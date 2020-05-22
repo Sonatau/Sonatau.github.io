@@ -16,5 +16,18 @@
   
   
   
+  <entry>
+    <title>《剑指Offer》Week2</title>
+    <link href="/2020/02/23/%E3%80%8A%E5%89%91%E6%8C%87Offer%E3%80%8BWeek2/"/>
+    <url>/2020/02/23/%E3%80%8A%E5%89%91%E6%8C%87Offer%E3%80%8BWeek2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="《剑指Offer》Week2"><a href="#《剑指Offer》Week2" class="headerlink" title="《剑指Offer》Week2"></a>《剑指Offer》Week2</h1><h2 id="Friday"><a href="#Friday" class="headerlink" title="Friday"></a>Friday</h2><p><strong>正则表达式</strong>：请实现一个函数用来匹配包括<code>&#39;.&#39;</code>和<code>&#39;*&#39;</code>的正则表达式。模式中的字符<code>&#39;.&#39;</code>表示任意一个字符，而<code>&#39;*&#39;</code>表示它前面的字符可以出现任意次（含0次）。在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串<code>&quot;aaa&quot;</code>与模式<code>&quot;a.a&quot;</code>和<code>&quot;ab*ac*a&quot;</code>匹配，但是与<code>&quot;aa.a&quot;</code>和<code>&quot;ab*a&quot;</code>均不匹配。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
   
 </search>
