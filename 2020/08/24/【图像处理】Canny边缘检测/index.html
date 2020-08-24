@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>【图像处理】Canny边缘检测 | 私人海域</title><meta name="description" content="前言 Canny边缘检测的步骤如下：  使用高斯滤波器，以平滑图像，滤除噪声。 计算图像中每个像素点的梯度强度和方向。 应用非极大值抑制，以消除边缘检测带来的杂散相应。（让边缘变瘦） 应用双阈值检测来确定真实的和潜在的边缘。 通过抑制孤立的弱边缘最终完成边缘检测。   高斯滤波器去除图像噪声 图像边缘容易收到噪声的干扰，因此为了避免检测到错误的边缘信息，需要建筑滤波器将图像做一个去噪的处理。滤波"><meta name="keywords" content="简单"><meta name="author" content="Sonata,sonatau@163.com"><meta name="copyright" content="Sonata"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://tva1.sinaimg.cn/large/007S8ZIlly1ghwjtdrp4tj30rs0rsjwe.jpg"><link rel="canonical" href="http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="【图像处理】Canny边缘检测"><meta property="og:url" content="http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/"><meta property="og:site_name" content="私人海域"><meta property="og:description" content="前言 Canny边缘检测的步骤如下：  使用高斯滤波器，以平滑图像，滤除噪声。 计算图像中每个像素点的梯度强度和方向。 应用非极大值抑制，以消除边缘检测带来的杂散相应。（让边缘变瘦） 应用双阈值检测来确定真实的和潜在的边缘。 通过抑制孤立的弱边缘最终完成边缘检测。   高斯滤波器去除图像噪声 图像边缘容易收到噪声的干扰，因此为了避免检测到错误的边缘信息，需要建筑滤波器将图像做一个去噪的处理。滤波"><meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2b65t4woj31hc0u0tp5.jpg"><meta property="article:published_time" content="2020-08-24T15:10:33.000Z"><meta property="article:modified_time" content="2020-08-24T15:17:50.908Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.0.2',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-08-24 23:17:50'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 5.0.2"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghwjow3dndj30jg0jgdgq.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">2</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E6%96%AF%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%8E%BB%E9%99%A4%E5%9B%BE%E5%83%8F%E5%99%AA%E5%A3%B0"><span class="toc-number">2.</span> <span class="toc-text"> 高斯滤波器去除图像噪声</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E5%A4%A7%E5%B0%8F%E4%B8%8E%E6%96%B9%E5%90%91%E8%AE%A1%E7%AE%97"><span class="toc-number">3.</span> <span class="toc-text"> 梯度大小与方向计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E6%9E%81%E5%A4%A7%E5%80%BC%E6%8A%91%E5%88%B6"><span class="toc-number">4.</span> <span class="toc-text"> 非极大值抑制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E9%98%88%E5%80%BC%E7%A1%AE%E5%AE%9A%E8%BE%B9%E7%BC%98"><span class="toc-number">5.</span> <span class="toc-text"> 双阈值确定边缘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D"><span class="toc-number">6.</span> <span class="toc-text"> 函数介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%8B%E7%BB%8D"><span class="toc-number">7.</span> <span class="toc-text"> 示例介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">8.</span> <span class="toc-text"> 参考资料</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://tva1.sinaimg.cn/large/007S8ZIlly1gi2b65t4woj31hc0u0tp5.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">私人海域</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">【图像处理】Canny边缘检测</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-24T15:10:33.000Z" title="发表于 2020-08-24 23:10:33">2020-08-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-24T15:17:50.908Z" title="更新于 2020-08-24 23:17:50">2020-08-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>Canny边缘检测的步骤如下：</p>
+<ul>
+<li>使用高斯滤波器，以平滑图像，滤除噪声。</li>
+<li>计算图像中每个像素点的梯度强度和方向。</li>
+<li>应用非极大值抑制，以消除边缘检测带来的杂散相应。（让边缘变瘦）</li>
+<li>应用双阈值检测来确定真实的和潜在的边缘。</li>
+<li>通过抑制孤立的弱边缘最终完成边缘检测。</li>
+</ul>
+<h2 id="高斯滤波器去除图像噪声"><a class="markdownIt-Anchor" href="#高斯滤波器去除图像噪声"></a> 高斯滤波器去除图像噪声</h2>
+<p>图像边缘容易收到噪声的干扰，因此为了避免检测到错误的边缘信息，需要建筑滤波器将图像做一个去噪的处理。滤波可以平滑一些纹理较弱的非边缘区域，以此得到更准确的边缘。</p>
+<p>在滤波过程中，我们通过滤波器对像素点周围的像素计算加权平均值，获取最终滤波结果。对于高斯滤波器T，<strong>越临近中心的点，权值越大</strong>。</p>
+<p>滤波器的大小也是可变的，<strong>滤波器的核越大，边缘信息对于噪声的敏感度就越低</strong>。不过，<strong>核越大，边缘检测的定位错误也会随之增加</strong>。</p>
+<p>通常来说，一个5×5的核能够满足大多数的情况。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2aal7nk4j30rs0840xt.jpg" alt="" /></p>
+<h2 id="梯度大小与方向计算"><a class="markdownIt-Anchor" href="#梯度大小与方向计算"></a> 梯度大小与方向计算</h2>
+<p>使用Sobel算子计算图像梯度的幅度。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>G</mi><mo>=</mo><msqrt><mo stretchy="false">(</mo></msqrt><msubsup><mi>G</mi><mi>x</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>G</mi><mi>y</mi><mn>2</mn></msubsup><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>θ</mi><mo>=</mo><mi>a</mi><mi>r</mi><mi>c</mi><mi>t</mi><mi>a</mi><mi>n</mi><mo stretchy="false">(</mo><msub><mi>G</mi><mi>y</mi></msub><mo separator="true">,</mo><msub><mi>G</mi><mi>x</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G = \sqrt(G_x ^2 + G_y ^ 2) \\
+\theta = arctan(G_y, G_x)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">G</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.25612499999999994em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.983875em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mopen" style="padding-left:1em;">(</span></span><span style="top:-2.9438750000000002em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119c34,79.3,68.167,
+158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120c340,-704.7,510.7,-1060.3,512,-1067
+c4.7,-7.3,11,-11,19,-11H40000v40H1012.3s-271.3,567,-271.3,567c-38.7,80.7,-84,
+175,-136,283c-52,108,-89.167,185.3,-111.5,232c-22.3,46.7,-33.8,70.3,-34.5,71
+c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1s-109,-253,-109,-253c-72.7,-168,-109.3,
+-252,-110,-252c-10.7,8,-22,16.7,-34,26c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26
+s76,-59,76,-59s76,-60,76,-60z M1001 80H40000v40H1012z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.25612499999999994em;"><span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.2472159999999999em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.864108em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span><span style="top:-3.1130000000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">a</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>梯度的方向总是与边缘垂直的，通常就近取值为水平（左、右）、垂直（上、下）、对角线（右上、左上、左下、右下）等8个不同的方向。</p>
+<p>下图的梯度的表示法中，每一个梯度包含幅度和角度两个不同的值。为了方便观察，这里使用了可视化表示方法。例如，左上角顶点的值“2↑”实际上表示的是一个二元数对“(2, 90)”，表示梯度的幅度为2，角度为90°。</p>
+<p>注意梯度方向和实际的边缘方向是垂直的。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2aexqem8j30m50c9ac0.jpg" alt="" /></p>
+<h2 id="非极大值抑制"><a class="markdownIt-Anchor" href="#非极大值抑制"></a> 非极大值抑制</h2>
+<p>在获得了梯度的幅度和方向后，遍历图像中的像素点，去除所有非边缘的点。在具体实现时，逐一遍历像素点，判断当前像素点是否是周围像素点中具有相同梯度方向的最大值，并根据判断结果决定是否抑制该点，这一过程也称作 <strong>边缘细化</strong>（即一个方向上提取出来的像素点变少了）。</p>
+<p>针对每个像素点：</p>
+<ul>
+<li>如果该点是其方向正/负梯度上的局部最大值，则保留该点。</li>
+<li>如果不是，则抑制该点（归零）。</li>
+</ul>
+<p>比如下图中A点具有最大的局部值，所以保留A点（称为边缘），其余两点（B和C）被抑制（归零）。由于ABC三点的梯度方向都是水平的，均垂直于边缘。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2akk9sl1j30qj0c0t9o.jpg" alt="" /></p>
+<p>“正/负梯度方向上”是指相反方向的梯度方向。例如，在图10-5中，黑色背景的像素点都是垂直方向梯度（向上、向下）方向上（即水平边缘）的局部最大值。这些点最终会被处理为边缘点。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2al6huqaj30jr0apmyk.jpg" alt="" /></p>
+<p>因此，这些黑色背景的点最终会被处理为边缘点，而其他点都被处理为非边缘点。</p>
+<p>经过上述处理后，<strong>对于同一个方向的若干个边缘点，基本上仅保留了一个</strong>，因此实现了边缘细化的目的。</p>
+<h2 id="双阈值确定边缘"><a class="markdownIt-Anchor" href="#双阈值确定边缘"></a> 双阈值确定边缘</h2>
+<p>完成上述步骤后，图像内的强边缘已经在当前获取的边缘图像内。但是，一些虚边缘可能也在边缘图像内。这些虚边缘可能是真实图像产生的，也可能是由于噪声所产生的。对于后者，必须将其剔除。</p>
+<p>设置两个阈值，其中一个为高阈值maxVal，另一个为低阈值minVal。根据当前边缘像素的梯度值（指的是梯度幅度，下同）与这两个阈值之间的关系，判断边缘的属性。具体步骤为：</p>
+<ul>
+<li>如果当前边缘像素的梯度值大于或等于maxVal，则将当前边缘像素标记为强边缘。</li>
+<li>如果当前边缘像素的梯度值介于maxVal与minVal之间，则将当前边缘像素标记为虚边缘（需要保留）。</li>
+<li>如果当前边缘像素的梯度值小于或等于minVal，则抑制当前边缘像素。<br />
+在上述过程中，我们得到了虚边缘，需要对其做进一步处理。一般通过判断虚边缘与强边缘是否连接，来确定虚边缘到底属于哪种情况。通常情况下，如果一个虚边缘：
+<ul>
+<li>与强边缘连接，则将该边缘处理为边缘。</li>
+<li>与强边缘无连接，则该边缘为弱边缘，将其抑制。</li>
+</ul>
+</li>
+</ul>
+<p>在下图中，左图显示的是三个边缘信息，右图是对边缘信息进行分类的示意图，具体划分如下：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2ap0b2vrj30x10cmgq6.jpg" alt="" /></p>
+<ul>
+<li>A点的梯度值值大于maxVal，因此A是强边缘。</li>
+<li>B和C点的梯度值介于maxVal和minVal之间，因此B、C是虚边缘。</li>
+<li>D点的梯度值小于minVal，因此D被抑制（抛弃）。</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2apza1cqj30rs08uwhp.jpg" alt="" /></p>
+<p>对于虚边缘：</p>
+<p>● B点的梯度值介于maxVal和minVal之间，是虚边缘，但该点与强边缘不相连，故将其抛弃。</p>
+<p>C点的梯度值介于maxVal和minVal之间，是虚边缘，但该点与强边缘A相连，故将其保留。</p>
+<p>注意，<strong>高阈值maxVal和低阈值minVal不是固定的</strong>，需要针对不同的图像进行定义。</p>
+<h2 id="函数介绍"><a class="markdownIt-Anchor" href="#函数介绍"></a> 函数介绍</h2>
+<p>使用openCV提供的Canny函数来实现边缘检测：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">edges = cv.Canny( image, threshold1, threshold2[, apertureSize[, L2gradient]])</span><br></pre></td></tr></table></figure>
+<p>edges为计算得到的边缘图像。</p>
+<p>● image为8位输入图像。</p>
+<p>● threshold1表示处理过程中的第一个阈值。</p>
+<p>● threshold2表示处理过程中的第二个阈值。</p>
+<p>● apertureSize表示Sobel算子的孔径大小。</p>
+<p>● L2gradient为计算图像梯度幅度（gradient magnitude）的标识。其默认值为False。如果为True，则使用更精确的L2范数进行计算（即两个方向的导数的平方和再开方），否则使用L1范数（直接将两个方向导数的绝对值相加）。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2asz94x7j30rt05awfs.jpg" alt="" /></p>
+<h2 id="示例介绍"><a class="markdownIt-Anchor" href="#示例介绍"></a> 示例介绍</h2>
+<p>假设现在对于某张火箭的背景图，计划使用canny检测来获取图像的边缘。测试使用不同大小的阈值，观察或渠道的边缘有何不同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">&quot;img/rocket.jpg&quot;</span>, cv.COLOR_BGR2GRAY)</span><br><span class="line">edges1 = cv.Canny(image, <span class="number">128</span>, <span class="number">200</span>)</span><br><span class="line">edges2 = cv.Canny(image, <span class="number">32</span>, <span class="number">128</span>)</span><br><span class="line">cv.imshow(<span class="string">&quot;origin&quot;</span>, image)</span><br><span class="line">cv.imshow(<span class="string">&quot;result1&quot;</span>, edges1)</span><br><span class="line">cv.imshow(<span class="string">&quot;result2&quot;</span>, edges2)</span><br><span class="line">cv.waitKey()</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+<p>观察结果如下：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2a64qv6vj31990u07sy.jpg" alt="" /></p>
+<p>其中：</p>
+<ul>
+<li>左上图为原图。</li>
+<li>右上角为参数128，200的边缘检测结果。</li>
+<li>中下图为参数32，128的边缘检测结果。</li>
+</ul>
+<p>由图可以发现，两个相关的阈值较小时，可以捕获更多的边缘信息。</p>
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<ol>
+<li>《openCV入门》</li>
+</ol>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:sonatau@163.com">Sonata</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/">http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yluy.gitee.io" target="_blank">私人海域</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%80%E5%8D%95/">简单</a></div><div class="post_share"><div class="social-share" data-image="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2b65t4woj31hc0u0tp5.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Harris%E7%89%B9%E5%BE%81%E7%82%B9%E6%A3%80%E6%B5%8B/"><img class="prev-cover" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2bbz5079j31hc0u0qfo.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【图像处理】Harris特征点检测</div></div></a></div><div class="next-post pull-right"><a href="/2020/08/24/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%91GAN/"><img class="next-cover" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi1xf7tuvjj30zk0npq5r.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【深度学习】GAN</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/08/19/【数据分析】基础知识准备/" title="【数据分析】基础知识准备"><img class="relatedPosts_cover" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghwkvfmw9ij30jg0el75b.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-19</div><div class="relatedPosts_title">【数据分析】基础知识准备</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/21/【数据分析】数据清洗及特征处理/" title="【数据分析】数据清洗及特征处理.md"><img class="relatedPosts_cover" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghyqj5ov5ej30m80esaaw.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-21</div><div class="relatedPosts_title">【数据分析】数据清洗及特征处理.md</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/23/【数据分析】数据重构/" title="【数据分析】数据重构"><img class="relatedPosts_cover" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi0haldzxsj31hc0u0wuk.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-23</div><div class="relatedPosts_title">【数据分析】数据重构</div></div></a></div><div class="relatedPosts_item"><a href="/2020/08/20/【深度学习】优化函数详解(二)/" title="【深度学习】优化函数详解(2)"><img class="relatedPosts_cover" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghwksvqq4oj30zk0m8n2k.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-20</div><div class="relatedPosts_title">【深度学习】优化函数详解(2)</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(https://tva1.sinaimg.cn/large/007S8ZIlly1gi2b65t4woj31hc0u0tp5.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 By Sonata</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">hi there ~</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>$(function () {
+  $('span.katex-display').wrap('<div class="katex-wrap"></div>')
+})</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script src="/js/third-party/click_heart.js" async="async"></script></div></body></html>
