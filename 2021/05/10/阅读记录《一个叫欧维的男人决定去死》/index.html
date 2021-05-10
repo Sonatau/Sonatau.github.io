@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>阅读记录《一个叫欧维的男人决定去死》 | 私人海域</title><meta name="description" content="她是色彩，他全部的色彩  我常在悬崖边上走。你轻轻一推我便可以落入黑暗，但你如果愿意拉我一把，我的爱情，连同我整个人，便都是你的。  失去某人以后总是会有一些奇怪的细节惹人怀念。都是极小的事情。笑容、她睡眠时翻身的样子。为她粉刷房间。 相信命运，你在生命中走过的每一条道路最终都会带领你到注定的归宿。 “一个人的品质是由他的行为决定的，而不是他说的话。”欧维说。 这是一个还没过期就已经过时的世界。"><meta name="keywords" content="其他"><meta name="author" content="Sonata,sonatau@163.com"><meta name="copyright" content="Sonata"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://tva1.sinaimg.cn/large/007S8ZIlly1ghwjtdrp4tj30rs0rsjwe.jpg"><link rel="canonical" href="http://yluy.gitee.io/2021/05/10/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%E3%80%8A%E4%B8%80%E4%B8%AA%E5%8F%AB%E6%AC%A7%E7%BB%B4%E7%9A%84%E7%94%B7%E4%BA%BA%E5%86%B3%E5%AE%9A%E5%8E%BB%E6%AD%BB%E3%80%8B/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="阅读记录《一个叫欧维的男人决定去死》"><meta property="og:url" content="http://yluy.gitee.io/2021/05/10/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%E3%80%8A%E4%B8%80%E4%B8%AA%E5%8F%AB%E6%AC%A7%E7%BB%B4%E7%9A%84%E7%94%B7%E4%BA%BA%E5%86%B3%E5%AE%9A%E5%8E%BB%E6%AD%BB%E3%80%8B/"><meta property="og:site_name" content="私人海域"><meta property="og:description" content="她是色彩，他全部的色彩  我常在悬崖边上走。你轻轻一推我便可以落入黑暗，但你如果愿意拉我一把，我的爱情，连同我整个人，便都是你的。  失去某人以后总是会有一些奇怪的细节惹人怀念。都是极小的事情。笑容、她睡眠时翻身的样子。为她粉刷房间。 相信命运，你在生命中走过的每一条道路最终都会带领你到注定的归宿。 “一个人的品质是由他的行为决定的，而不是他说的话。”欧维说。 这是一个还没过期就已经过时的世界。"><meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gqd6bp887nj31gr0u0aux.jpg"><meta property="article:published_time" content="2021-05-10T03:30:25.000Z"><meta property="article:modified_time" content="2021-05-10T03:32:58.180Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.0.2',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false    
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: false,
+  postUpdate: '2021-05-10 11:32:58'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 5.0.2"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghwjow3dndj30jg0jgdgq.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">62</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">15</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">22</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://tva1.sinaimg.cn/large/008i3skNly1gqd6bp887nj31gr0u0aux.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">私人海域</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">阅读记录《一个叫欧维的男人决定去死》</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-05-10T03:30:25.000Z" title="发表于 2021-05-10 11:30:25">2021-05-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-10T03:32:58.180Z" title="更新于 2021-05-10 11:32:58">2021-05-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><ul>
+<li>她是色彩，他全部的色彩</li>
+</ul>
+<p>我常在悬崖边上走。你轻轻一推我便可以落入黑暗，但你如果愿意拉我一把，我的爱情，连同我整个人，便都是你的。</p>
+<ul>
+<li>失去某人以后总是会有一些奇怪的细节惹人怀念。都是极小的事情。笑容、她睡眠时翻身的样子。为她粉刷房间。</li>
+<li>相信命运，你在生命中走过的每一条道路最终都会带领你到注定的归宿。</li>
+<li>“一个人的品质是由他的行为决定的，而不是他说的话。”欧维说。</li>
+<li>这是一个还没过期就已经过时的世界。整个国家都在为没人能正经做事起立鼓掌，毫无保留地为平庸欢呼喝彩。</li>
+</ul>
+<p>欧维还活在匠人世界</p>
+<p>我愿意向爱过的人学习那些曾经欣赏他的优点，比如温柔比如细腻。</p>
+<ul>
+<li>死亡最强大的力量不在于它能让人死去，而在于让留下来的人不想再活着。”——《外婆的道歉信》</li>
+<li>他从来就不是那种随心所欲的男人，对女人也没什么特别的兴趣。但看到她以后，他感觉自己就像一把走了火的手枪。</li>
+<li>他原路走回火车站，在候车室的一条长凳上躺下睡了一觉。三点一刻，他又按原路走回裁缝店</li>
+</ul>
+<p>欧维，你虽然看着不慌不忙，但我知道你一定紧张死了，这一路值得回味，而下一站令人期待。<br />
+我觉得自己跟你好像，死板枯燥行为单一，又有该死的原则不可跨越。<br />
+我甚至能体会到你平静行为下的心理独白，愤愤不平的时候，碰到索雅的时候，重复简单生活的时候，坚守原则的时候。从来没有过，我从来没有在书里碰到过这样的自己。</p>
+<ul>
+<li>她真诚的笑声让欧维忍不住低下头去踹一脚砾石。</li>
+<li>我只是想知道做你的眼中人是什么感觉。</li>
+<li>她喜欢他倾听自己说话的样子，也喜欢逗他笑。她说，对于她，这就足够了。</li>
+<li>欧维握着她的手坐了几个钟头，直到医院的工作人员跑来，温和而谨慎地向他解释，他们必须抬走她的尸体。于是欧维从椅子上站起来，自顾点点头，去殡仪馆填了些表格。周日是她的葬礼。周一他按时上了班。</li>
+</ul>
+<p>生活中唯一的彩色没有了，一切重回黑暗。忙碌是最好的麻痹工具。</p>
+<ul>
+<li>要是有人问起，他会说，在她之前，他没有生活。之后也没有。</li>
+<li>直到这个顽固的男孩露出笑容，就像包裹在珠宝周围的石膏模具碎裂开来。</li>
+<li>有人说最优秀的人是从错误中重生的，他们后来通常比那些从没有犯过错误的人更优秀。</li>
+<li>“这个世界上能成长为优秀的人类的，一定是那些曾经迷失过的人，而非那些在人生中从未迷失过的人。”——《那不勒斯的萤火》</li>
+<li>当一个人给另一个人钱，蒙福的不是那个收钱的人，而是给钱的那个。</li>
+<li>不管忙着生存还是死亡，欧维。我们都必须继续走下去。</li>
+<li>如果两个人不分担这份悲伤，就会被这悲伤分开。</li>
+<li>对死亡最大的恐惧，在于它与我们擦肩而过，留下我们独自一人</li>
+</ul>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:sonatau@163.com">Sonata</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yluy.gitee.io/2021/05/10/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%E3%80%8A%E4%B8%80%E4%B8%AA%E5%8F%AB%E6%AC%A7%E7%BB%B4%E7%9A%84%E7%94%B7%E4%BA%BA%E5%86%B3%E5%AE%9A%E5%8E%BB%E6%AD%BB%E3%80%8B/">http://yluy.gitee.io/2021/05/10/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%E3%80%8A%E4%B8%80%E4%B8%AA%E5%8F%AB%E6%AC%A7%E7%BB%B4%E7%9A%84%E7%94%B7%E4%BA%BA%E5%86%B3%E5%AE%9A%E5%8E%BB%E6%AD%BB%E3%80%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yluy.gitee.io" target="_blank">私人海域</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%85%B6%E4%BB%96/">其他</a></div><div class="post_share"><div class="social-share" data-image="https://tva1.sinaimg.cn/large/008i3skNly1gqd6bp887nj31gr0u0aux.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/05/05/Mac%E5%8D%87%E7%BA%A7BigSur%E5%90%8E%E6%8F%90%E7%A4%BA%E6%B2%A1%E6%9C%89%E6%9D%83%E9%99%90%E6%89%93%E5%BC%80%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/"><img class="next-cover" data-lazy-src="https://tva1.sinaimg.cn/large/008i3skNly1gq7v3jth45j30jg0e4di0.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Mac升级BigSur后提示没有权限打开应用程序</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/11/01/【小路的日常】11月计划/" title="【小路的日常】11月计划"><img class="relatedPosts_cover" data-lazy-src="https://tva1.sinaimg.cn/large/0081Kckwly1gk9mkiviqmj30jg0cbq40.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-01</div><div class="relatedPosts_title">【小路的日常】11月计划</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(https://tva1.sinaimg.cn/large/008i3skNly1gqd6bp887nj31gr0u0aux.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Sonata</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">hi there ~</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>$(function () {
+  $('span.katex-display').wrap('<div class="katex-wrap"></div>')
+})</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script src="/js/third-party/click_heart.js" async="async"></script></div></body></html>
