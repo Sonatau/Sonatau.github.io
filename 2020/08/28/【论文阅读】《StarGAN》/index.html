@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【论文阅读】《StarGAN》 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="论文：《StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation》 发表时间：CVPR 2018 解决问题：多领域的图像转换问题   背景 Pix2Pix与CycleGAN分别解决了两个领域之间基于匹配数据和非匹配数据的转换。但是在实际的应用中我们会发现需要大量的多领域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文阅读】《StarGAN》">
+<meta property="og:url" content="http://yluy.gitee.io/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8AStarGAN%E3%80%8B/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="论文：《StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation》 发表时间：CVPR 2018 解决问题：多领域的图像转换问题   背景 Pix2Pix与CycleGAN分别解决了两个领域之间基于匹配数据和非匹配数据的转换。但是在实际的应用中我们会发现需要大量的多领域">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvy75rvdjj30rs0nzdxg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvy775araj30rs0rte1y.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvyatd2kej30r80pdwm5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvygn9f2tj30jq0j3djv.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvytyjx6mj30u00vz15m.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvywv0in5j30rs0dt0wp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvz0uoh57j30rs01k3yx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3ilsp6jj30rs03iq3p.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3o7k22pj30rs01kq37.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3rlg640j30rs03haao.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3u4xwpuj30rs01udfy.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw44d8vp1j30rs0ru4ep.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw46o6fdaj30rs0kf1gg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw49yhhl1j30rs0mn1fj.jpg">
+<meta property="article:published_time" content="2020-08-28T02:42:42.000Z">
+<meta property="article:modified_time" content="2020-08-28T02:44:21.293Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="中等">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvy75rvdjj30rs0nzdxg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【论文阅读】《StarGAN》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8AStarGAN%E3%80%8B/" class="article-date">
+  <time datetime="2020-08-28T02:42:42.000Z" itemprop="datePublished">2020-08-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【论文阅读】《StarGAN》
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>论文：《StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation》</p>
+<p>发表时间：CVPR 2018</p>
+<p>解决问题：多领域的图像转换问题</p>
+</blockquote>
+<h2 id="背景"><a class="markdownIt-Anchor" href="#背景"></a> 背景</h2>
+<p>Pix2Pix与CycleGAN分别解决了两个领域之间基于匹配数据和非匹配数据的转换。但是在实际的应用中我们会发现需要大量的多领域转换，例如图1所示，这可能是一个智能修图的场景，用户输入一张人物照片，他希望能够通过选项来调节照片中人物的外貌，比如图中例子的发色、性别、年龄、肤色等。又比如图2，对于同一个人物照片我们希望能够将他转换成各种不一样的表情，从普通的表情转换为愤怒、喜悦和恐惧等。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvy75rvdjj30rs0nzdxg.jpg" alt="图1 头像照片的多种外貌转换" style="width:50%">
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvy775araj30rs0rte1y.jpg" alt="图2 头像照片的多种表情转换" style="width:50%">
+<p>之前的Pix2Pix和CycleGAN可以非常好地解决领域间转换问题，它们同样可以应用于多领域的转换，但是存在的问题是必须在每两个领域之间进行单独的训练。我们假设场景为图8-3的表情转换，一共有四个领域，分别为中性、生气、喜悦与恐惧，我们将它们从1到4标号。如果使用CycleGAN的话我们可以看到图3，在每两个领域都需要训练两个生成器，比如领域1和领域3之间，就需要有生成器G31与生成器G13，分别作为从3到1和从1到3的生成。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvyatd2kej30r80pdwm5.jpg" alt="图3 使用CycleGAN实现多领域转换的情况" style="width:50%">
+<p>我们会发现，在四个领域的情况下已经需要12个不同的生成器了，随着领域数量的增加，该数量会越来越大，如果领域的数量为n的话，排列组合的数量为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>C</mi><mi>n</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">C_n ^ 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.061108em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>￼。在领域很多的情况下，要训练这么多生成模型是非常消耗资源的。<br />
+此外，除了在训练过程中的资源消耗以外，StarGAN的研究者还发现如果仅使用CycleGAN的方法在每两个领域之间进行生成器的训练，那么各自的训练过程都是独立的，这导致比如像图2中虽然每个领域是不一样的表情，但是人脸的结构是基本一致的，<strong>独立的训练会浪费大量可以辅助优化生成器的数据</strong>，这显然也是不合理的。针对这两个问题，研究者们希望能够为这样的多领域转换找到一个更加合适的解决方案。</p>
+<p>StarGAN的论文在2017年年底发布在了arxiv上，并随后发表在了计算机视觉领域会议CVPR2018。StarGAN提供了一种针对多领域的解决方案，<strong>在多领域转换的情况下仅需训练一个通用的生成器即可</strong>。图4是StarGAN的结构示意图，对于五个领域的情况仅需中间的一个生成器G即可，整个网络形成一个星形的拓扑结构，这也是StarGAN的命名由来。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvygn9f2tj30jq0j3djv.jpg" alt="图4 使用StarGAN实现多领域转换的情况" style="width:50%">
+<h2 id="网络架构"><a class="markdownIt-Anchor" href="#网络架构"></a> 网络架构</h2>
+<p>StarGAN的网络设计借鉴了很多经典的思想，其中最重要的正是Cycle-GAN和cGAN。首先我们看一下StarGAN的网络结构，其判别器如图8-5所示，输入为任意分类的真伪图片，输出部分需要将所有数据都进行真伪判断，对真数据还需要进行所属领域的分类，这一判别器非常类似前面介绍的ACGAN。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvytyjx6mj30u00vz15m.jpg" alt="图5 StarGAN判别器结构图" style="width:50%">
+<p>图6展示了StarGAN比较完整的流程，<strong>对于生成器的输入不仅需要原始图片，同时还需要像cGAN一样设定一个目标领域。由生成器产生的图像会进入上面所说的判别器中进行判定，目标是让判别器将其判定为真实图像且属于目标领域。与此同时该生成图像还需要再次输入本身的生成器中，且将输入条件设置为源领域，用于重建原始图像，确保重建的图像能够与原始图像越接近越好。</strong></p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvywv0in5j30rs0dt0wp.jpg" alt="图6 StarGAN完整结构图" style="width:50%">
+<h2 id="目标函数"><a class="markdownIt-Anchor" href="#目标函数"></a> 目标函数</h2>
+<p>根据上述网络架构，我们来看一下StarGAN的目标函数。</p>
+<p>首先是常规的<strong>GAN对抗损失函数</strong>，也就是生成器能否让判别器认为该生成图像为真实图像，其中c为条件参数，表示目标类型。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghvz0uoh57j30rs01k3yx.jpg" style="width:50%">
+<p>其次是<strong>分类损失</strong>，同样也要同时对生成器和判别器进行优化，这里可以写成两种分类损失：第一种是对于真数据的分类损失<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>L</mi><mrow><mi>c</mi><mi>l</mi><mi>s</mi></mrow><mi>r</mi></msubsup></mrow><annotation encoding="application/x-tex">L_{cls}^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9664379999999999em;vertical-align:-0.2831079999999999em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4168920000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">s</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831079999999999em;"><span></span></span></span></span></span></span></span></span></span>￼，第二种是假数据的分类损失￼<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>L</mi><mrow><mi>c</mi><mi>l</mi><mi>s</mi></mrow><mi>f</mi></msubsup></mrow><annotation encoding="application/x-tex">L_{cls}^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2683239999999998em;vertical-align:-0.3013079999999999em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9670159999999999em;"><span style="top:-2.3986920000000005em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">s</span></span></span></span><span style="top:-3.1809080000000005em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3013079999999999em;"><span></span></span></span></span></span></span></span></span></span>￼对应下面两个公式。</p>
+<p>其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mrow><mi>c</mi><mi>l</mi><mi>s</mi></mrow></msub><mo stretchy="false">(</mo><mi>c</mi><mi mathvariant="normal">′</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D_{cls}(c′|x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">c</span><span class="mord">′</span><span class="mord">∣</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span>代表判别器将真实输入x归为原始分类c′的判别概率分布，(x,c′)是真实训练数据中的分类匹配数据，判别器D的目标是最小化这个损失函数。另一方面，对于生成器来说希望基于x的生成数据能够被判别器判断为目标分类c，需要G能够最小化损失函数￼。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3ilsp6jj30rs03iq3p.jpg" style="width:50%">
+<p>再清楚一点说，就是当给定一个输入图像x属于c’领域，将它投入判别器，判别器的目标就是尽可能分辨出x时属于c’类的，因此<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><msub><mi>D</mi><mrow><mi>c</mi><mi>l</mi><mi>s</mi></mrow></msub><mo stretchy="false">(</mo><msup><mi>c</mi><mo mathvariant="normal">′</mo></msup><mi mathvariant="normal">∣</mi><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">logD_{cls}(c&#x27;|x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.001892em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span>就要尽可能得大。另外，当将目标领域和输入图像都投入生成器后的结果作为新的输入，被判别器判断为是c的可能性应该尽可能得大，所以<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><msub><mi>D</mi><mrow><mi>c</mi><mi>l</mi><mi>s</mi></mrow></msub><mo stretchy="false">(</mo><mi>c</mi><mi mathvariant="normal">∣</mi><mi>G</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>c</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">logD_{cls}(c|G(x, c))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">c</span><span class="mord">∣</span><span class="mord mathdefault">G</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">c</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>要尽可能大。</p>
+<p>最终我们还需构建<strong>重建损失</strong>，确保生成的数据能够很好地还原到本来的领域分类中。这里使用原始数据和经过两次生成（先转换到分类c，再转换为源分类c′）的图像L1损失作为重建损失（CycleGAN），公式如下所示。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3o7k22pj30rs01kq37.jpg" style="width:50%">
+<p>最终的目标函数如下，分为判别器与生成器。其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>λ</mi><mrow><mi>c</mi><mi>l</mi><mi>s</mi></mrow></msub></mrow><annotation encoding="application/x-tex">λ_{cls}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>λ</mi><mrow><mi>r</mi><mi>e</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">λ_{rec}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>为超参数，用来控制分类损失、重建损失相对于对抗损失的重要性，在StarGAN原文的实验中取<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>λ</mi><mrow><mi>c</mi><mi>l</mi><mi>s</mi></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">λ_{cls}=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>λ</mi><mrow><mi>r</mi><mi>e</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">λ_{rec}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>=10。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3rlg640j30rs03haao.jpg" style="width:50%">
+<p>StarGAN的另外一个创新点在于能够同时协调多个包含不同领域的数据集，比如图1的外貌数据集和图2的表情数据集。但这里存在的问题是两个数据集之间是不知道对方的分类标签是什么的，比如外貌数据集只知道自己包含发色、肤色等，却不知道表情数据集包含了喜悦、愤怒等。</p>
+<p>在StarGAN中，研究者们加入了<strong>一个Mask向量m的概念，用来忽略那些未知的分类</strong>，仅关注于自身了解的分类。最终的分类标签向量如下所示，其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>用来表示第i个数据库的分类信息。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw3u4xwpuj30rs01udfy.jpg" style="width:50%">
+<p>在训练过程中，会将上式中的￼直接输入生成器作为条件信息，由于Mask向量的存在，那些无关的分类标签向量会变成零向量，生成器会自动忽略。另一方面在多任务的训练中，判别器也仅会对自己了解的分类进行判别。图7是使用两个多分类数据库同时训练的框架图，使用的就是外貌数据集和表情数据集，可以看到Mask向量分别在两种数据库的情况下对应为[1, 0]和[0, 1]，会将不属于该数据库的分类标签向量置为全零。在这样的多数据库训练过程后，判别器会具备各个数据库的分类判别能力，而生成器也可以同时针对多个数据库的信息进行图像生成。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw44d8vp1j30rs0ru4ep.jpg" alt="图7 StarGAN同时训练两个多分类数据库的框架示意图" style="width:50%">
+<h2 id="结果"><a class="markdownIt-Anchor" href="#结果"></a> 结果</h2>
+<p>图8和图9是官方给出的最终生成效果图，分别对应上文提到的外貌数据库与表情数据库，读者可以自己按照上述步骤尝试使用一下多分类的转换。</p>
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw46o6fdaj30rs0kf1gg.jpg" alt="图8 StarGAN的多种外貌生成效果图" style="width:50%">
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ghw49yhhl1j30rs0mn1fj.jpg" alt="图8-9 StarGAN的多种表情生成效果图" style="width:50%">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8AStarGAN%E3%80%8B/" data-id="clkqxrnpu00641fj4f0qa0sng" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/29/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91%E5%9B%BE%E5%83%8F%E8%BD%AE%E5%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【图像处理】图像轮廓
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8APix2Pix%E3%80%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【论文阅读】《Pix2Pix》</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

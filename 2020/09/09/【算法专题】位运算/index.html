@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【算法专题】位运算 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="位运算  位运算的基本操作 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091typedef stru">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法专题】位运算">
+<meta property="og:url" content="http://yluy.gitee.io/2020/09/09/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E4%BD%8D%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="位运算  位运算的基本操作 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091typedef stru">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-09-09T03:23:55.000Z">
+<meta property="article:modified_time" content="2020-09-09T03:26:08.949Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="中等">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【算法专题】位运算" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/09/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E4%BD%8D%E8%BF%90%E7%AE%97/" class="article-date">
+  <time datetime="2020-09-09T03:23:55.000Z" itemprop="datePublished">2020-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>►<a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【算法专题】位运算
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="位运算"><a class="markdownIt-Anchor" href="#位运算"></a> 位运算</h2>
+<h3 id="位运算的基本操作"><a class="markdownIt-Anchor" href="#位运算的基本操作"></a> 位运算的基本操作</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">Bitset</span> &#123;</span><br><span class="line">    <span class="type">int</span> setsize; <span class="comment">// 16 32 ... int 是32位的</span></span><br><span class="line">    <span class="type">int</span> arraysize;  <span class="comment">// 相当于有几行</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">short</span> *v; <span class="comment">// 之后会分配一片连续的空间</span></span><br><span class="line">&#125;Bitset; <span class="comment">//还非要大写才行 ..</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// SetInit(size) 集合大小</span></span><br><span class="line"><span class="function">Bitset <span class="title">SetInit</span><span class="params">(<span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line">    Bitset s;</span><br><span class="line">    s.setsize = size;</span><br><span class="line">    s.arraysize = (size + <span class="number">15</span>) &gt;&gt; <span class="number">4</span>; <span class="comment">// 右移4位 除以16</span></span><br><span class="line">    <span class="comment">//我之前好像智障了 sizeof后面的是不需要看的 肯定是要带上的 所以这行就是相当于 创建一个sizes长度的v 类型是unsigned short型</span></span><br><span class="line">    s.v = (<span class="type">unsigned</span> <span class="type">short</span>*) <span class="built_in">malloc</span>( size * <span class="built_in">sizeof</span>(<span class="type">unsigned</span> <span class="type">short</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        s.v[i] = <span class="number">0</span>; <span class="comment">// 初始化</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SetAssign(A, B) 将集合B 复制 到集合A</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetAssign</span><span class="params">(Bitset A, Bitset B)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(A.setsize!=B.setsize) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; A.arraysize; i++) A.v[i] = B.v[i]; <span class="comment">//定义是按照n定，赋值是按照层d赋值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SetMember(x, A) 判断是否是相同类型</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 首先明确一点 就是集合A的元素&#123;1,3,5&#125; 它代表的是 第1、3、5位的数字为1 也就是 101010</span></span><br><span class="line"><span class="comment"> 而元素x ： 若 x=2 则表示判断 第x位是否为1。 现在假设传入的x=28 说明我要找的是第28位的数字</span></span><br><span class="line"><span class="comment"> x &gt;&gt; 4 = 1 说明我应该去v[1]找</span></span><br><span class="line"><span class="comment"> x &amp; 15 = 12 相当于mod 16 = 12 ， 再将 1 右移 12位 ，就是相当于 把v中第13个数 和 1 相与</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">findIndex</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &gt;&gt; <span class="number">4</span>; <span class="comment">// 找下标</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bitIndex</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> &lt;&lt; (x &amp; <span class="number">15</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">SetMember</span><span class="params">(<span class="type">int</span> x, Bitset A)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x&lt;<span class="number">0</span> || x &gt; A.setsize) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">return</span> A.v[<span class="built_in">findIndex</span>(x)] &amp; <span class="built_in">bitIndex</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SetEqual(A, B) 两集合是否相等</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">SetEqual</span><span class="params">(Bitset A, Bitset B)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(A.setsize!=B.setsize) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; A.arraysize; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(A.v[i]!=B.v[i])</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SetUnion(A, B) U 并集合</span></span><br><span class="line"><span class="function">Bitset <span class="title">SetUnion</span><span class="params">(Bitset A, Bitset B)</span> </span>&#123;</span><br><span class="line">    Bitset C = <span class="built_in">SetInit</span>(A.setsize);</span><br><span class="line">    <span class="keyword">if</span>(A.setsize!=B.setsize) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; A.arraysize; i++) &#123;</span><br><span class="line">        C.v[i] = A.v[i] | B.v[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> C;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SetInterSection(A, B) 交集  -&gt;  C.v[i] = A.v[i] | B.v[i];</span></span><br><span class="line"><span class="comment">// SetDifference(A, B) 差集 属于A而不属于B的</span></span><br><span class="line"><span class="function">Bitset <span class="title">setDifference</span><span class="params">(Bitset A, Bitset B)</span> </span>&#123;</span><br><span class="line">    Bitset C = <span class="built_in">SetInit</span>(A.setsize);</span><br><span class="line">    <span class="keyword">if</span>(A.setsize!=B.setsize) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; A.arraysize; i++) &#123;</span><br><span class="line">        C.v[i] = A.v[i] ^ (A.v[i] &amp; B.v[i]); <span class="comment">// 这步骤就是把，A B都有的元素取出，再异或一下，不同取1，就可以拿出差集了。</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> C;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SetInsert(x, S) 在x位插入元素</span></span><br><span class="line"><span class="function">Bitset <span class="title">SetInsert</span><span class="params">(<span class="type">int</span> x, Bitset S)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;<span class="number">0</span> || x &gt; S.setsize) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    S.v[<span class="built_in">findIndex</span>(x)] |= <span class="built_in">bitIndex</span>(x);<span class="comment">// 妈耶 我怎么会把它想那么复杂呢</span></span><br><span class="line">    <span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SetDelete(x,S) 在x位删除元素</span></span><br><span class="line"><span class="function">Bitset <span class="title">SetDelete</span><span class="params">(<span class="type">int</span> x, Bitset S)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;<span class="number">0</span> || x &gt; S.setsize) <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    S.v[<span class="built_in">findIndex</span>(x)] &amp;= ~<span class="built_in">bitIndex</span>(x); <span class="comment">// x位为0，其余都是1，&amp;上之后，可以成功删除</span></span><br><span class="line">    <span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="一般操作"><a class="markdownIt-Anchor" href="#一般操作"></a> 一般操作</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 求n的第k位数字: </span></span><br><span class="line">n &gt;&gt; k &amp; <span class="number">1</span></span><br><span class="line"><span class="comment">//返回n的最后一位1：</span></span><br><span class="line"><span class="built_in">lowbit</span>(n) = n &amp; -n</span><br></pre></td></tr></table></figure>
+<h3 id="逆转二进制数"><a class="markdownIt-Anchor" href="#逆转二进制数"></a> 逆转二进制数</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">rever</span><span class="params">(<span class="type">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> m_1  = <span class="number">0x55555555</span>; <span class="comment">// 0101 8对</span></span><br><span class="line">    <span class="type">int</span> m_2  = <span class="number">0x33333333</span>;  <span class="comment">// 0011 8对</span></span><br><span class="line">    <span class="type">int</span> m_4  = <span class="number">0x0f0f0f0f</span>; <span class="comment">// 00001111 4对</span></span><br><span class="line">    <span class="type">int</span> m_8  = <span class="number">0x00ff00ff</span>;</span><br><span class="line">    <span class="type">int</span> m_16 = <span class="number">0x0000ffff</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> b = ((num &amp; m_16) &lt;&lt; <span class="number">16</span>) + ((num &gt;&gt; <span class="number">16</span>) &amp; m_16); <span class="comment">// 右挪左，左侧右移16位</span></span><br><span class="line">    <span class="type">int</span> c = ((b &amp; m_8) &lt;&lt; <span class="number">8</span>) + ((b &gt;&gt; <span class="number">8</span>) &amp; m_8);</span><br><span class="line">    <span class="type">int</span> d = ((c &amp; m_4) &lt;&lt; <span class="number">4</span>) + ((c &gt;&gt; <span class="number">4</span>) &amp; m_4);</span><br><span class="line">    <span class="type">int</span> e = ((d &amp; m_2) &lt;&lt; <span class="number">2</span>) + ((d &gt;&gt; <span class="number">2</span>) &amp; m_2);</span><br><span class="line">    <span class="type">int</span> f = ((e &amp; m_1) &lt;&lt; <span class="number">1</span>) + ((e &gt;&gt; <span class="number">1</span>) &amp; m_1);</span><br><span class="line">    <span class="keyword">return</span> f;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">67</span>;</span><br><span class="line">    <span class="type">int</span> b = <span class="built_in">rever</span>(a);</span><br><span class="line">    <span class="type">int</span> c = <span class="built_in">rever</span>(b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %d&quot;</span>, a, c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="leetcode762-二进制表示中质数个计算置位"><a class="markdownIt-Anchor" href="#leetcode762-二进制表示中质数个计算置位"></a> leetcode.762 二进制表示中质数个计算置位</h3>
+<p><strong>题目</strong>：给定两个整数 L 和 R ，找到闭区间 [L, R] 范围内，计算置位位数为质数的整数个数。（注意，计算置位代表二进制表示中1的个数。例如 21 的二进制表示 10101 有 3 个计算置位。还有，1 不是质数。）</p>
+<h2 id="-code3-"><a class="markdownIt-Anchor" href="#-code3-"></a> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">countPrimeSetBits</span><span class="params">(<span class="type">int</span> L, <span class="type">int</span> R)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="function">unordered_set&lt;<span class="type">int</span>&gt; <span class="title">primes</span><span class="params">(&#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>&#125;)</span></span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = L; i &lt;= R; i ++ )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="type">int</span> s = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = i; j; j &gt;&gt;= <span class="number">1</span>) s += j &amp; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (primes.<span class="built_in">count</span>(s)) res ++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></h2>
+<h3 id="leetcode231-2的整次幂"><a class="markdownIt-Anchor" href="#leetcode231-2的整次幂"></a> leetcode.231 2的整次幂</h3>
+<p><strong>题目</strong>：给定一个整数，编写一个函数来判断它是否是 2 的幂次方。</p>
+<h2 id="-code4-"><a class="markdownIt-Anchor" href="#-code4-"></a> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> n &gt; <span class="number">0</span> &amp;&amp; ( n &amp; -n ) == n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></h2>
+<h3 id="leetcode136-只出现一次的数字"><a class="markdownIt-Anchor" href="#leetcode136-只出现一次的数字"></a> leetcode.136 只出现一次的数字</h3>
+<p><strong>题目</strong>：给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<h2 id="-code5-"><a class="markdownIt-Anchor" href="#-code5-"></a> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输入 [1,2,3,1,2,3,4]</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">singleNumber</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">auto</span> x : nums) res ^= x;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></h2>
+<h3 id="leetcode136-只出现一次的数字ii"><a class="markdownIt-Anchor" href="#leetcode136-只出现一次的数字ii"></a> leetcode.136 只出现一次的数字II</h3>
+<p><strong>题目</strong>：除了某个元素只出现一次以外，其余每个元素均出现了三次。找出那个只出现了一次的元素。<br />
+<strong>题解</strong>：统计每一列1的个数，是3的倍数，表明 贡献了该位的数字是3的整数； 反之，如果一个数字只出现了一次，那么其贡献过的相应位置的1的总个数绝对不可能是三的倍数。最后将该列模3得到1后，右移相应位，可以转变成2进制上的相应位置为1。</p>
+<h2 id="-code6-"><a class="markdownIt-Anchor" href="#-code6-"></a> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">singleNumber</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> bit = <span class="number">32</span>, res = <span class="number">0</span>, count; <span class="comment">// int型为32位整数</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; bit; i ++) &#123;</span><br><span class="line">    count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; nums.<span class="built_in">size</span>(); j ++) &#123;</span><br><span class="line">      count += ( nums[j] &gt;&gt; i ) &amp; <span class="number">1</span>; <span class="comment">// 上一次的移位本次是不会记录的 因此 每次都是移动i位</span></span><br><span class="line">      <span class="comment">/* 我之前是count+=(nums[j]&amp;1);</span></span><br><span class="line"><span class="comment">      	 nums[j] &gt;&gt; 1; 这样显示是不行的。nums[j]的移动不可能保存到下一轮。所以是用i记录遍历到的位数</span></span><br><span class="line"><span class="comment">      	 真的是太牛逼了- -。</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(count % <span class="number">3</span> == <span class="number">1</span>) res += (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></h2>
+<h3 id="leetcode476-数字的补数"><a class="markdownIt-Anchor" href="#leetcode476-数字的补数"></a> leetcode.476 数字的补数</h3>
+<p><strong>题目</strong>：给定一个正整数，输出它的补数。补数是对该数的二进制表示取反。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">findComplement</span><span class="params">(<span class="type">int</span> num)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> res = <span class="number">0</span>, bit = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span>(num) &#123;</span><br><span class="line">    res += (!(num &amp; <span class="number">1</span>) &lt;&lt; bit);</span><br><span class="line">    num &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    bit++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>知识点和代码均学习于Acwing: <a target="_blank" rel="noopener" href="https://www.acwing.com/activity/">https://www.acwing.com/activity/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/09/09/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E4%BD%8D%E8%BF%90%E7%AE%97/" data-id="clkqxrnp900461fj4f0082gvt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/09/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【算法专题】动态规划
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/09/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E4%BA%8C%E5%8F%89%E6%A0%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【算法专题】二叉树</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>掌握卷积神经网络（CNN）的细碎知识点 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最开始计算卷积的过程中，需要进行翻转卷积核的操作。 引入的互相关，用滑动窗口的点积计算来实现，可以省去翻转的步骤，这是因为使用点积运算是为了进行特征提取，而卷积核是否翻转与其特征抽取的能力并无关系。  CNN特点 CNN的特点可以概括为：局部连接、权重共享。 1. 局部连接 如果使用全连接，参数个数为Ml∗xl−1M_l * x_{l-1}Ml​∗xl−1​，如果变成局部连接，参数个数为Ml∗KM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="掌握卷积神经网络（CNN）的细碎知识点">
+<meta property="og:url" content="http://yluy.gitee.io/2021/01/27/%E6%8E%8C%E6%8F%A1%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89%E7%9A%84%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="最开始计算卷积的过程中，需要进行翻转卷积核的操作。 引入的互相关，用滑动窗口的点积计算来实现，可以省去翻转的步骤，这是因为使用点积运算是为了进行特征提取，而卷积核是否翻转与其特征抽取的能力并无关系。  CNN特点 CNN的特点可以概括为：局部连接、权重共享。 1. 局部连接 如果使用全连接，参数个数为Ml∗xl−1M_l * x_{l-1}Ml​∗xl−1​，如果变成局部连接，参数个数为Ml∗KM">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gn2avli4kuj30k00f70ux.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-ea9d19241afe764f3be98b0e2522516c_720w.jpg?source=1940ef5c">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=X_%7Bin%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_%7Bout%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_%7Bout%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_%7Bin%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_%7Bout%7D">
+<meta property="article:published_time" content="2021-01-27T10:19:41.000Z">
+<meta property="article:modified_time" content="2021-01-27T10:25:20.330Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="神经网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gn2avli4kuj30k00f70ux.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-掌握卷积神经网络（CNN）的细碎知识点" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/27/%E6%8E%8C%E6%8F%A1%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89%E7%9A%84%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/" class="article-date">
+  <time datetime="2021-01-27T10:19:41.000Z" itemprop="datePublished">2021-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      掌握卷积神经网络（CNN）的细碎知识点
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最开始计算卷积的过程中，需要进行翻转卷积核的操作。</p>
+<p>引入的互相关，用滑动窗口的点积计算来实现，可以省去翻转的步骤，这是因为使用点积运算是为了进行特征提取，而卷积核是否翻转与其特征抽取的能力并无关系。</p>
+<h2 id="cnn特点"><a class="markdownIt-Anchor" href="#cnn特点"></a> CNN特点</h2>
+<p>CNN的特点可以概括为：局部连接、权重共享。</p>
+<p><strong>1. 局部连接</strong></p>
+<p>如果使用全连接，参数个数为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>M</mi><mi>l</mi></msub><mo>∗</mo><msub><mi>x</mi><mrow><mi>l</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">M_l * x_{l-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>，如果变成局部连接，参数个数为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>M</mi><mi>l</mi></msub><mo>∗</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">M_l * K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span></span></span></span>，其中K为卷积核的大小。可以有效减少参数的个数。</p>
+<p><strong>2. 权重共享</strong></p>
+<p>作为卷积核<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>w</mi><mi>l</mi></msup></mrow><annotation encoding="application/x-tex">w^l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span></span></span></span></span></span></span>对第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span>层的所有神经元相同，可以理解为一个卷积核只捕捉输入数据的一种特定局部特征。因此，如果需要对多特征进行提取，则需要多个卷积核。</p>
+<p>因此，在第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span>层中，需要参数的个数为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>K</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>，参数个数与神经元的数量是无关的。</p>
+<h2 id="3d卷积核"><a class="markdownIt-Anchor" href="#3d卷积核"></a> 3D卷积核</h2>
+<p>卷积核厚度等于1时为2D卷积，对应平面点相乘然后把结果加起来，相当于点积运算；</p>
+<p>卷积核厚度大于1时为3D卷积，每片分别平面点求卷积，然后把每片结果加起来，作为3D卷积结果；</p>
+<p>1x1卷积属于3D卷积的一个特例，有厚度无面积, 直接把每片单个点乘以权重再相加。</p>
+<p>归纳之，<strong>卷积的意思就是把一个区域，不管是一维线段，二维方阵，还是三维长方块，全部按照卷积核的维度形状，对应逐点相乘再求和，浓缩成一个标量值也就是降到零维度，作为下一层的一个feature map的一个点的值</strong>！</p>
+<p>可以比喻一群渔夫坐一个渔船撒网打鱼，鱼塘是多层水域，每层鱼儿不同。<br />
+船每次移位一个stride到一个地方，每个渔夫撒一网，得到收获，然后换一个距离stride再撒，如此重复直到遍历鱼塘。</p>
+<p>A渔夫盯着鱼的品种，遍历鱼塘后该渔夫描绘了鱼塘的鱼品种分布；</p>
+<p>B渔夫盯着鱼的重量，遍历鱼塘后该渔夫描绘了鱼塘的鱼重量分布；</p>
+<p>还有N-2个渔夫，各自兴趣各干各的；</p>
+<p>最后得到N个特征图，描述了鱼塘的一切！</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn2avli4kuj30k00f70ux.jpg" alt="" /></p>
+<p>由上图可知，输入层和滤波器有着相同的深度，即输入层的通道数量与滤波器中卷积核数量相同。在每个滑动位置，执行乘法和加法运算得到一个运算结果（单个数字），因此最后得到的输出层仅含一个输出通道。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-ea9d19241afe764f3be98b0e2522516c_720w.jpg?source=1940ef5c" alt="img" /></p>
+<p>进一步地，我们就能非常轻易地理解如何在不同深度的层（Layer）进行转换。假设输入层有<img src="https://www.zhihu.com/equation?tex=X_%7Bin%7D" alt="[公式]" />个通道，而输出层需要得到<img src="https://www.zhihu.com/equation?tex=D_%7Bout%7D" alt="[公式]" />个通道。只需要将<img src="https://www.zhihu.com/equation?tex=D_%7Bout%7D" alt="[公式]" />个过滤器对输入层进行处理，而每一个过滤器有<img src="https://www.zhihu.com/equation?tex=D_%7Bin%7D" alt="[公式]" />个卷积核。每个过滤器提供一个输出通道。完成该过程，将得到<img src="https://www.zhihu.com/equation?tex=D_%7Bout%7D" alt="[公式]" />个通道组成输出层。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/27/%E6%8E%8C%E6%8F%A1%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89%E7%9A%84%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="clkqxrnql009n1fj404phejcv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/01/27/ResNeXt%E7%BD%91%E7%BB%9C/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ResNeXt网络
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/01/26/CVMP2019%E3%80%8APaintsTorch%E3%80%8B%E5%90%AB%E7%94%A8%E6%88%B7%E6%8C%87%E5%AF%BC%E7%9A%84%E7%BA%BF%E7%A8%BF%E7%9D%80%E8%89%B2%E5%B7%A5%E5%85%B7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CVMP2019《PaintsTorch》含用户指导的线稿着色工具</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

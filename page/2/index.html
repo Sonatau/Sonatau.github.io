@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="温和安静 爱我所爱">
+<meta property="og:type" content="website">
+<meta property="og:title" content="私人海域">
+<meta property="og:url" content="http://yluy.gitee.io/page/2/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="温和安静 爱我所爱">
+<meta property="og:locale">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="test">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-梯度下降法及其优化进程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/17/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96%E8%BF%9B%E7%A8%8B/" class="article-date">
+  <time datetime="2021-11-17T11:38:57.000Z" itemprop="datePublished">2021-11-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/17/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96%E8%BF%9B%E7%A8%8B/">梯度下降法及其优化进程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="batch-gradient-descent"><a class="markdownIt-Anchor" href="#batch-gradient-descent"></a> Batch Gradient Descent</h3>
+<p><strong>中心思想</strong>：沿着局部梯度的方向，迭代调整目标函数的参数，使得损失值最小化。</p>
+<p><strong>相关参数</strong>：</p>
+<ul>
+<li>
+<p>样本量：<strong>所有训练数据</strong></p>
+</li>
+<li>
+<p>目标函数：所有数据的平均损失，如MSE之和的平均</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">损</mi><mi mathvariant="normal">失</mi><mi mathvariant="normal">之</mi><mi mathvariant="normal">和</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">平</mi><mi mathvariant="normal">均</mi><mi mathvariant="normal">：</mi><mi>L</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>M</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>M</mi></munderover><mi>L</mi><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>θ</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><msub><mi>y</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>L</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mi>M</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>M</mi></munderover><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>θ</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">损失之和的平均：L(\theta) = \frac{1}{M} \sum^M_{i=1}L(f(x_i, \theta),y_i) \\
+
+L(\theta) = \frac{1}{M} \sum^M_{i=1}(y_i - f(x_i, \theta))^2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord cjk_fallback">损</span><span class="mord cjk_fallback">失</span><span class="mord cjk_fallback">之</span><span class="mord cjk_fallback">和</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">平</span><span class="mord cjk_fallback">均</span><span class="mord cjk_fallback">：</span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.106005em;vertical-align:-1.277669em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">M</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.106005em;vertical-align:-1.277669em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">M</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>局部梯度：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">L(\theta)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span> 在 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>θ</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">\theta_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 处的导数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">∇</mi><mi>L</mi><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\nabla L(\theta_t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∇</span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></p>
+</li>
+<li>
+<p>移动步长</p>
+<ul>
+<li>移动步长 = 学习率 * 当前梯度</li>
+<li>当参数接近最小值时，步长逐渐变小</li>
+</ul>
+</li>
+</ul>
+<p><strong>参数更新</strong>：</p>
+<p>模型参数的更新公式如下，其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span></span></span></span>为学习率</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>−</mo><mi>α</mi><mi mathvariant="normal">∇</mi><mi>L</mi><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\theta_{t+1} = \theta_t - \alpha \nabla L(\theta_t)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.902771em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mord">∇</span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p><strong>梯度更新的特点</strong>：</p>
+<ol>
+<li>受到起始点的影响比较大，极有可能收敛到局部极值</li>
+<li>步长太大可能使得函数无法收敛，在山谷间来回震荡</li>
+<li>步长太小时需要大量的迭代次数，耗费时间</li>
+</ol>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>缺点
+<ul>
+<li>每次迭代都使用了所有数据进行计算，计算量大、时间成本大</li>
+<li>容易陷入局部极值点</li>
+</ul>
+</li>
+<li>优点
+<ul>
+<li>每次更新都朝着损失函数下降最快的方向移动，更新稳定。</li>
+</ul>
+</li>
+</ul>
+<p><strong>优化的方向</strong>：</p>
+<ol>
+<li>由于每次迭代的计算量过大，能否适当的减少计算量？==&gt; SGD ==&gt; Mini-Batch GD</li>
+<li>能否更加贴近最优路径，从而更快到达地极值点？ ==&gt; 牛顿法、Momentum、AdaGrad、RMSProp、Adam</li>
+</ol>
+<h3 id="stochastic-gradient-descent"><a class="markdownIt-Anchor" href="#stochastic-gradient-descent"></a> Stochastic Gradient Descent</h3>
+<p><strong>中心思想</strong>：为了减少计算量而提出。每一步在训练集中<strong>随机选择一个实例</strong>，基于该单个实例来计算梯度。</p>
+<p><strong>收敛性</strong>：BGD的收敛速度比SGD快，但数学家证明不超过1/k，因此其在计算所有数据的情况下提高效果并不明显，性价比太差。</p>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>优点
+<ul>
+<li>更新速度快，计算量较小，加快了收敛速度。</li>
+<li>随机大，因此有机会跳出局部最优解。</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>更新路线不稳定，有可能朝着与上次更新相反的方向前进。</li>
+<li>即使达到了最小值，由于迭代没有结束，也会持续反弹，使得最后停下来的结果可能不是最优的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="mini-batch-gd"><a class="markdownIt-Anchor" href="#mini-batch-gd"></a> Mini-Batch GD</h3>
+<p><strong>中心思想</strong>：提高稳定性的同时减少计算量而提出了小批量梯度下降，计算小部分数据的梯度。</p>
+<p><strong>batchsize的取值</strong>：2的次幂，32、64…等等。</p>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>优点
+<ul>
+<li>综合了上述两种优缺点。更新路线比SGD稳定，运行速度比BGD快。</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>难以摆脱局部最小值</li>
+</ul>
+</li>
+</ul>
+<h3 id="newton-method"><a class="markdownIt-Anchor" href="#newton-method"></a> Newton Method</h3>
+<p><strong>中心思想</strong>：</p>
+<p>在迭代过程中，找到参数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\theta_{t+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.902771em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span> 使得<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mo stretchy="false">(</mo><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo><mo>&lt;</mo><mi>L</mi><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">L(\theta_{t+1}) &lt; L(\theta_{t})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。梯度下降法使用一阶法来估计<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">L</span></span></span></span>。</p>
+<p>牛顿法利用迭代点<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>θ</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">\theta_{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>处的一阶导数(梯度)和二阶导数( Hessen 矩阵)<strong>对目标函数进行二次函数近似，然后把二次模型的极小点作为新的迭代点</strong>，并不断重复这一过程，直至求得满足精度的近似极小值。</p>
+<p>*也就是进行泰勒二阶在当前点展开后，计算极小值点，作为更好的估计值。</p>
+<p><strong>泰勒二阶展开推导</strong>：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwi74cw09fj31oo0q2mzr.jpg" alt="" /></p>
+<p><strong>更新公式</strong>：</p>
+<p>参数更新公式如下。此时不需要学习率超参数，因为计算出来的结果恰好是二阶下极小点的位置。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>−</mo><msup><mi mathvariant="normal">∇</mi><mn>2</mn></msup><mi>L</mi><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>t</mi></msub><msup><mo stretchy="false">)</mo><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="normal">∇</mi><mi>L</mi><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\theta_{t+1} = \theta_t - \nabla^2 L(\theta_t)^{-1} \nabla L(\theta_t)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.902771em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.864108em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord">∇</span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwi68f9ytdj320d0u0whr.jpg" alt="" /></p>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>优点：更加接近最优的更新路线。如上图绿色线条为Newton法，灰色线条为最优路线，橙色线条为标准梯度下降法。、</li>
+<li>缺点：矩阵求解的计算量太大。</li>
+</ul>
+<h3 id="momentum"><a class="markdownIt-Anchor" href="#momentum"></a> Momentum</h3>
+<p>分析下图可知，对于第一个和第二个更新点而言，横轴分量方向相同，纵轴方向相反，这是令更新反复震荡的主要原因。因此引出了优化目标：减弱纵轴的震荡幅度，增加横轴的移动距离，加快收敛速度。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwi8ib8yt6j31qs0kg43t.jpg" alt="" /></p>
+<p><strong>主要思想</strong>：用历史数据上的分量对当前梯度进行修正，相同增强，相反抵消。同时，距离很久之前的训练数据对当前的影响要变小。整个更新过程具有一定的“惯性”。</p>
+<p><strong>更新公式</strong>：</p>
+<p>再看上图的前两个更新点：</p>
+<p>纵轴上，P2的梯度方向与P1相反，两者相加之后抵消，使得步长变短。</p>
+<p>在横轴上，两者的梯度方向相同，相加之后步长增加。</p>
+<p>加上<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>β</mi></mrow><annotation encoding="application/x-tex">\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span></span></span></span>可以削减距离久远的梯度影响。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwibs72c1pj31kk0aa3zf.jpg" alt="" /></p>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>
+<p>优点：适当减少了震荡</p>
+</li>
+<li>
+<p>缺点：有的时候会走弯路，当前梯度的方向和下一梯度的方向存在很大的夹角，如果能提前预知的话，可以使得更新路径更接近最优路径。</p>
+</li>
+</ul>
+<h3 id="nesterov"><a class="markdownIt-Anchor" href="#nesterov"></a> Nesterov</h3>
+<p><strong>中心思想</strong>：扩展了momentum法，顺着惯性方向，计算未来可能位置处的梯度方向而非当前位置的，有机会使得收敛速度加快。</p>
+<p>如下图所示，本来是求当前点的梯度（灰色点）。但加上红色框内数值后，将求得左图红色点的梯度，最后的移动方向如红色箭头指向。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwic8fj2lcj31o60j240g.jpg" alt="" /></p>
+<p><strong>上面几种方法的学习率一直是固定值，这有可能使得其在极值点附近来回震荡无法停止。最佳效果应该是一开始采用较大的学习率，步长较大，在接近最小值时学习率慢慢减小。</strong></p>
+<h3 id="adagrad"><a class="markdownIt-Anchor" href="#adagrad"></a> AdaGrad</h3>
+<p><strong>中心思想</strong>：自适应地更新参数的学习率，不同参数的更新幅度不同。若历史数据修改的多，学习率减少的越多，相应的更新幅度减少。</p>
+<p><strong>更新公式</strong>：采用”<strong>历史梯度平方和</strong>“来衡量不同参数梯度的稀疏性，取值越小表明越稀疏，更需要更新。</p>
+<p><strong>数据呈现稀疏性</strong>：</p>
+<p>例如，数据集在某一维度上的可利用信息很少，会导致梯度在多数情况下为0，该参数无法更新。如果其他参数的梯度比较大，则有可能出现震荡的情况。</p>
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gwicla8ji2j30ws0mo75k.jpg" height="150"/>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>
+<p>优点</p>
+<ul>
+<li>适合稀疏数据，在稀疏数据上的训练效果很好。</li>
+<li>随着时间推移，学习速率越来越小，保证了算法的最终收敛。</li>
+</ul>
+</li>
+<li>
+<p>缺点：考虑了所有历史数据。在经过一个平地之后，由于之前的梯度大多为0，之后的更新速度会变慢。</p>
+  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gwicxsssnuj30yf0u0dlq.jpg" height="250" />
+</li>
+</ul>
+<h3 id="rmsprop"><a class="markdownIt-Anchor" href="#rmsprop"></a> RMSProp</h3>
+<p><strong>中心思想</strong>：优化AdaGrad方法，但同时参考了momentum，邻近点梯度的影响较大。如下图所示，经过平台期后的变化会逐渐加快。</p>
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gwid0cvzqtj30vk0q8n1v.jpg" height="250" />
+<p><strong>更新公式</strong>：</p>
+<p>使用<strong>指数衰退平均</strong>，用过往梯度的均值替代直接求和。</p>
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gwid5sf8o9j30z60ekdgi.jpg" height="150" />
+<h3 id="adam"><a class="markdownIt-Anchor" href="#adam"></a> Adam</h3>
+<p><strong>主要思想</strong>：将惯性保持和环境感知两个优点集于一身。</p>
+<ul>
+<li>考虑过往梯度与当前梯度，保持惯性。</li>
+<li>为不同参数产生自适应的学习率，同时时间久远的梯度对当前平均值的贡献成指数衰减。</li>
+</ul>
+<p>*结合的是Momentum和RMSProp方法</p>
+<p><strong>更新公式</strong>：</p>
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gwid9zmy3pj310o0g8759.jpg" height="150" />
+<p>分析：</p>
+<ul>
+<li>Vt大St大，说明梯度大且稳定更新，此时在一个大坡上。</li>
+<li>Vt趋于0, St大，说明梯度不稳定，可能遇到了峡谷，容易引起震荡。（这个我还没懂为啥</li>
+<li>两者都趋于0，说明可能到达了局部最低点，或者走到了一片平地。</li>
+</ul>
+<h3 id="相关问题"><a class="markdownIt-Anchor" href="#相关问题"></a> 相关问题</h3>
+<h4 id="q1-梯度下降需要标准化的原因"><a class="markdownIt-Anchor" href="#q1-梯度下降需要标准化的原因"></a> Q1. 梯度下降需要标准化的原因</h4>
+<p>左边的训练集上两特征具有相同的数值规模，损失函数等高线呈现正圆。</p>
+<p>右边的训练集上特征1的数值比特征2小，呈现一个细长的碗状。每一步在横轴方向上的移动很小，因此移动的步数会增多，因此收敛时间也会变长。</p>
+<p>*因为特征1的值比较小，它需要更大的变化来影响损失函数，这也是为什么呈现细长状的原因</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwi3qmg9b1j31630e3my7.jpg" alt="" /></p>
+<h4 id="q2-山谷和鞍点地形"><a class="markdownIt-Anchor" href="#q2-山谷和鞍点地形"></a> Q2. 山谷和鞍点地形</h4>
+<p>山谷</p>
+<ul>
+<li>地形：狭长的小道，左右两边是峭壁（像上图的长碗，且两边高，中间低）</li>
+<li>特点：想象一下，峭壁向谷底的梯度大，因此更新的步长也更大。同一侧峭壁间的梯度小，更新步长也小。准确的梯度方向是沿着山道向下，但实际上变成在峭壁间反复震荡，而山道方向的下降速度慢。</li>
+</ul>
+<p>鞍点</p>
+<ul>
+<li>地形：两头翘，与之垂直方向上两头垂。</li>
+<li>特点：四周的梯度变化不明显，有可能导致走错方向或者停下。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/11/17/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96%E8%BF%9B%E7%A8%8B/" data-id="clkqxrnqm009r1fj4dlem12rr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Boyer-Moore投票算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/05/Boyer-Moore%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2021-11-05T06:41:57.000Z" itemprop="datePublished">2021-11-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>►<a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/05/Boyer-Moore%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/">Boyer-Moore投票算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gw49ke7bnej31240qk76h.jpg" alt="" /></p>
+<p>这道“简单”题，可以用哈希表解了，但题上要求时间复杂度<code>O(n)</code>，空间复杂度<code>O(1)</code>，我想不出来，就翻评论，它提到的是听都没听过的<strong>摩尔投票法</strong>。</p>
+<p>找了个比较有趣的例子帮助我理解：</p>
+<p>多国开战，各方军队每次派一个士兵来两两单挑，每次单挑士兵见面一定会和对方同归于尽，最后只要哪边还有人活着就算胜利，那么最后一定是没有人活着，或者活下来的都是同一势力。</p>
+<p>那么活下来的势力一定就是参战中势力最雄厚的嘛(指人最多)？不是的，假设总共有2n+1个士兵参战，其中n个属于一方，另n个属于另一方，最后一方势力只有一个人，也许前两方杀红了眼两败俱伤了，最后被剩下的一个人捡漏了也是可能的。</p>
+<p>那么辛苦杀敌到底是为了什么呢？只为了两件事</p>
+<ol>
+<li>最后活下来的势力未必就是人最多的(也许会被人偷鸡)</li>
+<li>人最多的势力如果不能活下来，只说明它的势力还不够强大，不足以保证赢得战争的胜利(指人数超过总参战人数的一半)</li>
+<li>如果最后没有人活下来，说明此次参战的势力中，没有任何一只足够强大到一定会赢得胜利。</li>
+</ol>
+<p>严谨的逻辑证明咱不会，凭理解写下思路，有错误的地方请大佬指正。</p>
+<p>所以遍历一遍，每次清除一对不同势力的人，对最后活下来的势力单独验证一下究竟实力如何，对无人生还的情况，直接输出-1。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">majorityElement</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> candidate = <span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num: nums) &#123;</span><br><span class="line">            <span class="keyword">if</span>(!count) candidate = num;</span><br><span class="line">            <span class="keyword">if</span>(num == candidate) count++;</span><br><span class="line">            <span class="keyword">else</span> count--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num: nums) &#123;</span><br><span class="line">            <span class="keyword">if</span> (num == candidate) count++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> count * <span class="number">2</span> &gt; nums.<span class="built_in">size</span>() ? candidate : <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>配合官方题解的ppt会好理解很多：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-majority-element-lcci/solution/zhu-yao-yuan-su-by-leetcode-solution-xr1p/">Boyer-Moore 投票算法</a></p>
+<p>它不配做一名“简单”同学~~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/11/05/Boyer-Moore%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/" data-id="clkqxrno900091fj45gx7fxzi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021年9月15日" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/15/2021%E5%B9%B49%E6%9C%8815%E6%97%A5/" class="article-date">
+  <time datetime="2021-09-15T12:39:23.000Z" itemprop="datePublished">2021-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/15/2021%E5%B9%B49%E6%9C%8815%E6%97%A5/">2021年9月15日</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>生日这天做点记录吧，为什么每年这个时候都会感受到孤独。别说安德鲁不想孤独终老了，我也不想。</p>
+<p>其实我现在郁闷且暴躁，但是又不希望别人来影响我的心情，索性一股脑儿说点什么吧。</p>
+<p>早上收到了小袁和童章璐的生日祝福<br />
+刷朋友圈看到zqf说一直在期待今天，但也不过如此。觉得自己很内疚，因为他生日我完全没想起来，消息我也总是忘记回<br />
+真的很对不起，但是没有办法，我的精力有限，已经不想把时间浪费在这种地方了<br />
+我觉得自己已经算是不过分在意仪式感的人了，但这不代表我不希望别人在意<br />
+zth真的次次让我失望，不过两人始终频道不同，还是不强求了吧，但我已经生气了<br />
+当然，都这么多年了，我居然还抱有期望，实在是不应该<br />
+她能有对待恋人一半的在意去对待朋友，都不至于现在这样<br />
+真的给我气笑了</p>
+<p>fls也是非常牛逼一人了，她完全不具备共情能力<br />
+或许是常年被人捧在手心习惯了，语气时常霸道且无理。<br />
+我不懂为什么她能任何时间任何地点无论别人有没有事情 旁若无人的将自己的感情过去<br />
+不管别人想不想听在不在意<br />
+可能别人一直在给她传递她非常好她很值得 但是我看来也就一般吧<br />
+起码无时无刻不专注于自己 从不在意别人的感受 就很让人烦</p>
+<p>ck挺好的，每年都记得，自以为做不到像她这样<br />
+老何依然是最宽心的那个，礼物买到心坎里了<br />
+至于xy，我不能要求他一定要做点什么，或许他也已经做了他认为自己应该做的部分了</p>
+<p>之前看到有位老师说，送礼就是送个稀缺性	<br />
+想到自己以前准备的东西，还有被别人弄丢的手链，真的很丧<br />
+我真的还挺难过的，为什么每次都这样，每年都会觉得自己孤独可怜，到头来还是自己一个人，没有任何长进和变化<br />
+18年的时候我就说再也不过生日了，现在都还记得自己当时买了一瓶酒坐在操场上，边哭边喝<br />
+虽然有故意作的成分在，但是伤心也是真的，每年的难过都是<br />
+我最烦有的人把你领进新世界的大门，本以为可以一起经历了，结果却自己走开了，留下你自己一个人适应变化</p>
+<p>可能现在媒体宣传地把仪式感过分重要了，心里有点落差感<br />
+Anyway, growing as scheduled, less expectation but more confidence.<br />
+Happy Birthday to myself~</p>
+<p>我真不想这么丧这么暴躁，但没有办法，仅此一天吧<br />
+希望没人看到，或者看到了也装作不知道，麻烦了<br />
+今天什么也没有，我什么也不需要 😦</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/09/15/2021%E5%B9%B49%E6%9C%8815%E6%97%A5/" data-id="clkqxrno000011fj43i643w9m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-VAE" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/01/VAE/" class="article-date">
+  <time datetime="2021-09-01T05:59:34.000Z" itemprop="datePublished">2021-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/01/VAE/">VAE</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我这几天比较好奇VAE模型和简单AE之间的区别，就是为什么要引入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">/</mi><mi>m</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">/mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">/</span><span class="mord mathdefault">m</span><span class="mord mathdefault">u</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>i</mi><mi>g</mi><mi>m</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span></span></span></span>，看了一上午，似懂非懂。</p>
+<h2 id="autoencoder"><a class="markdownIt-Anchor" href="#autoencoder"></a> AutoEncoder</h2>
+<h3 id="encoder"><a class="markdownIt-Anchor" href="#encoder"></a> Encoder</h3>
+<p>Produce the new features representation from the old features representation, from the initial space to latent space, as dimensionality reduction.<br />
+Aim: <strong>keep the maximum of information when encoding</strong></p>
+<h3 id="decoder"><a class="markdownIt-Anchor" href="#decoder"></a> Decoder</h3>
+<p>Decompress the latent vector back to the initial space, and recover more information as far as possioble.<br />
+Aim: <strong>keep the minimum of reconstruction error when decoding</strong></p>
+<p>At each iteration, the loss function could be illustrated as</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12smkasdj60z20j6jsh02.jpg" alt="" /></p>
+<p>Indeed, if our encoder and decoder have enough degrees of freedom, we can reduce any initial dimensionality to <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mtext> </mtext><mi>N</mi></mrow><annotation encoding="application/x-tex">1~N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">1</span><span class="mspace nobreak"> </span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span></span> with a small loss.</p>
+<p>We should however keep two things in mind:</p>
+<ol>
+<li>An important dimensionality reduction with no reconstrction loss often comes with a price: the lack of regularity in the latent space. ( dimension 1 )</li>
+<li>Most of the time the final purpose of dimensionality reduction is not to only reduce the number of dimensions of the data but to <strong>reduce this number of dimensions while keeping the major part of the data structure information in the reduced representations</strong>.</li>
+</ol>
+<p>For these two reasons, the dimension of the latent space and the “depth” of autoencoders (that define degree and quality of compression) have to be carefully controlled and adjusted depending on the final purpose of the dimensionality reduction.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12svzy46j61ef0jydhc02.jpg" alt="" /></p>
+<h3 id="limitations"><a class="markdownIt-Anchor" href="#limitations"></a> Limitations</h3>
+<p>If the latent space is regular enough, we could take a point randomly from that latent space and decode it to get a new content we may need. The decoder would then act more or less like the generator of GAN.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12t4npt4j612l0k30tx02.jpg" alt="" /></p>
+<p>The quality and relevance of generated content depend on the regularity of the latent space. But actually it is difficult to ensure that the encoder will organize the latent space to keep its regularity for autoencoder.</p>
+<p>From the image as follow, it illustrates that a good model aims to find a correct mapping from the datasets distribution to the source distribution, in other words, it likes a brige between distributions.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu0y8zpjx8j60or0c775702.jpg" alt="" /></p>
+<p>我卡住了，用中文吧：</p>
+<p>这个模型能够将原来的概率分布映射到训练集的概率分布，也就是说，<strong>它们的目的都是进行分布之间的变换</strong>。生成模型的难题就是判断生成分布与真实分布的相似度。如果两者无法尽可能拟合，将导致生成分布sample出来的随机变量无法生成出合适的结果。</p>
+<p>overfitting也是表现之一，即生成分布与真实分布相似度太低了。</p>
+<p>The high degree of freedom of the autoencoder that makes possible to encode and decode with no infomation loss leads to a severe <strong>overfitting</strong>, implying that some points of the latent space will give meaningless content once decoded. Irregular latent space prevent us from using autoencoder for new content generation.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12ti5wznj61e40gojsv02.jpg" alt="" /></p>
+<p><strong>the autoencoder is solely trained to encode and decode with as few loss as possible, no matter how the latent space is organised.</strong> Thus, if we are not careful about the definition of the architecture, it is natural that, during the training, the network takes advantage of any overfitting possibilities to achieve its task as well as it can…</p>
+<h2 id="variational-autoencoder"><a class="markdownIt-Anchor" href="#variational-autoencoder"></a> Variational autoencoder</h2>
+<p>To overcome the aforementioned drawbacks, we have to be sure that the latent space is regular enough.</p>
+<h3 id="definition"><a class="markdownIt-Anchor" href="#definition"></a> Definition</h3>
+<p><strong>A variational autoencoder can be defined as being an autoencoder whose training is regularised to avoid overfitting and ensure that the latent space has good properties that enable generative process</strong>.</p>
+<p>In order to introduce some regularisation of the latent space, instead of encoding an input as a single point, <strong>we encode it as a distribution over the latent space</strong>!!!</p>
+<p>The model is trained as follows:</p>
+<ol>
+<li>The input is encoded as distribution over the latent space</li>
+<li>A point from the latent space is sampled from that distribution</li>
+<li>The sampled point is decoded and the reconstruction error can be computed</li>
+<li>The reconstruction error is backpropageted through the network</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12tphkgmj61e40gk0tq02.jpg" alt="" /></p>
+<p>The distribution returned by the encoder are enforced to be close to a standard normal distribution so as the latent space regularisation.</p>
+<h3 id="loss-function"><a class="markdownIt-Anchor" href="#loss-function"></a> Loss function</h3>
+<p>The loss function is composed of a “reconstrucion term” and a “regularisation term”, the later item which tends to regularise the organisation of the latent space by making the distributions returned by the encoder close to a standard normal distribution, is expressed by KLD loss.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12uaw5f6j612w0iw3zq02.jpg" alt="" /></p>
+<h3 id="about-regularisation"><a class="markdownIt-Anchor" href="#about-regularisation"></a> About regularisation</h3>
+<p>The regularity that is expected from the latent space in order to make generative process possible can be expressed through two main properties:</p>
+<ol>
+<li><strong>continuity</strong> (two close points in the latent space should not give two completely different contents once decoded)</li>
+<li><strong>completeness</strong> (for a chosen distribution, a point sampled from the latent space should give “meaningful” content once decoded).</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12uid1jpj61fz0izta702.jpg" alt="" /></p>
+<p>The only fact that VAEs encode inputs as distributions instead of simple points is not sufficient to ensure continuity and completeness. Without a well defined regularisation term, the model can learn, in order to minimise its reconstruction error, <strong>to “ignore” the fact that distributions are returned and behave almost like classic autoencoders</strong> (leading to overfitting). To do so, the encoder can either return distributions with tiny variances (that would tend to be punctual distributions) or return distributions with very different means (that would then be really far apart from each other in the latent space). In both cases, distributions are used the wrong way (cancelling the expected benefit) and continuity and/or completeness are not satisfied.</p>
+<p>So, in order to avoid these effects <strong>we have to regularise both the covariance matrix and the mean of the distributions returned by the encoder</strong>. In practice, this regularisation is done by enforcing distributions to be close to a standard normal distribution (centred and reduced). This way, we require the covariance matrices to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each others.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12uu15pnj61fz0izq3u02.jpg" alt="" /></p>
+<p>We can observe that continuity and completeness obtained with regularisation <strong>tend to create a “gradient” over the information encoded in the latent space</strong>. For example, a point of the latent space that would be halfway between the means of two encoded distributions coming from different training data should be decoded in something that is somewhere between the data that gave the first distribution and the data that gave the second distribution as it may be sampled by the autoencoder in both cases.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12zaueibj60z60izwf102.jpg" alt="" /></p>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34998569">https://zhuanlan.zhihu.com/p/34998569</a></li>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73">https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27549418">https://zhuanlan.zhihu.com/p/27549418</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/09/01/VAE/" data-id="clkqxrnos00201fj48jag3wux" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CC-FPSE" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/30/CC-FPSE/" class="article-date">
+  <time datetime="2021-08-30T06:17:09.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/30/CC-FPSE/">CC-FPSE</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Title</strong>：Learning to Predict Layout-to-image Conditional Convolutions for Semantic Image Synthesis<br />
+<strong>Year</strong>：NeurIPS 2019<br />
+<strong>Author</strong>：Xihui Liu<br />
+<strong>School</strong>：The Chinese University of HongKong<br />
+<strong>Code</strong>：<a target="_blank" rel="noopener" href="https://github.com/xh-liu/CC-FPSE">https://github.com/xh-liu/CC-FPSE</a></p>
+<h2 id="topic-and-gap"><a class="markdownIt-Anchor" href="#topic-and-gap"></a> Topic and Gap</h2>
+<h3 id="topic"><a class="markdownIt-Anchor" href="#topic"></a> Topic</h3>
+<p>Semantic image synthesis, which aims at generating photorealistic images conditioned on semantic layouts.</p>
+<h3 id="gap"><a class="markdownIt-Anchor" href="#gap"></a> Gap</h3>
+<p><strong>How to exploit the semantic layout information in the generator</strong></p>
+<ul>
+<li>Preserve information: most of network just be fed into semantic label maps once at the input layers.</li>
+<li>Spatial locations: distinct semantic labels at different locations as well as the unique semantic layout of each sample, different convolutional kernels should be used for generating different stuff or object.</li>
+</ul>
+<p><strong>How to promote high-fidelity details and enhance the spatial semantic alignment in the discriminator</strong></p>
+<ul>
+<li>High-fidelity details includes texture and edges</li>
+<li>the spatial semantic alignment between generated image and semantic label layout</li>
+<li>Current discriminator seems without considering whether generated image matches well with the label map.</li>
+</ul>
+<h2 id="contributions"><a class="markdownIt-Anchor" href="#contributions"></a> Contributions</h2>
+<ul>
+<li>Predict layout-to-image conditional convolution kernels based on the semantic layout for generating.</li>
+<li>A feature pyramid semantics-embedding discriminator.</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gtym3qrstlj616q0j610q02.jpg" alt="" /></p>
+<h2 id="method-details"><a class="markdownIt-Anchor" href="#method-details"></a> Method Details</h2>
+<h3 id="image-generation"><a class="markdownIt-Anchor" href="#image-generation"></a> Image Generation</h3>
+<p><strong>Model input</strong></p>
+<ul>
+<li>Noise Map with CC kernels from Weight Prediction Network</li>
+</ul>
+<p><strong>Kernel weight</strong><br />
+For traditional convolution layers, they are applied to all samples and at all spatial locations, but different objects should be generated differently, the better way is, at each convolution layers and each multiplication times, these kernels weights are suitable for that locations, by given semantic label map.</p>
+<p><strong>Depthwise separable convolution</strong><br />
+In order to avoid excessive computational costs and GPU memory usage, the author uses “depthwise separable convolution” to predict weights for each layer.</p>
+<ul>
+<li><u>definition</u>: The depth wise separable convolutions consist of two steps: depthwise convolutions and 1x1 convolutions.</li>
+<li><u>info details</u>: <a target="_blank" rel="noopener" href="https://towardsdatascience.com/a-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215">A Comprehensive Introduction to Different Types of Convolutions in Deep Learning</a></li>
+<li><u>parameters</u>: for each layer, parameters number: <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>C</mi><mo>×</mo><mi>k</mi><mo>×</mo><mi>k</mi><mo>×</mo><mi>H</mi><mo>×</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">C \times k \times k \times H \times W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span></span></span></span></li>
+</ul>
+<p><strong>Conditional attention operation</strong></p>
+<ul>
+<li><u>role</u>: gate the information flow passed to the next layer.</li>
+<li><u> computation </u>: the element-wise product, the same shape with the last output.</li>
+</ul>
+<h3 id="conditional-weight-predition"><a class="markdownIt-Anchor" href="#conditional-weight-predition"></a> Conditional Weight Predition</h3>
+<p>The generator uses different kernels to generate images, but how to get the predicted weights?</p>
+<p><strong>Model input</strong></p>
+<ul>
+<li>Label map</li>
+</ul>
+<p><strong>Predicted weights</strong><br />
+Semantic label maps have some hidden information, such as locations between different stuff. A small receptive field restricts the weight prediction from incorporating long-range context information. So the author introduce “A feature pyramid structure”.</p>
+<p><strong>A feature pyramid structure</strong></p>
+<ul>
+<li><u> process </u>: The features at different levels of the feature pyramid are concatenated with the original semantic map to obtain the global-context-aware semantic feature maps.</li>
+<li><u>role</u>: predict weights which are aware of not only local neighborhood, but also long-range context and relative locations.</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gtyogvi3gkj60r40dm0v902.jpg" alt="" /></p>
+<h2 id="feature-pyramid-semantics-embedding-discriminator"><a class="markdownIt-Anchor" href="#feature-pyramid-semantics-embedding-discriminator"></a> Feature Pyramid Semantics Embedding Discriminator</h2>
+<p><strong>Drawback of PathGAN</strong></p>
+<ul>
+<li>Just discriminate whether an image is fake or true, not to keep semantic alignment.</li>
+</ul>
+<p><strong>Model input</strong></p>
+<ul>
+<li>an image (GT or generated image)</li>
+<li>the label map is used as an additional clues to compute a matching score.</li>
+</ul>
+<h3 id="semantic-embedding-for-discriminator"><a class="markdownIt-Anchor" href="#semantic-embedding-for-discriminator"></a> Semantic Embedding for Discriminator</h3>
+<p><strong>PatchGAN</strong><br />
+for each feature map, it classify if each patch is real or not by predicting a score for each spatial location.</p>
+<p><strong>Projection discriminator</strong><br />
+computes the dot product between the class label and image feature vector as part of the output discriminator score.</p>
+<p><strong>Ours</strong></p>
+<ul>
+<li><u>role</u>: force the discriminator to classify not only real or fake images, but also <strong>whether the patch features match with the semantic labels in that patch</strong> within a joint embedding space.</li>
+<li><u>info details</u>: 1)inspired by “Projection discriminator”, calculate the inner product between each spatial location of <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>F</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">F_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">S_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, to obtain a semantic matching score map; 2) The semantic matching score is <strong>added with</strong> the conventional real/fake score as the final discriminator score.</li>
+</ul>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li>Takeru Miyato and Masanori Koyama. cgans with projection discriminator. arXiv preprint arXiv:1802.05637, 2018.</li>
+</ol>
+<h2 id="notes"><a class="markdownIt-Anchor" href="#notes"></a> Notes</h2>
+<p>I found that some papers you were hardly understand what the content means yesterday, would become easier to read tomorrow…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/08/30/CC-FPSE/" data-id="clkqxrnob000d1fj4estz005m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SMIS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/26/SMIS/" class="article-date">
+  <time datetime="2021-08-26T07:30:34.000Z" itemprop="datePublished">2021-08-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/26/SMIS/">SMIS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="semi-parametric-image-synthesis"><a class="markdownIt-Anchor" href="#semi-parametric-image-synthesis"></a> Semi-parametric Image Synthesis</h1>
+<p><strong>Year</strong>：CVPR2018<br />
+<strong>Author</strong>：Xiaojuan Qi<br />
+<strong>School</strong>：CUHK 港中文<br />
+<strong>Code</strong>：<a target="_blank" rel="noopener" href="https://github.com/xjqicuhk/SIMS">https://github.com/xjqicuhk/SIMS</a></p>
+<h2 id="problem-statement-gap"><a class="markdownIt-Anchor" href="#problem-statement-gap"></a> Problem Statement / Gap</h2>
+<p>基于参数的深度学习网络图像生成与人类的绘画过程不符。<br />
+非参数方法在图像生成没有利用大量的数据集。<br />
+因此引入semi-parametric的图像生成方法。</p>
+<h2 id="contributions"><a class="markdownIt-Anchor" href="#contributions"></a> Contributions</h2>
+<p>模型根据segmentation的形状及周边类型信息，在数据集中找到与最相似的同类别块状图像，不同类别拼接转换得到Canvas，与标签图一起作为输入，得到最终的生成结果。</p>
+<p><strong>For each connected component, we retrieve a compatible segment from M based on shape, location and context, after transformed, they are composited onto a canvas. The canvas C and the input layout L are used as input to a synthesis network.</strong></p>
+<h2 id="method-and-solution"><a class="markdownIt-Anchor" href="#method-and-solution"></a> Method and Solution</h2>
+<h3 id="external-memory"><a class="markdownIt-Anchor" href="#external-memory"></a> External Memory</h3>
+<p><strong>1. Retrieval the most compatible segment</strong><br />
+compute <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>L</mi><mi>j</mi><mi>m</mi></msubsup><mi>a</mi><mi>s</mi><mi>k</mi></mrow><annotation encoding="application/x-tex">L_j^mask</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0892119999999998em;vertical-align:-0.394772em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.394772em;"><span></span></span></span></span></span></span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>L</mi><mi>j</mi><mi>c</mi></msubsup><mi>o</mi><mi>n</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">L_j^cont</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.078102em;vertical-align:-0.394772em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.394772em;"><span></span></span></span></span></span></span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mord mathdefault">t</span></span></span></span> for each semantic segment <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">L_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>, then select the most compatible segment <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>P</mi><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msub></mrow><annotation encoding="application/x-tex">P_{\sigma (j)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.03853em;vertical-align:-0.3551999999999999em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">σ</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span></span></span></span> in M; IoU is the intersection over union score<br />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gttc37ruy6j60i8052q2w02.jpg" alt="" /></p>
+<p><strong>2. Match origin mask through Transformation network</strong><br />
+The transformation network : T is designed to transform the selected object segment <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>P</mi><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msub></mrow><annotation encoding="application/x-tex">P_{\sigma (j)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.03853em;vertical-align:-0.3551999999999999em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">σ</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span></span></span></span> to match <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">L_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> via translation, rotation, scaling and clipping.<br />
+Network training: the author simulate inconsistencies (in shape, scale and location) by applying random affine transformations and cropping to <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>P</mi><mi>i</mi><mrow><mi>c</mi><mi>o</mi><mi>l</mi><mi>o</mi><mi>r</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">P_i^{color}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.107772em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.441336em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span>, and get <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mover accent="true"><mi>P</mi><mo stretchy="true">~</mo></mover><mi>i</mi><mrow><mi>c</mi><mi>o</mi><mi>l</mi><mi>o</mi><mi>r</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">\widetilde{P}_i^{color}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.201994em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.94333em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span></span></span><span class="svg-align" style="width:calc(100% - 0.16668em);margin-left:0.16668em;top:-3.6833299999999998em;"><span class="pstrut" style="height:3em;"></span><span style="height:0.26em;"><svg width='100%' height='0.26em' viewBox='0 0 600 260' preserveAspectRatio='none'><path d='M200 55.538c-77 0-168 73.953-177 73.953-3 0-7
+-2.175-9-5.437L2 97c-1-2-2-4-2-6 0-4 2-7 5-9l20-12C116 12 171 0 207 0c86 0
+ 114 68 191 68 78 0 168-68 177-68 4 0 7 2 9 5l12 19c1 2.175 2 4.35 2 6.525 0
+ 4.35-2 7.613-5 9.788l-19 13.05c-92 63.077-116.937 75.308-183 76.128
+-68.267.847-113-73.952-191-73.952z'/></svg></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.441336em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span>.<br />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gttcnblcnjj60ou0360sz02.jpg" alt="" /><br />
+color image is more specific and better constrains the transformation.</p>
+<p><strong>3. Adjust object order through Ordering network</strong><br />
+When two segment overlap, model need to determine their order, since one of them will occlude the other. Like sky and building, building should be the front and sky should be background.<br />
+Network training: some datasets have provided the front-back order, network’s output is a c-dimensional one-hot vector that indicates the semantic label of the segment that should be front.</p>
+<h3 id="image-synthesis"><a class="markdownIt-Anchor" href="#image-synthesis"></a> Image Synthesis</h3>
+<p><strong>Canvas is inadequate in itself</strong>: 1) regions are typically missing. 2) different segments are inconsistently illuminated. 3)color-inbalanced. 4) boundary artifacts</p>
+<p><strong>Aim</strong>: canvas and semantic layout --&gt; realistic image</p>
+<p><strong>1. Image Synthesis Network</strong><br />
+Architecture: an encoder-decoder structure with skip connections.<br />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gttxk76v62j61ck0gowin02.jpg" alt="" /></p>
+<p><strong>2. How to train network?</strong><br />
+method: simulate canvas <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>C</mi><mo mathvariant="normal">′</mo></msup></mrow><annotation encoding="application/x-tex">C&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.751892em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span> by applying stenciling, color transfer and boundary elision, to recover the original image.</p>
+<p>Stenciling: simulate missing regions by stenciling each segment in (I,L) <em>using a mask obtained from a different segment in the dataset</em>.</p>
+<p>Color transfer: transfer from the color distribution of a segment in M to the segment in <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>C</mi><mo mathvariant="normal">′</mo></msup></mrow><annotation encoding="application/x-tex">C&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.751892em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>Boundary elision: boundary pixel are replaced by white pixel to force the network to learn to synthesize content near boundaries. Outside an object segment are replaced by black pixels.<br />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gttyvjccv2j61ci0l2tgu02.jpg" alt="" /></p>
+<h2 id="evaluation"><a class="markdownIt-Anchor" href="#evaluation"></a> Evaluation</h2>
+<p>compare with: pix2pix, CRN<br />
+datasets: cityscapes, ade20k, nyu<br />
+evaluation: IoU, Accuracy…</p>
+<h2 id="notes"><a class="markdownIt-Anchor" href="#notes"></a> Notes</h2>
+<ol>
+<li>How to represent <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>P</mi><mi>i</mi><mrow><mi>c</mi><mi>o</mi><mi>l</mi><mi>o</mi><mi>r</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">P_i^{color}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.107772em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.441336em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ol>
+<h2 id="summary"><a class="markdownIt-Anchor" href="#summary"></a> Summary</h2>
+<p>Actually it’s a comprehensive work, the author even use an inpaiting network to fill up the missing region? But the idea that finding the most similar segment from training datasets by compute a score contains shape, location or color is almost silimar with mine, hope i can get some new ideas from this paper.</p>
+<p>Sometimes using network to synthesis is more quicker, ranther than using an analyical approach, without hard-coding such properties as rules.</p>
+<p>What a goddamn network!!</p>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li>Tranformation Network: M. Jaderberg, K. Simonyan, A. Zisserman, and K. Kavukcuoglu. Spatial transformer networks. In NIPS, 2015. 3, 4</li>
+<li>Color Transfer: E. Reinhard, M. Ashikhmin, B. Gooch, and P. Shirley. Color transfer between images. IEEE Computer Graphics and Applications, 21(5), 2001. 6</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/08/26/SMIS/" data-id="clkqxrnop001q1fj45a7v8ab3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Art2Real" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/26/Art2Real/" class="article-date">
+  <time datetime="2021-08-26T07:23:09.000Z" itemprop="datePublished">2021-08-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/26/Art2Real/">Art2Real</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="art2real"><a class="markdownIt-Anchor" href="#art2real"></a> Art2Real</h1>
+<p><strong>Year</strong>：CVPR2019<br />
+<strong>Author</strong>：Matteo Tomei<br />
+<strong>School</strong>：University of Modena and Reggio Emilia<br />
+<strong>Code</strong>：<a target="_blank" rel="noopener" href="https://github.com/aimagelab/art2real">https://github.com/aimagelab/art2real</a>.</p>
+<h2 id="problem-statement-gap"><a class="markdownIt-Anchor" href="#problem-statement-gap"></a> Problem Statement / Gap</h2>
+<ol>
+<li>艺术图像和自然图片的数量不平衡，模型更偏向于自然图片，转换效果不佳</li>
+<li>在图像转换的过程中，尽可能保持两类型图片的语义特征。</li>
+</ol>
+<h2 id="contributions"><a class="markdownIt-Anchor" href="#contributions"></a> Contributions</h2>
+<ol>
+<li>提出了Art2Real生成模型，缩小了两个Domain距离，也就是最大可能保持了图像的语义特征。</li>
+<li>unpaired数据集训练，保持Patch级别的细节。</li>
+<li>对比Cycle-GAN、UNIT、DRIT的效果</li>
+</ol>
+<h2 id="method-and-solution"><a class="markdownIt-Anchor" href="#method-and-solution"></a> Method and Solution</h2>
+<ol>
+<li>
+<p>To increase the realism, we build a network which can copy from the details of real images at the patch level.</p>
+</li>
+<li>
+<p>Make use of a semantic similarity constraint: each patch of the generated image is paired up with similar patches of the same semantic class extracted from a memory bank of realistic images.</p>
+</li>
+</ol>
+<p><strong>Patch Memory banks</strong>：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>B</mi><mi>c</mi></msup></mrow><annotation encoding="application/x-tex">B^c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span></span></span></span></span></span></span> 表示真实图片中所有类别C的RGB Patches集合。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gts0ywia91j60v40ei42802.jpg" alt="" /></p>
+<p><strong>Semantically aware generation</strong>：<br />
+参考原始painting中的mask，对生成图进行Patch划分并归类，得到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>K</mi><mi>c</mi></msup></mrow><annotation encoding="application/x-tex">K^c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span></span></span></span></span></span></span>。对于某块<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mi>k</mi><mi>i</mi><mi>c</mi></msubsup></mrow><annotation encoding="application/x-tex">k_i^c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.953104em;vertical-align:-0.258664em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.441336em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span>而言，计算它与<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>B</mi><mi>c</mi></msup></mrow><annotation encoding="application/x-tex">B^c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span></span></span></span></span></span></span> 中所有Patch的余弦相似度，根据余弦矩阵找到最相似的K个。损失函数contextual loss计算中，最大化语义相似度。最终使得一张生成图的各个Patch与匹配上的Patch之间尽可能相似。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gts17g1n7tj60xw0gw41n02.jpg" alt="" /></p>
+<h2 id="evaluation"><a class="markdownIt-Anchor" href="#evaluation"></a> Evaluation</h2>
+<p><strong>评估方法</strong>：FID、Human Judgment</p>
+<p><strong>数据集</strong>：Wikiart和Flickr收集</p>
+<h2 id="notes"><a class="markdownIt-Anchor" href="#notes"></a> Notes</h2>
+<p><strong>疑问</strong>：</p>
+<ol>
+<li>如何表示Patch，计算的方式是什么</li>
+<li>PCA如何做压缩</li>
+<li>文中提到的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>I</mi><mi>c</mi></msup></mrow><annotation encoding="application/x-tex">I^c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span></span></span></span></span></span></span>是什么</li>
+</ol>
+<h2 id="summary"><a class="markdownIt-Anchor" href="#summary"></a> Summary</h2>
+<ol>
+<li>提出了一个新模型实现艺术作品到真实图像的转换，无监督学习。</li>
+<li>提出了Patch memory banks的方法，使得生成结果具有局部（Patch-Level）相似性。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/08/26/Art2Real/" data-id="clkqxrno700071fj4aftf0bme" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Mac下显示远程服务器Tensorboard" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/15/Mac%E4%B8%8B%E6%98%BE%E7%A4%BA%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8Tensorboard/" class="article-date">
+  <time datetime="2021-08-15T09:19:21.000Z" itemprop="datePublished">2021-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/15/Mac%E4%B8%8B%E6%98%BE%E7%A4%BA%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8Tensorboard/">Mac下显示远程服务器Tensorboard</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>Mac 终端登录远程 Ubuntu 服务器：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 本地端口:<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:TensorBoard端口 用户名@服务器的IP地址 -p 服务器登录端口</span><br><span class="line">ssh -L <span class="number">16006</span>:<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6006</span> user@<span class="number">172.17</span><span class="number">.173</span><span class="number">.47</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>本地端口：查看 tensorboard 结果时，在浏览器中输入地址时的端口号（如：10086）</li>
+<li>TensorBoard 端口：运行 tensorboard 时指定的端口（如：6008）</li>
+<li>服务器登录端口：登录服务器时的默认端口，如果不需要端口，则省略 -p 及其后的端口号（如：2020）</li>
+</ul>
+<ol start="2">
+<li>跳转至包含TensorBoard日志信息文件保存的位置，终端运行Tensorboard：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir=logs --host=<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>  --port <span class="number">6006</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>Mac 本地浏览器输入如下地址，即可查看 tensorboard 结果</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">16006</span>/</span><br></pre></td></tr></table></figure>
+<p>✌️</p>
+<h3 id="参考博客"><a class="markdownIt-Anchor" href="#参考博客"></a> 参考博客</h3>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sdnuwjw/article/details/104232290">https://blog.csdn.net/sdnuwjw/article/details/104232290</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/08/15/Mac%E4%B8%8B%E6%98%BE%E7%A4%BA%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8Tensorboard/" data-id="clkqxrnom001e1fj4f8t67rxa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-GauGAN损失函数篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/15/GauGAN%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%AF%87/" class="article-date">
+  <time datetime="2021-08-15T04:39:19.000Z" itemprop="datePublished">2021-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/15/GauGAN%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%AF%87/">GauGAN损失函数篇</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这两天整理一个GauGAN的损失函数及其曲线变化。</p>
+<h2 id="generator"><a class="markdownIt-Anchor" href="#generator"></a> Generator</h2>
+<p>首先，对于生成器而言，损失函数包括如下几项：GAN_loss、Feat_loss、VGG_loss、KLD_loss四项。我已经拖了两三周没理它了，两眼一抹黑策略失败，后天必须给陈老师讲清楚。</p>
+<h3 id="gan-loss"><a class="markdownIt-Anchor" href="#gan-loss"></a> GAN LOSS</h3>
+<p>在函数<code>generate_fake</code>中，将标签图与GT作为生成器的输入，返回大小为<code>[bs,3,256,256]</code>的逼真图像。</p>
+<p>随后将语义标签图、GT、生成图作为鉴别器的输入，返回鉴别结果。鉴别器的输入看作是两个部分的结合：</p>
+<ul>
+<li>语义标签图和生成图在<code>dim=1</code>处拼接得到<code>fake_concat</code></li>
+<li>语义标签图和GT在<code>dim=1</code>处拼接得到<code>real_concat</code></li>
+<li>两者在<code>dim=0</code>处拼接得到的<code>real_and_fake</code>为输入</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fake_concat = torch.cat([input_semantics, fake_image], dim=<span class="number">1</span>)  <span class="comment"># [bs, 305, 256, 256]</span></span><br><span class="line">real_concat = torch.cat([input_semantics, real_image], dim=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">fake_and_real = torch.cat([fake_concat, real_concat], dim=<span class="number">0</span>)  <span class="comment"># [bs*2, 305, 256, 256]</span></span><br><span class="line">discriminator_out = self.netD(fake_and_real)</span><br></pre></td></tr></table></figure>
+<p>然而此鉴别器由2个子鉴别器组合而成，第一个子鉴别的结构如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gtgmj2r7nsj60ao079t9k02.jpg" alt="" /></p>
+<p>所以把<code>fake_and_real</code>作为输入后，中间层的尺寸变化是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">intermediate_output: torch.Size([bs*<span class="number">2</span>, <span class="number">64</span>, <span class="number">129</span>, <span class="number">129</span>])</span><br><span class="line">intermediate_output: torch.Size([bs*<span class="number">2</span>, <span class="number">128</span>, <span class="number">65</span>, <span class="number">65</span>])</span><br><span class="line">intermediate_output: torch.Size([bs*<span class="number">2</span>, <span class="number">256</span>, <span class="number">33</span>, <span class="number">33</span>])</span><br><span class="line">intermediate_output: torch.Size([bs*<span class="number">2</span>, <span class="number">512</span>, <span class="number">34</span>, <span class="number">34</span>])</span><br><span class="line">intermediate_output: torch.Size([bs*<span class="number">2</span>, <span class="number">1</span>, <span class="number">35</span>, <span class="number">35</span>])</span><br></pre></td></tr></table></figure>
+<p>并且在定义子鉴别器结构的函数<code>NLayerDiscriminator</code>中，它把所有的中间结果都保存起来，组合成一个结果序列，并作为该鉴别器的计算结果返回，因此该序列的长度为5。</p>
+<p>在函数<code>MultiscaleDiscriminator</code>中，它再次将每个子鉴别器的返回结果作为序列保存起来，因此最后<code>netD</code>返回的尺寸是<code>opt.num_D x opt.n_layers_D</code>。</p>
+<p>另外需要注意的是，第二个子鉴别器的输入尺寸是对第一个鉴别器的input做<code>downsample</code>的结果，同理，第三个子鉴别器的输入尺寸是对第二个鉴别器的input做<code>downsample</code>的结果。</p>
+<p>接着在函数<code>divide_pred</code>中需要将生成图和GT的鉴别结果分开，对于多鉴别器的结果序列而言：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">fake = []</span><br><span class="line">real = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> p <span class="keyword">in</span> pred:</span><br><span class="line">  fake.append([tensor[:tensor.size(<span class="number">0</span>) // <span class="number">2</span>] <span class="keyword">for</span> tensor <span class="keyword">in</span> p])</span><br><span class="line">  real.append([tensor[tensor.size(<span class="number">0</span>) // <span class="number">2</span>:]<span class="keyword">for</span> tensor <span class="keyword">in</span> p])</span><br><span class="line">  </span><br><span class="line"><span class="keyword">return</span> fake, real <span class="comment"># (bs, layers) layers = 5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 长度为2的pred序列p中tensor的尺寸如下：</span></span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">64</span>, <span class="number">129</span>, <span class="number">129</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">128</span>, <span class="number">65</span>, <span class="number">65</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">256</span>, <span class="number">33</span>, <span class="number">33</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">512</span>, <span class="number">34</span>, <span class="number">34</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">1</span>, <span class="number">35</span>, <span class="number">35</span>])</span><br><span class="line">----------------------------</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">64</span>, <span class="number">65</span>, <span class="number">65</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">128</span>, <span class="number">33</span>, <span class="number">33</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">256</span>, <span class="number">17</span>, <span class="number">17</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">512</span>, <span class="number">18</span>, <span class="number">18</span>])</span><br><span class="line">torch.Size([<span class="number">4</span>, <span class="number">1</span>, <span class="number">19</span>, <span class="number">19</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后得到的pred_fake和pred_real的尺寸都是 (bs, 5)</span></span><br></pre></td></tr></table></figure>
+<p>在<code>GANLoss</code>这个类中，有几个初始化的参数如下，其中<code>target_real_label</code>的意思就是GT进入鉴别器后得到的结果应该越接近1越好，反之生成图越接近0越好：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gan_mode target_real_label=<span class="number">1.0</span> target_fake_label=<span class="number">0.0</span>  <span class="comment"># 默认gan_mode为hinge</span></span><br></pre></td></tr></table></figure>
+<p>计算GAN损失只需要鉴别器最后一层的结果，因此在<code>criterionGAN</code>函数中，对<code>pred_fake</code>的鉴别结果进行计算，并返回结果存储在<code>G_losses</code>中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">G_losses[<span class="string">&#x27;GAN&#x27;</span>] = self.criterionGAN(pred_fake, target_is_real=<span class="literal">True</span>, 			</span><br><span class="line">                                    for_discriminator=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>在<code>loss</code>函数中，我们只需要看hinge部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> self.gan_mode == <span class="string">&#x27;hinge&#x27;</span>:</span><br><span class="line">  <span class="keyword">if</span> for_discriminator:</span><br><span class="line">    <span class="keyword">if</span> target_is_real:</span><br><span class="line">      minval = torch.<span class="built_in">min</span>(<span class="built_in">input</span> - <span class="number">1</span>, self.get_zero_tensor(<span class="built_in">input</span>))</span><br><span class="line">      loss = -torch.mean(minval)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">      minval = torch.<span class="built_in">min</span>(-<span class="built_in">input</span> - <span class="number">1</span>, self.get_zero_tensor(<span class="built_in">input</span>))</span><br><span class="line">      loss = -torch.mean(minval)</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># GAN LOSS</span></span><br><span class="line">    <span class="keyword">assert</span> target_is_real, <span class="string">&quot;The generator&#x27;s hinge loss must be aiming for real&quot;</span></span><br><span class="line">      loss = -torch.mean(<span class="built_in">input</span>)  <span class="comment"># torch.mean(input)越大越好 因此加个负号</span></span><br><span class="line">      <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<p>在上面这段代码中，计算<code>GAN_loss</code>时的input尺寸是<code>pred_fake</code>中两个元素的最后一层，尺寸分别为<code>[bs, 1, 35, 35]</code>和<code>[bs, 1, 19, 19]</code>，其预测的结果值应该在0~1的范围之内，且越接近1越好（target is real），才能证明生成器的效果好，并最终返回的是多个鉴别器的平均结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">isinstance</span>(<span class="built_in">input</span>, <span class="built_in">list</span>):</span><br><span class="line">  loss = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> pred_i <span class="keyword">in</span> <span class="built_in">input</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(pred_i, <span class="built_in">list</span>):</span><br><span class="line">      pred_i = pred_i[-<span class="number">1</span>]  <span class="comment"># [bs, 1, 35, 35] [bs, 1, 19, 19]</span></span><br><span class="line">    loss_tensor = self.loss(pred_i, target_is_real, for_discriminator)</span><br><span class="line">    bs = <span class="number">1</span> <span class="keyword">if</span> <span class="built_in">len</span>(loss_tensor.size()) == <span class="number">0</span> <span class="keyword">else</span> loss_tensor.size(<span class="number">0</span>)</span><br><span class="line">    new_loss = torch.mean(loss_tensor.view(bs, -<span class="number">1</span>), dim=<span class="number">1</span>)</span><br><span class="line">    loss += new_loss</span><br><span class="line">  <span class="keyword">return</span> loss / <span class="built_in">len</span>(<span class="built_in">input</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="gan-feat-loss"><a class="markdownIt-Anchor" href="#gan-feat-loss"></a> GAN FEAT LOSS</h3>
+<p><code>GAN feat loss</code>实际上是计算GT和生成图分别丢给鉴别器后，每一层输出结果之间的L1损失，且不包括最后一层。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># self.criterionFeat = torch.nn.L1Loss()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_D):</span><br><span class="line">  num_intermediate_outputs = <span class="built_in">len</span>(pre_fake[i] - <span class="number">1</span>)  <span class="comment"># 4</span></span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(num_intermediate_outputs):</span><br><span class="line">    unweighted_loss = self.criterionFeat(</span><br><span class="line">                        pred_fake[i][j], pred_real[i][j].detach())</span><br><span class="line">    GAN_Feat_loss += unweighted_loss * self.opt.lambda_feat / num_D</span><br></pre></td></tr></table></figure>
+<p><code>opt.lambda_feat</code>等于10，最后返回的是多个鉴别器的平均结果。</p>
+<h3 id="vgg-loss"><a class="markdownIt-Anchor" href="#vgg-loss"></a> VGG LOSS</h3>
+<p>GauGAN网络中使用的是VGG19，这个类用于计算感知损失<code>perceptual loss</code>，即将生成图与GT作为VGG的输入，输出结果是长度为5的序列，每个元素是各层输出的中间特征。</p>
+<p>在VGG中，计算GT和生成图相同层的中间特征的L1损失，最后将得到的损失值乘以<code>lambda_vgg</code>，其值为10：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># self.criterion = nn.L1loss()</span></span><br><span class="line"></span><br><span class="line">x_vgg, y_vgg = self.vgg(x), self.vgg(y)</span><br><span class="line">loss = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x_vgg)):</span><br><span class="line">  loss += self.weight[i] * self.criterion(x_vgg[i], y_vgg[i].detach())</span><br><span class="line"><span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"><span class="comment"># VGG损失的最后结果</span></span><br><span class="line">G_losses[<span class="string">&#x27;VGG&#x27;</span>] = self.criterionVGG(fake_image, real_image) \</span><br><span class="line">                * self.opt.lambda_vgg</span><br></pre></td></tr></table></figure>
+<p>综上所述，所有损失都是基于全局计算，且越小越好的。</p>
+<h2 id="discriminator"><a class="markdownIt-Anchor" href="#discriminator"></a> Discriminator</h2>
+<p>那么接下来，对于鉴别器而言，损失项包括两个：<code>D_fake</code>和<code>D_real</code>，我们继续一一介绍吧。</p>
+<p>在函数<code>compute_discriminator_loss</code>中，语义标签图和GT作为输入，此时假设已经训练好生成器G，那么通过<code>generate_fake</code>得到生成图<code>fake_image</code>。与上面相同，将GT和生成图丢进鉴别器中，返回得到<code>pred_fake</code>和<code>pred_real</code>鉴别结果。</p>
+<p>但计算损失的时候略有不同，此时鉴别器的目标有两个：</p>
+<ul>
+<li>对于<code>pred_fake</code>，鉴别器的鉴别结果越接近0越好。</li>
+<li>对于<code>pred_real</code>，鉴别器的鉴别结果越接近1越好。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">D_losses[<span class="string">&#x27;D_Fake&#x27;</span>] = self.criterionGAN(pred_fake, target_is_real=<span class="literal">False</span>,</span><br><span class="line">                                               for_discriminator=<span class="literal">True</span>)</span><br><span class="line">D_losses[<span class="string">&#x27;D_real&#x27;</span>] = self.criterionGAN(pred_real, target_is_real=<span class="literal">True</span>,</span><br><span class="line">                                       for_discriminator=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="d_fake-loss"><a class="markdownIt-Anchor" href="#d_fake-loss"></a> D_fake LOSS</h3>
+<p>当<code>gan_mode=hinge</code>，且目标为0时：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_zero_tensor</span>(<span class="params">self, <span class="built_in">input</span></span>):</span><br><span class="line">  <span class="keyword">if</span> self.zero_tensor <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    self.zero_tensor = self.Tensor(<span class="number">1</span>).fill_(<span class="number">0</span>)</span><br><span class="line">    self.zero_tensor.requires_grad_(<span class="literal">False</span>)</span><br><span class="line">  <span class="keyword">return</span> self.zero_tensor.expand_as(<span class="built_in">input</span>)</span><br><span class="line"></span><br><span class="line">minval = torch.<span class="built_in">min</span>(-<span class="built_in">input</span> - <span class="number">1</span>, self.get_zero_tensor(<span class="built_in">input</span>))</span><br><span class="line">loss = -torch.mean(minval)</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<p><code>-input-1</code>绝大多数情况为负值，其绝对值越小越好。比如当<code>input=0.5</code>与<code>input=0.2</code>时，<code>-input - 1</code>的绝对值结果分别为<code>1.5</code>和<code>1.2</code>，显然对于生成图而言，<code>input=0.2</code>的鉴别结果更好。</p>
+<h3 id="d_real-loss"><a class="markdownIt-Anchor" href="#d_real-loss"></a> D_real LOSS</h3>
+<p>当<code>gan_mode=hinge</code>，且目标为1时：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_zero_tensor</span>(<span class="params">self, <span class="built_in">input</span></span>):</span><br><span class="line">  <span class="keyword">if</span> self.zero_tensor <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    self.zero_tensor = self.Tensor(<span class="number">1</span>).fill_(<span class="number">0</span>)</span><br><span class="line">    self.zero_tensor.requires_grad_(<span class="literal">False</span>)</span><br><span class="line">  <span class="keyword">return</span> self.zero_tensor.expand_as(<span class="built_in">input</span>)</span><br><span class="line"></span><br><span class="line">minval = torch.<span class="built_in">min</span>(<span class="built_in">input</span> - <span class="number">1</span>, self.get_zero_tensor(<span class="built_in">input</span>))</span><br><span class="line">loss = -torch.mean(minval)</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<p>同理，<code>input-1</code>绝大多数情况为负值，其绝对值越小越好。比如当<code>input=0.5</code>与<code>input=0.2</code>时，<code>input - 1</code>的绝对值结果分别为<code>0.5</code>和<code>0.8</code>，显然对于GT而言，<code>input=0.5</code>的鉴别结果更好。</p>
+<h2 id="optimizer"><a class="markdownIt-Anchor" href="#optimizer"></a> Optimizer</h2>
+<p>在函数<code>run_generator_one_step</code>中，生成器损失<code>g_loss</code>等于Generator中所有损失值之和的均值。同理，鉴别器损失<code>d_loss</code>等于<code>Discriminator</code>中所有损失值之和的均值。</p>
+<p>然后通过Adam优化器进行优化迭代。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/08/15/GauGAN%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%AF%87/" data-id="clkqxrnod000l1fj494521ya5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-opencv小工具" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/04/opencv%E5%B0%8F%E5%B7%A5%E5%85%B7/" class="article-date">
+  <time datetime="2021-08-04T09:18:26.000Z" itemprop="datePublished">2021-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>►<a class="article-category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/04/opencv%E5%B0%8F%E5%B7%A5%E5%85%B7/">opencv小工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="hsv颜色空间"><a class="markdownIt-Anchor" href="#hsv颜色空间"></a> hsv颜色空间</h3>
+<p>HSV色彩空间从心理学和视觉的角度出发，提出人眼的色彩知觉主要包含三要素：</p>
+<ul>
+<li>H：色调（Hue，也称为色相）</li>
+<li>S：饱和度（Saturation）</li>
+<li>V：亮度（Value）</li>
+</ul>
+<h4 id="色调"><a class="markdownIt-Anchor" href="#色调"></a> 色调</h4>
+<p>在HSV色彩空间中，色调H的取值范围是[0,360]。8位图像内每个像素点所能表示的灰度级有28=256个，所以在8位图像内表示HSV图像时，要把色调的角度值映射到[0,255]范围内。在OpenCV中，可以直接把色调的角度值除以2，得到[0,180]之间的值，以适应8位二进制（256个灰度级）的存储和表示范围。</p>
+<p>在HSV空间中，色调值为0表示红色，色调值为300表示品红色。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gt4uqnaznej31jc0de0u7.jpg" alt="" /></p>
+<p>每个色调值对应一个指定的色彩，而与饱和度和亮度无关。在OpenCV中，将色调值除以2之后，会得到如下所示的色调值与对应的颜色。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gt4urh2c8ij31je0d8ta5.jpg" alt="" /></p>
+<p>确定值范围后，就可以直接在图像的H通道内查找对应的值，从而找到特定的颜色。例如，在HSV图像中，H通道内值为120的像素点对应蓝色。查找H通道内值为120的像素点，找到的就是蓝色像素点。在上述基础上，通过分析各种不同对象对应的HSV值，便可以查找不同的对象。</p>
+<h4 id="饱和度"><a class="markdownIt-Anchor" href="#饱和度"></a> 饱和度</h4>
+<p>进行色彩空间转换后，为了适应8位图的256个像素级，需要将新色彩空间内的数值映射到[0,255]范围内。所以，同样要将饱和度S的值从[0,1]范围映射到[0,255]范围内，通常可以选取100-255。</p>
+<ul>
+<li>作为灰度图像显示时，较亮区域对应的颜色具有较高的饱和度。</li>
+<li>如果颜色的饱和度很低，那么它计算所得色调就不可靠。</li>
+</ul>
+<h4 id="亮度"><a class="markdownIt-Anchor" href="#亮度"></a> 亮度</h4>
+<p>亮度的范围与饱和度的范围一致，都是[0,1]。同样，亮度值在OpenCV内也将值映射到[0,255]范围内。</p>
+<p>亮度值越大，图像越亮；亮度值越低，图像越暗。</p>
+<p>当亮度值为0时，图像是纯黑色。同样可以选取100-255范围。</p>
+<p>根据hsv分量模型，各种颜色范围分布如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gt4vrbaq66j312q0aswgu.jpg" alt="" /></p>
+<p>红色的范围是：[0, 43, 46]~[10,255,255]∪[156, 43, 46]~[180,255,255]。</p>
+<p>红色比较特殊，覆盖了多个范围，处理起来增加了不少难度，可使用以下方法去获取红色。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_red</span>(<span class="params">pic</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;&#x27;method1：使用inRange方法，拼接mask0,mask1&#x27;&#x27;&#x27;</span></span><br><span class="line">    </span><br><span class="line">    img = io.imread(os.path.join(mask_path, filename))  <span class="comment"># RGB</span></span><br><span class="line">    <span class="built_in">print</span>(img.shape)</span><br><span class="line">    img = img[..., ::-<span class="number">1</span>]  <span class="comment"># 转换成BGR</span></span><br><span class="line">    hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)</span><br><span class="line">    h, w, c = img.shape</span><br><span class="line">    </span><br><span class="line">     <span class="comment"># 红黄区间</span></span><br><span class="line">    left = np.array([<span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>])</span><br><span class="line">    right = np.array([<span class="number">30</span>, <span class="number">255</span>, <span class="number">255</span>])</span><br><span class="line">    mask0 = cv.inRange(hsv, left, right)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 紫-砖红</span></span><br><span class="line">    left = np.array([<span class="number">150</span>, <span class="number">100</span>, <span class="number">100</span>])</span><br><span class="line">    right = np.array([<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>])</span><br><span class="line">    mask1 = cv.inRange(hsv, left, right)</span><br><span class="line"></span><br><span class="line">    mask = mask0 + mask1  <span class="comment"># 拼接两个区间</span></span><br><span class="line">    color_map = cv.bitwise_and(img, img, mask=mask)  <span class="comment"># hsv色彩图</span></span><br></pre></td></tr></table></figure>
+<p>得到的颜色结果如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gt4uzl4ndyj30x90eujv4.jpg" alt="" /></p>
+<h3 id="仿射变换"><a class="markdownIt-Anchor" href="#仿射变换"></a> 仿射变换</h3>
+<h3 id="图像融合"><a class="markdownIt-Anchor" href="#图像融合"></a> 图像融合</h3>
+<p>opencv中的图像融合可以在合成过程中根据图片的权重不同，呈现透明的效果；如果直接叠加图像，又可能改变颜色。但我的需求是不需要它透明，上面的图片直接覆盖底图。</p>
+<p>可以使用按位AND，OR，NOT的运算实现。我直接放搜到的实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"> </span><br><span class="line">img1 = cv2.imread(<span class="string">&#x27;img.jpg&#x27;</span>)</span><br><span class="line">img2 = cv2.imread(<span class="string">&#x27;img1.jpg&#x27;</span>)</span><br><span class="line"> </span><br><span class="line">img2 = cv2.resize(img2,(<span class="number">100</span>,<span class="number">100</span>))</span><br><span class="line"><span class="comment"># I want to put logo on top-left corner, So I create a ROI</span></span><br><span class="line">h,w,c = img2.shape</span><br><span class="line">roi = img1[<span class="number">0</span>:h, <span class="number">0</span>:w ]</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Now create a mask of logo and create its inverse mask also</span></span><br><span class="line">img2gray = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)</span><br><span class="line">ret, mask = cv2.threshold(img2gray, <span class="number">200</span>, <span class="number">255</span>, cv2.THRESH_BINARY)  <span class="comment"># mask的关键部分是0</span></span><br><span class="line">mask_inv = cv2.bitwise_not(mask)  <span class="comment"># 反码</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Now black-out the area of logo in ROI</span></span><br><span class="line">img1_bg = cv2.bitwise_and(roi,roi,mask = mask)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Take only region of logo from logo image.</span></span><br><span class="line">img2_fg = cv2.bitwise_and(img2,img2,mask = mask_inv)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Put logo in ROI and modify the main image</span></span><br><span class="line">dst = cv2.add(img1_bg,img2_fg)</span><br><span class="line">img1[<span class="number">0</span>:h, <span class="number">0</span>:w ] = dst</span><br><span class="line"> </span><br><span class="line">cv2.imshow(<span class="string">&#x27;res&#x27;</span>,img1)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line">cv2.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gt4vhu6xxqj30mm09h0tf.jpg" alt="" /></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/08/04/opencv%E5%B0%8F%E5%B7%A5%E5%85%B7/" data-id="clkqxrnot00271fj4aniw16cg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

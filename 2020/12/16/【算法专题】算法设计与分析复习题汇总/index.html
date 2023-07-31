@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【算法专题】算法设计与分析复习题汇总 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="五大算法介绍 （一）分治法（divide and conquer method） 是将待求解的原问题划分成k个较小规模的子问题，对这k个子问题分别求解。如果子问题的规模仍然不够小，则再将每个子问题划分为k个规模更小的子问题，如此分解下去，直到问题规模足够小，很容易求出其解为止（子问题求解思路一致），再将子问题的解合并为一个更大规模的问题的解，自底向上逐步求出原问题的解。 （二）动态规划法（dyn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【算法专题】算法设计与分析复习题汇总">
+<meta property="og:url" content="http://yluy.gitee.io/2020/12/16/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90%E5%A4%8D%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="五大算法介绍 （一）分治法（divide and conquer method） 是将待求解的原问题划分成k个较小规模的子问题，对这k个子问题分别求解。如果子问题的规模仍然不够小，则再将每个子问题划分为k个规模更小的子问题，如此分解下去，直到问题规模足够小，很容易求出其解为止（子问题求解思路一致），再将子问题的解合并为一个更大规模的问题的解，自底向上逐步求出原问题的解。 （二）动态规划法（dyn">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glferwy6dxj30hk03xjs1.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gllz3cniw9j30i209qwf1.jpg">
+<meta property="og:image" content="https://pic.leetcode-cn.com/05f8151bbb0f1818723710b2455695f01c33d75a38653eeee181ab61217e8f16-image.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gln94nhv9qj31ji09wdhj.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1gln9groa03j31iu0hc777.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnaz88f5aj31j40ocn0l.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnbcg663bj31jw0ledkj.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnbvuef55j30z40omjwy.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnc3eecl2j31k20hkn1d.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glne5moqdfj31jy07y3zy.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnevarki7j31kc0b840r.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnevx34tzj31cu0lymzk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnf735y74j31ki0cgacw.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnmf82vxdj318u0gst9y.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnmjobk71j31ka0aw0v9.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glnnyqin01j31ic0cgdiw.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glno955ymej316m0o4n21.jpg">
+<meta property="article:published_time" content="2020-12-16T15:50:40.000Z">
+<meta property="article:modified_time" content="2020-12-16T15:56:00.435Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="中等">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwly1glferwy6dxj30hk03xjs1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【算法专题】算法设计与分析复习题汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/16/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90%E5%A4%8D%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB/" class="article-date">
+  <time datetime="2020-12-16T15:50:40.000Z" itemprop="datePublished">2020-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>►<a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【算法专题】算法设计与分析复习题汇总
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="五大算法介绍"><a class="markdownIt-Anchor" href="#五大算法介绍"></a> 五大算法介绍</h2>
+<p>（一）分治法（divide and conquer method）</p>
+<p>是<strong>将待求解的原问题划分成k个较小规模的子问题，对这k个子问题分别求解</strong>。如果子问题的规模仍然不够小，则再将每个子问题划分为k个规模更小的子问题，如此分解下去，直到问题规模足够小，很容易求出其解为止（子问题求解思路一致），再将子问题的解合并为一个更大规模的问题的解，自底向上逐步求出原问题的解。</p>
+<p>（二）动态规划法（dynamic programing method）</p>
+<p><strong>动态规划，当前子问题的解将由上一次子问题的解推算出</strong>。</p>
+<p>动态规划应用于子问题重叠的情况，即不同的子问题具有公共的子子问题。在这种情况下，分治算法会做出许多不必要的工作，它会反复的求解那些公共子问题，而动态规划对每一个子子问题只求解一次，将结果保存到数组中，从而在下次使用时，直接从数组中得到，无需每次求解一个子子问题时都要重复计算公共子子问题。</p>
+<p>（三）贪心法（greedy method）</p>
+<p>贪心法并不是从整体最优考虑，它**所做出的选择只是在某种意义上的局部最优。**这种局部最优选择并不总能获得整体最优解（Optimal Solution），但通常能获得近似最优解（Near-Optimal Solution）。</p>
+<p>（四）回溯法（back track method）</p>
+<p><strong>回溯法采用深度优先方法搜索遍历问题的解空间</strong>，可以看作是蛮力法穷举搜索的改进。先判断该节点对应的部分是否是满足约束条件，也就是判断该节点是否包含问题的最优解。如果肯定不包含，则跳过对该节点为根的子树的搜索，即所谓的剪枝；否则，进入该节点为根的子树，继续按照深度优先策略搜索。回溯法常常可以避免搜索所有可能的解，所以，适用于求解组合数组较大的问题。</p>
+<p>（五）分支限界法（branch and bound method）</p>
+<p><strong>分支限界法按广度优先策略遍历问题的解空间</strong>，在遍历过程中，对已经处理的每一个结点根据限界函数估算目标函数的可能值，从中选取使目标函数取得极值（极大或极小）的结点优先进行广度优先搜索，从而不断调整搜索方向，尽快找到问题的解。因为界限函数常常是基于问题的目标函数而确定的，所以，分支限界法适用于求解最优化问题。</p>
+<h3 id="算法差异"><a class="markdownIt-Anchor" href="#算法差异"></a> 算法差异</h3>
+<p>（一）分治法和动态规划法的区别</p>
+<ul>
+<li>
+<p>共同点：二者都要求原问题具有最优子结构性质，都将原问题分成若干个子问题，然后将子问题的解合并，形成原问题的解。</p>
+</li>
+<li>
+<p>不同点：动态规划法是将待求解问题分解成若干个相互重叠的子问题，即不同的子问题具有公共的子子问题，而分治法是分解成若干个互不相交的子问题。利用分治法求解，这些子问题的重叠部分被重复计算多次。而动态规划法将每个子问题只求解一次并将其保存在一个数组中，当需要再次求解此子问题时，从数组中获得该子问题的解，从而避免了大量的重复计算。</p>
+</li>
+</ul>
+<p>（二）动态规划法和贪心法的区别</p>
+<ul>
+<li>
+<p>共同点：贪心算法和动态规划算法都要求问题具有最优子结构性质。</p>
+</li>
+<li>
+<p>不同点：动态规划法用到之前的最优解，贪心则不是，贪心无法解决动态规划的问题，但是动态规划能解决贪心的问题。虽然能够应用贪心算法一定能够应用动态规划法，但是一般来说，贪心算法的效率高于动态规划法，因而还是应用贪心算法。动态规划算法通常以自底向上的方式解各子问题，而贪心算法则通常以自顶向下的方式进行，以迭代的方式作出相继的贪心选择，每做一次贪心选择就将所求问题简化为规模更小的子问题。</p>
+</li>
+</ul>
+<p>（三）回溯法和分支限界法的区别</p>
+<ul>
+<li>
+<p>共同点：一种在问题的解空间树上搜索问题解的算法。</p>
+</li>
+<li>
+<p>不同点：求解目标不同，回溯法的目标是找出解空间树满足约束条件的所有解，而分支限界法的求解目标是尽快地找出满足约束条件的一个解；搜索方法不同，回溯法采用深度优先方法搜索解空间，而分支限界法一般采用广度优先或以最小消耗优先的方式搜索解空间树；对扩展结点的扩展方式不同，回溯法中，如果当前的扩展结点不能够再向纵深方向移动，则当前扩展结点就成为死结点，此时应回溯到最近一个活结点处，并使此活结点成为扩展结点。分支限界法中，每一次活结点只有一次机会成为扩展结点。活结点一旦成为扩展结点，就一次性产生其所有儿子结点；存储空间的要求不同，分支限界法的存储空间比回溯法大得多，当内存容量有限时，回溯法成功的可能性更大。</p>
+</li>
+</ul>
+<h3 id="适用情况"><a class="markdownIt-Anchor" href="#适用情况"></a> 适用情况</h3>
+<p>(一) 分治法</p>
+<ul>
+<li>
+<p>适用特征：该问题的规模缩小到一定的程度就可以容易地解决；可以分解为若干个规模较小的相同问题，即该问题具有最优子结构性质；利用该问题分解出的子问题的解可以合并为该问题的解；所分解出的各个子问题是相互独立的，即子问题之间不包含公共的子子问题。</p>
+</li>
+<li>
+<p>典型代表：二分搜索、棋盘覆盖、合并排序、最接近点对问题、循环赛日程表、汉诺塔…</p>
+</li>
+</ul>
+<p>(二) 动态规划法</p>
+<ul>
+<li>
+<p>适用特征：该问题问题的最优解所包含的子问题的解也是最优的，即满足最优化原理；某状态以后的过程不会影响以前的状态，只与当前状态有关；子问题之间是不独立的，当前子问题的解将由上一次子问题的解推算出。</p>
+</li>
+<li>
+<p>典型代表：最长公共子序列、最优二叉查找树、近似串匹配问题、背包问题、…</p>
+</li>
+</ul>
+<p>(三)贪心法</p>
+<ul>
+<li>
+<p>适用特征：该问题局部最优策略能导致产生全局最优解（贪心算法适用的情况很少）。</p>
+</li>
+<li>
+<p>典型代表：TSP问题（最近邻点）、TSP问题（最短链接）、图着色、多极度调度问题…</p>
+</li>
+</ul>
+<p>(四)回溯法</p>
+<ul>
+<li>
+<p>适用特征：该问题是求解组合数量较大；需要找出该问题的解集（全部解）或者要求回答什么解是满足某些约束条件的最优解。</p>
+</li>
+<li>
+<p>典型代表：哈密顿回路问题、八皇后问题、批处理作业调度…</p>
+</li>
+</ul>
+<p>(五)分支限界法</p>
+<ul>
+<li>
+<p>适用特征：求解最优化问题。</p>
+</li>
+<li>
+<p>典型代表：单源最短路径问题、批处理作业调度问题、电路布线问题</p>
+</li>
+</ul>
+<h2 id="简答题"><a class="markdownIt-Anchor" href="#简答题"></a> 简答题</h2>
+<p><strong>1. 动态规划与分治算法的异同点</strong></p>
+<ul>
+<li>
+<p>共同点 ：二者都要求原问题具有最优子结构性质，都是将原问题分而治之，分解成若干个规模较小(小到很容易解决的程序)的子问题。然后将子问题的解合并，形成原问题的解.</p>
+</li>
+<li>
+<p>不同点：分治法将分解后的子问题看成相互独立的，通过用递归来做。</p>
+</li>
+</ul>
+<p>动态规划将分解后的子问题理解为相互间有联系,有重叠部分，需要记忆，通常用迭代来做。</p>
+<p><strong>问题特征</strong>：</p>
+<p>最优子结构：当问题的最优解包含了其子问题的最优解时，称该问题具有最优子结构性质。</p>
+<p>重叠子问题：在用递归算法自顶向下解问题时，每次产生的子问题并不总是新问题，有些子问题被反复计算多次。动态规划算法正是利用了这种子问题的重叠性质，对每一个子问题只解一次，而后将其解保存在一个表格中，在以后尽可能多地利用这些子问题的解。</p>
+<p><strong>2. 多项式时间算法</strong></p>
+<p><strong>3. 陈述算法在最坏情况下的时间复杂度和平均时间复杂度，这两种评估算法复杂性的方法各自有什么实际意义？</strong></p>
+<p>最坏情况下的时间复杂度称最坏时间复杂度。一般不特别说明，讨论的时间复杂度均是最坏情况下的时间复杂度。这样做的原因是：最坏情况下的时间复杂度是算法在任何输入实例上运行时间的上界，这就保证了算法的运行时间不会比任何更长。平均时间复杂度是指所有可能的输入实例均以等概率出现的情况下，算法的期望运行时间。</p>
+<p><strong>4. 阐述动态规划算法与贪心算法的区别，它们都有那些优势和劣势？</strong></p>
+<p>动态规划算法与贪心算法都要求问题具有最优子结构性质，这是二者的一个共同点。但是对于具有最优子结构的问题应该选择前者还后者来解决？下面通过两个经典的组合优化问题谈谈动态规划算法与贪心算法的主要差异。</p>
+<p>动态规划法与分治法和贪心法类似，它也是将原问题分解为若干个更小的、相似的子问题，并通过求解子问题产生一个全局最优解。与分治法和贪心法不同之处在于：</p>
+<p>① 使用贪心法时，当前的选择可能要依赖于已经作出的所有选择，但不依赖于有待于做出的选择和子问题。因此贪心法是自顶向下(即从起点到终点)，一步一步地作出贪心选择。当然，如果当前的选择可能要依赖于子问题的解时，则难以通过局部的贪心策略达到全局最优解。</p>
+<p>② 使用分治法时，由原问题分解出的各子问题通常是相互独立的，即不包含公共的子问题，因此一旦递归地求出各子问题的解后，便可自下而上地将各子问题的解合并成问题的解。如果各子问题不是相互独立的，则分治法要做许多不必要的工作，重复地求解公共的子问题。</p>
+<p>③ 动态规划允许由原问题分解出的子问题之间相互依赖。每一个子问题只求解一次，并将结果保存起来，避免每次碰到此子问题时都要重复计算。</p>
+<p><strong>5. 阐述回溯算法与分枝限界算法的共同点和不同点，提高算法效率的关键是什么？</strong></p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glferwy6dxj30hk03xjs1.jpg" alt="" /></p>
+<p><strong>6. 在对算法进行复杂性分析时，强调渐进复杂性的意义是什么？</strong></p>
+<p>算法的复杂性是算法效率的度量，是评价算法优劣的重要依据。一个算法的复杂性的高低体现在运行该算法所需要的计算机资源的多少上面，所需的资源越多，我们就说该算法的复杂性越高；反之，所需的资源越低，则该算法的复杂性越低简化算法复杂性分析的方法和步骤，即只要考察当问题的规模充分大时，算法复杂性在渐近意义下的阶。与此简化的复杂性分析方法相配套，问题复杂程度和规模的线性增长导致的时耗的增长和空间需求的增长，对低效算法来说，都是超线性的，决非计算机速度和容量的线性增长带来的时耗减少和存储空间的扩大所能抵销。</p>
+<p><strong>7. 简述N类、NP类与NP完全问题的定义及三者之间的关系？</strong></p>
+<p>在了解P问题，NP问题，NPC问题以及NP Hard问题之前，我们需要明白<strong>多项式级</strong>的复杂度和<strong>非多项式级</strong>的复杂度。<strong>时间复杂度</strong>是当问题规模扩大后，程序需要的时间长度增长得有多快。有O(1)的时间复杂度，也称常数级复杂度；数据规模变得有多大，花的时间也跟着变得有多长，这个程序的时间复杂度就是O(n)。数据扩大2倍，时间变慢4倍的，属于O(n^2)的复杂度。</p>
+<ul>
+<li>
+<p>多项式级的复杂度，它的规模n出现在底数的位置；</p>
+</li>
+<li>
+<p>非多项式级的复杂度，比如O(a^n)和O(n!)型复杂度，其复杂度计算机往往不能承受。</p>
+<p>P问题：如果一个问题可以找到一个能在多项式的时间里解决它的算法，那么这个问题就属于P问题。</p>
+<p>NP问题：在多项式时间内“可验证”的问题。也就是说，不能判定这个问题到底有没有解，而是猜出一个解来在多项式时间内证明这个解是否正确。即该问题的猜测过程是不确定的，而对其某一个解的验证则能够在多项式时间内完成。P类问题属于NP问题，但NP类问题不一定属于P类问题。<strong>所有的P类问题都是NP问题</strong>，因为能多项式地解决一个问题，也就能够在多项式的时间内验证问题的解。</p>
+<p>NP完全问题：<strong>约化：</strong> 如果能找到这样一个变化法则，对任意一个程序A的输入，都能按这个法则变换成程序B的输入，使两程序的输出相同，那么我们说，问题A可约化为问题B。<br />
+一个问题A可以约化为问题B的含义即是，可以用问题B的解法解决问题A。比如一元一次方程可以约化为一元二次方程，方法为将一元二次方程的二次项系数设为0。约化具有<strong>传递性</strong>，如果问题A可以约化为问题B，问题B可以约化为问题C，则问题A可以约化为问题C。<br />
+<strong>NPC问题：</strong> 首先，它得是一个NP问题；然后，所有的NP问题都可以约化到它。</p>
+<p>NP-Hard问题：它满足NPC问题定义的第二条但不一定要满足第一条（就是说，NP-Hard问题要比 NPC问题的范围广）。NP-Hard问题同样难以找到多项式的算法，但它不列入我们的研究范围，因为它不一定是NP问题。</p>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gllz3cniw9j30i209qwf1.jpg" alt="" /></p>
+<p><strong>8. 简述蒙特卡罗算法与拉斯维加斯算法的区别</strong></p>
+<p><strong>蒙特卡罗</strong>是一类随机方法的统称。这类方法的特点是，可以在随机采样上计算得到近似结果，随着采样的增多，得到的结果是正确结果的概率逐渐加大，但在（放弃随机采样，而采用类似全采样这样的确定性方法）获得真正的结果之前，无法知道目前得到的结果是不是真正的结果。<strong>拉斯维加斯方法</strong>是另一类随机方法的统称。这类方法的特点是，随着采样次数的增多，得到的正确结果的概率逐渐加大，如果随机采样过程中已经找到了正确结果，该方法可以判别并报告，但在但在放弃随机采样，而采用类似全采样这样的确定性方法之前，不保证能找到任何结果（包括近似结果）。</p>
+<p>假如筐里有100个苹果，让我每次闭眼拿1个，挑出最大的。于是我随机拿1个，再随机拿1个跟它比，留下大的，再随机拿1个……我每拿一次，留下的苹果都至少不比上次的小。拿的次数越多，挑出的苹果就越大，但我除非拿100次，否则无法肯定挑出了最大的。这个挑苹果的算法，就属于蒙特卡罗算法——尽量找好的，但不保证是最好的。而拉斯维加斯算法，则是另一种情况。假如有一把锁，给我100把钥匙，只有1把是对的。于是我每次随机拿1把钥匙去试，打不开就再换1把。我试的次数越多，打开（最优解）的机会就越大，但在打开之前，那些错的钥匙都是没有用的。这个试钥匙的算法，就是拉斯维加斯的——尽量找最好的，但不保证能找到。</p>
+<ul>
+<li>
+<p>蒙特卡罗算法  ：采样越多，越近似最优解；</p>
+</li>
+<li>
+<p>拉斯维加斯算法：采样越多，越有机会找到最优解；</p>
+</li>
+</ul>
+<p>这两类随机算法之间的选择，往往受到问题的局限。如果问题要求在有限采样内，必须给出一个解，但不要求是最优解，那就要用蒙特卡罗算法。反之，如果问题要求必须给出最优解，但对采样没有限制，那就要用拉斯维加斯算法。</p>
+<h2 id="课后作业整理"><a class="markdownIt-Anchor" href="#课后作业整理"></a> 课后作业整理</h2>
+<h3 id="第三章"><a class="markdownIt-Anchor" href="#第三章"></a> 第三章</h3>
+<h4 id="31-yy-and-card"><a class="markdownIt-Anchor" href="#31-yy-and-card"></a> 3.1 YY and Card</h4>
+<p>![image-20201214112509150](/Users/sonata/Library/Application Support/typora-user-images/image-20201214112509150.png)</p>
+<p><strong>解题思路</strong>：</p>
+<p>这题可以参考Leetcode的第494题。<br />
+我们用 <code>f[i][j]</code> 表示用数组中的前 i 个元素，组成和为 j 的方案数。考虑第 i 个数 nums[i]，它可以被添加 + 或 -，因此状态转移方程如下：<code>f[i][j] = f[i-1][j-nums[i]] + f[i-1][j+nums[i]]</code></p>
+<p>打表过程如下，第 i 行的结果由第 i-1行转移而来。</p>
+<p><img src="https://pic.leetcode-cn.com/05f8151bbb0f1818723710b2455695f01c33d75a38653eeee181ab61217e8f16-image.png" alt="image.png" /></p>
+<p>在考虑初始化时要注意，如果<code>nums[0]!=0</code>，红色格子要初始化为1，代表的是，当只有一本书的时候，满足目标和的情况只有一种，即<code>+nums[0]</code>或者<code>-nums[0]</code>。一个需要注意的坑是，如果此时的<code>nums[0]=0</code>，<code>f[0][0]</code>需要初始化为2。因为数组下标是没有复数的，所以应该将第二维的下标进行平移，考虑到总和不超过1000，所以第二维要加上1000。</p>
+<p>上述过程可以借助下列代码完成：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f[<span class="number">0</span>][nums[<span class="number">0</span>] + <span class="number">1000</span>] = <span class="number">1</span>;</span><br><span class="line">f[<span class="number">0</span>][-nums[<span class="number">0</span>] + <span class="number">1000</span>] ++;</span><br></pre></td></tr></table></figure>
+<p>所以综合下来，代码是这样的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> f[<span class="number">21</span>][<span class="number">2002</span>];</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">findTargetSumWays</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> S)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (S &gt; <span class="number">1000</span>) <span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// 越界</span></span><br><span class="line">        f[<span class="number">0</span>][nums[<span class="number">0</span>] + <span class="number">1000</span>] = <span class="number">1</span>;</span><br><span class="line">        f[<span class="number">0</span>][-nums[<span class="number">0</span>] + <span class="number">1000</span>] ++;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; nums.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">-1000</span>; j &lt;= <span class="number">1000</span>; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (f[i - <span class="number">1</span>][j + <span class="number">1000</span>] &gt; <span class="number">0</span>) &#123;  <span class="comment">// 只计算上一行大于0的情况</span></span><br><span class="line">                    f[i][j + <span class="number">1000</span> - nums[i]] += f[i - <span class="number">1</span>][j + <span class="number">1000</span>];</span><br><span class="line">                    f[i][j + <span class="number">1000</span> + nums[i]] += f[i - <span class="number">1</span>][j + <span class="number">1000</span>];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> f[nums.<span class="built_in">size</span>() - <span class="number">1</span>][S + <span class="number">1000</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="31-yy-and-fab"><a class="markdownIt-Anchor" href="#31-yy-and-fab"></a> 3.1 YY and Fab</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gln94nhv9qj31ji09wdhj.jpg" alt="" /></p>
+<p><strong>解题思路</strong>：</p>
+<p>本题使用二维数组来记录状态，<code>dp[r][s]</code> 表示由区间 f[r] 和 f[s]  组成的斐波那契数列，理论上任何两个数字都可以组成斐波那契数列所以初始化为2：</p>
+<p><code>vector&lt;vector&lt;int&gt;&gt; dp(f.size(), vector&lt;int&gt;(f.size(), 2))</code></p>
+<p>如果存在<code>f[l]+f[r]==f[s]</code> ，就表示存在差值可把两个元组连接起来，故状态转移方程可更新为<br />
+<code>dp[r, s] = dp[l, r] + 1</code></p>
+<p>故详细代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Fib</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; F)</span> </span>&#123;</span><br><span class="line">	vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(f.<span class="built_in">size</span>(), <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(f.<span class="built_in">size</span>(), <span class="number">2</span>))</span><br><span class="line">	<span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 固定s端</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> s = <span class="number">2</span>; s &lt; f.<span class="built_in">size</span>(); s++) &#123;</span><br><span class="line">    <span class="type">int</span> l = <span class="number">0</span>, r = s - <span class="number">1</span>;  <span class="comment">// l 表示左边界，r 表示右边界</span></span><br><span class="line">    <span class="keyword">while</span> (r &gt; l) &#123;</span><br><span class="line">      <span class="keyword">if</span> (f[l] + f[r] &lt; f[s]) l++;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (f[l] + f[r] &gt; f[s]) r--;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        dp[r][s] = <span class="built_in">max</span>(dp[r][s], dp[l][r] + <span class="number">1</span>);  <span class="comment">// 状态转移方程</span></span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dp[r][s]);</span><br><span class="line">        l++, r--;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="33-yy-and-inverse"><a class="markdownIt-Anchor" href="#33-yy-and-inverse"></a> 3.3 YY and Inverse</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1gln9groa03j31iu0hc777.jpg" alt="" /></p>
+<p><strong>解题思路</strong>：</p>
+<p><code>dp[i][j]</code>表示1到i的全排列中有 j 个逆序对的排列个数，若已知<code>1...i-1</code>的全排列，将 i 放在全排列的任意位置。</p>
+<p>当 i 放到最后一个位置，增加了0个逆序对，故要知道<code>dp[i-1][j-0]</code></p>
+<p>当 i 放到倒数第二个位置，增加了1个逆序对，故要知道<code>dp[i-1][j-1]</code></p>
+<p>…</p>
+<p>当 i 放在第一个位置，增加了 i-1 个逆序对，故要知道<code>dp[i-1][j-(i-1)]</code><br />
+所以<code>dp[i][j] = dp[i - 1][j] + dp[i - 1][j-1] + ... + dp[i - 1][j - i + 1]</code>，时间复杂度<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi mathvariant="normal">²</mi><mo>∗</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n² * t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord">²</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">t</span><span class="mclose">)</span></span></span></span>。</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnaz88f5aj31j40ocn0l.jpg" alt="" /></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> n, t;</span><br><span class="line">  <span class="type">int</span> M = <span class="number">1000000007</span>;</span><br><span class="line">  cin &gt;&gt; n &gt;&gt; t;</span><br><span class="line">  <span class="type">int</span> dp[n + <span class="number">1</span>][t + <span class="number">1</span>];</span><br><span class="line">  <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="built_in">sizeof</span>(dp));</span><br><span class="line">  dp[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    dp[i][<span class="number">0</span>] = <span class="number">1</span>; <span class="comment">// 1到i的全排列逆序对为0的全排列个数有1个（即正序</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= t; j++) &#123;</span><br><span class="line">      dp[i][j] = (dp[i][j<span class="number">-1</span>] + dp[i<span class="number">-1</span>][j]) % M;</span><br><span class="line">      <span class="keyword">if</span> (j &gt;= i) &#123;  <span class="comment">// 只有当 j - i &gt;= 0 即 j &gt;= i时，最后一项才有值，需要减去</span></span><br><span class="line">        dp[i][j] = (dp[i][j] - dp[i<span class="number">-1</span>][j-i] + M) % M;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  cout &lt;&lt; dp[n][t];</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="34-yy-and-shop-i"><a class="markdownIt-Anchor" href="#34-yy-and-shop-i"></a> 3.4 YY and Shop I</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnbcg663bj31jw0ledkj.jpg" alt="" /></p>
+<p><strong>解题思路</strong>：在不考虑有物品不能购买的情况下，这道题是一个多重背包问题。即有n个物品和一个容量（最大资金）为M（本题的m设为xi的最大值）的背包，第i件物品的体积（促销价）、价值（原价）、数量（限购数量）分别为we[i]、val[i]、num[i]。求解将哪些物品装入背包可使得这些物品的耗费的总空间不超过背包容量，且价值总和最大。<br />
+在本题中，当存在物品无法装入时，共有q次询问，每次询问给出了资金xi（1&lt;=xi&lt;=M）和不能购买的物品编号yi。对于单次询问xi，yi，可以把xi拆成两个部分,第yi个禁买，那么花费c购买前y-1个物品，花费x-c购买后y+1个物品。</p>
+<p>详细代码如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnbvuef55j30z40omjwy.jpg" alt="" /></p>
+<h4 id="35-yy-and-shop-ii"><a class="markdownIt-Anchor" href="#35-yy-and-shop-ii"></a> 3.5 YY and shop II</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnc3eecl2j31k20hkn1d.jpg" alt="" /></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">先虚构出0节点，那么这就是一个完整的树。</span></span><br><span class="line"><span class="comment">约束是只有得到父节点，才能得到子节点。</span></span><br><span class="line"><span class="comment">参考依赖背包的做法，使用邻接表保存这棵树</span></span><br><span class="line"><span class="comment">但是本题中没有背包容量约束，只是限定取个数，因此每次都取价值最大的商品</span></span><br><span class="line"><span class="comment">动态规划使用 F[父节点][个数]：在购买了当前父节点情况下，再买m-1个子节点商品所能得到的最大价值</span></span><br><span class="line"><span class="comment">里对于树中的每个节点来说，就是一个分组背包问题。每个子节点是一组物品。 </span></span><br><span class="line"><span class="comment">我们从叶子节点往上到根节点规划，当规划到 0 节点时，F[0][m]即为我们所求 </span></span><br><span class="line"><span class="comment">	</span></span><br><span class="line"><span class="comment">邻接表</span></span><br><span class="line"><span class="comment">	假设有一棵树如下： </span></span><br><span class="line"><span class="comment">		    0 </span></span><br><span class="line"><span class="comment">		1   2   3</span></span><br><span class="line"><span class="comment"> 	  4 5	6  7 8</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	用邻接表可以写成</span></span><br><span class="line"><span class="comment">	 H   NE</span></span><br><span class="line"><span class="comment">	 0   3 2 1 -1</span></span><br><span class="line"><span class="comment">	 1   5 4 -1</span></span><br><span class="line"><span class="comment">	 2   6 -1</span></span><br><span class="line"><span class="comment">	 3   8 7 -1</span></span><br><span class="line"><span class="comment">	 4   -1</span></span><br><span class="line"><span class="comment">*/</span> </span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span> </span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> N,M; <span class="comment">//物品件数，每人限购个数 </span></span><br><span class="line"><span class="type">int</span> H[<span class="number">301</span>], NE[<span class="number">301</span>]; <span class="comment">//用邻接表保存树结构，H保存邻接表的头，NE是有共同起点下的另一条边 </span></span><br><span class="line"><span class="type">int</span> W[<span class="number">301</span>]; <span class="comment">//物品的价值 </span></span><br><span class="line"><span class="type">int</span> F[<span class="number">301</span>][<span class="number">301</span>]; <span class="comment">//前一维存放父节点、后一维存放每人限购件数 </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> p)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=H[p]; i!=<span class="number">-1</span>; i=NE[i])&#123; <span class="comment">//p是父节点商品序号，所有i都是其子节点商品序号 </span></span><br><span class="line">		<span class="built_in">dfs</span>(i);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> m=M; m&gt;=<span class="number">1</span>; --m)&#123;<span class="comment">//因为要留出一个买父节点p的物品，所以只能分配出2~m个给子节点商品 </span></span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> m2=<span class="number">0</span>; m2&lt;=m; ++m2)&#123; <span class="comment">//接着再分，每个子节点能得到的分配到的个数是m2 </span></span><br><span class="line">				F[p][m]=<span class="built_in">max</span>(F[p][m], F[p][m-m2]+F[i][m2]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; </span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> m=M; m&gt;=<span class="number">1</span>; --m) F[p][m] = F[p][m<span class="number">-1</span>]+W[p]; <span class="comment">//这里要加上P节点的价值哦 </span></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;N&gt;&gt;M;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//构建邻接表 </span></span><br><span class="line">	<span class="built_in">memset</span>(H, <span class="number">-1</span>, <span class="built_in">sizeof</span>(H)); </span><br><span class="line">	<span class="type">int</span> p; </span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>; i&lt;=N; ++i)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;p,&amp;W[i]);</span><br><span class="line">		NE[i]=H[p];</span><br><span class="line">		H[p]=i;	</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	W[<span class="number">0</span>]=<span class="number">0</span>;<span class="comment">//虚构0节点</span></span><br><span class="line">	++M; <span class="comment">//因为加上虚构节点，所以购买个数要加1 </span></span><br><span class="line">	<span class="built_in">memset</span>(F, <span class="number">0</span>, <span class="built_in">sizeof</span>(F));</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">0</span>);</span><br><span class="line">	</span><br><span class="line">	cout&lt;&lt;F[<span class="number">0</span>][M]&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第五章"><a class="markdownIt-Anchor" href="#第五章"></a> 第五章</h3>
+<h4 id="51-小明爱数数"><a class="markdownIt-Anchor" href="#51-小明爱数数"></a> 5.1 小明爱数数</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glne5moqdfj31jy07y3zy.jpg" alt="" /></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="type">int</span> v[<span class="number">1000010</span>]; <span class="comment">// v记录的是 余数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 参考思路：两个数的前缀模一个数的结果相等时，最终结果是否相等由其后缀唯一决定</span></span><br><span class="line"><span class="comment">         由于数值从小到大遍历，那么在取余过程中，有一个余数第二次出现时，</span></span><br><span class="line"><span class="comment">         这个数往后延伸出来的数都是没有意义的，因为它肯定不是最小的n的倍数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">node</span> &#123;</span><br><span class="line">    string str;  <span class="comment">// 字符串</span></span><br><span class="line">    <span class="type">int</span> num;  <span class="comment">// 该字符串转化为数字后 模n得到的结果</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bfs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    queue&lt;node&gt; que;</span><br><span class="line">    node p, q;</span><br><span class="line">    </span><br><span class="line">    p.str = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">    p.num = <span class="number">1</span> % n;</span><br><span class="line">    </span><br><span class="line">    v[p.num] = <span class="number">1</span>; <span class="comment">// 判断的数值从 1 开始</span></span><br><span class="line">    que.<span class="built_in">push</span>(p);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>( !que.<span class="built_in">empty</span>() ) &#123;</span><br><span class="line">        p = que.<span class="built_in">front</span>();</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span> (p.num == <span class="number">0</span>) &#123;   <span class="comment">// 表示该数可以被整除</span></span><br><span class="line">            cout &lt;&lt; p.str;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 加 0</span></span><br><span class="line">        q.str = p.str + <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        q.num = (p.num * <span class="number">10</span>) % n;  <span class="comment">// 直接处理余数即可，将余数乘10后再计算</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> ( !v[q.num] ) &#123;</span><br><span class="line">            v[q.num] = <span class="number">1</span>;</span><br><span class="line">            que.<span class="built_in">push</span>(q);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 加 1</span></span><br><span class="line">        q.str = p.str + <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">        q.num = (p.num * <span class="number">10</span> + <span class="number">1</span>) % n;  <span class="comment">// 直接处理余数即可，将余数乘10 + 1后再计算</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> ( !v[q.num] ) &#123;</span><br><span class="line">            v[q.num] = <span class="number">1</span>;</span><br><span class="line">            que.<span class="built_in">push</span>(q);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="built_in">bfs</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="52-小明与序列"><a class="markdownIt-Anchor" href="#52-小明与序列"></a> 5.2 小明与序列</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnevarki7j31kc0b840r.jpg" alt="" /></p>
+<p><strong>解题思路</strong>：</p>
+<p>用树的左右结点表示，选不选这个数，结点的值表示当前的序列和，叶节点就是所有的子序列的和。用优先队列存储当前前k小序列和，当队列长度小于k时，直接加入叶子节点值，当队列长度等于k时，比较当前叶子结点值和优先队列队首的值，若小于，则将队首出队，当前叶子结点值加入优先队列。</p>
+<p>剪枝时，比较当前序列和和优先队列队首的值，若大于等于则剪枝。可先将序列按从大到小排序，让序列和小的尽可能先出现。</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnevx34tzj31cu0lymzk.jpg" alt="" /></p>
+<p>关键代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">back</span><span class="params">(<span class="type">int</span> m, <span class="type">long</span> <span class="type">long</span> ans)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (q.<span class="built_in">size</span>() == k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (ans &gt;= q.<span class="built_in">top</span>()) <span class="keyword">return</span>;  <span class="comment">// 剪枝</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// m = n时 表明到达叶节点</span></span><br><span class="line">  <span class="keyword">if</span> (m == n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (ans == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (q.<span class="built_in">size</span>() &lt; k) q.<span class="built_in">push</span>(ans);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (ans &lt; q.<span class="built_in">top</span>()) &#123;  <span class="comment">// 值更小</span></span><br><span class="line">      q.<span class="built_in">pop</span>();</span><br><span class="line">      q.<span class="built_in">push</span>(ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;  <span class="comment">// 回溯</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">back</span>(m+<span class="number">1</span>, ans);</span><br><span class="line">  <span class="built_in">back</span>(m+<span class="number">1</span>, ans + a[m]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="53-小明坐地铁"><a class="markdownIt-Anchor" href="#53-小明坐地铁"></a> 5.3 小明坐地铁</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnf735y74j31ki0cgacw.jpg" alt="" /></p>
+<p><strong>解题思路</strong>：</p>
+<ol>
+<li>用树的左右结点表示，下一个站点在上一个站点的左边还是右边，结点的值表示站点所在的位置，假设a0站点在位置0，即有Backtrack(0, 0)开始，两个0分别表示第i站的坐标为j。</li>
+<li>通过判断每条到叶子结点的路径上有多少个值不同的点，来得到站点最小可能是多少。</li>
+<li>到叶子结点时，比较当前站点数与当前最小站点数，选择较小的。</li>
+<li>当前的站点数若已经大于当前最小站点数，则剪枝</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnmf82vxdj318u0gst9y.jpg" alt="" /></p>
+<p>关键代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">distant</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> site)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (n - <span class="number">1</span> == m) &#123;</span><br><span class="line">    <span class="keyword">if</span> (num &lt; minn) minn = num;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (num &gt;= minn) <span class="keyword">return</span>;  <span class="comment">// 剪枝</span></span><br><span class="line">  <span class="keyword">if</span> (x[site + N] == <span class="number">0</span>) num++;  <span class="comment">// 没有来过的站点</span></span><br><span class="line">  x[site + N] ++;</span><br><span class="line">  <span class="built_in">distance</span>(n + <span class="number">1</span>, site + a[n]);  <span class="comment">// 回溯</span></span><br><span class="line">  <span class="built_in">distance</span>(n + <span class="number">1</span>, site - a[n]);</span><br><span class="line">  <span class="keyword">if</span> (x[site + N] == <span class="number">1</span>) num--;  <span class="comment">// 恢复现场</span></span><br><span class="line">  x[site + N] --;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="54-小明和最小点覆盖"><a class="markdownIt-Anchor" href="#54-小明和最小点覆盖"></a> 5.4 小明和最小点覆盖</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnmjobk71j31ka0aw0v9.jpg" alt="" /></p>
+<p><strong>解题思路</strong>：</p>
+<p>使用两个数组x和y来代表每条边对应的两个端点，使用visited数组来代表某个端点是否被访问过，即是否加入了结果集。</p>
+<p>遍历无向图中的所有边：</p>
+<ul>
+<li>如果某条边的两个端点之一被访问过了，则表明该边所连接的两个点已经有一个点被选到了，则该边连接的另一个点就不需要加入结果集，这时候就遍历下一条边，但结果集中的点数不增加。</li>
+<li>如果某条边的两个端点都没被访问过，则需要选取该边中的任意一个端点加入结果集，结果集中的点数加一，遍历下一条边。</li>
+<li>重复(1)，(2)步骤，直至遍历完所有边或者当前结果集超过了最小结果集。</li>
+</ul>
+<p>关键代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> t, <span class="type">int</span> temp)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 递归出口</span></span><br><span class="line">  <span class="keyword">if</span> (temp &gt; n) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (t == m) &#123;</span><br><span class="line">    ans = temp;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (temp &lt; ans) &#123;</span><br><span class="line">    <span class="comment">// if 表示 两端的点均未被选中的情况</span></span><br><span class="line">    <span class="keyword">if</span> (node[edge[t][<span class="number">0</span>]] == <span class="number">0</span> &amp;&amp; node[edge[t][<span class="number">1</span>]] == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">2</span>; j++) &#123;</span><br><span class="line">        node[edge[t][j]] = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">dfs</span>(t + <span class="number">1</span>, temp + <span class="number">1</span>);</span><br><span class="line">        <span class="built_in">node</span>(edge[t][j]) = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  <span class="comment">// 点已经被选中了</span></span><br><span class="line">      <span class="built_in">dfs</span>(t + <span class="number">1</span>, temp);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="55-小明和第k小带权匹配"><a class="markdownIt-Anchor" href="#55-小明和第k小带权匹配"></a> 5.5 小明和第K小带权匹配</h4>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glnnyqin01j31ic0cgdiw.jpg" alt="" /></p>
+<ol>
+<li>对边进行搜索，搜索出所有的匹配可能性及其所对应的权重值，从小到大进行排序取出第k项。</li>
+<li>由于只需要知道第k小的数，所有比第k项大的数据都没有用，因此只需要存储前k小的数，在搜索树上所有当前节点权值大于k的子树可全部舍弃。</li>
+<li>精心设计的数据可能导致搜索过程中权值从最大到最小依次递减，可先对边进行从小到大的<strong>排序</strong>降低搜索空间。</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwly1glno955ymej316m0o4n21.jpg" alt="" /></p>
+<p>关键代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> t, <span class="type">int</span> sum, <span class="type">int</span>* Lef, <span class="type">int</span>* Rit)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//表示所有的边都已经枚举完了</span></span><br><span class="line">    <span class="keyword">if</span>(t == m || Count == k || sum+Em[t].w &gt; mid) <span class="keyword">return</span> ;</span><br><span class="line">   <span class="comment">//表示左或右此节点已经有边了--强剪枝</span></span><br><span class="line">    <span class="keyword">if</span>(Lef[Em[t].u] != <span class="number">1</span> &amp;&amp; Rit[Em[t].v] != <span class="number">1</span>)&#123; </span><br><span class="line">        Count++;<span class="comment">//选择 </span></span><br><span class="line">        Lef[Em[t].u] = <span class="number">1</span>;</span><br><span class="line">        Rit[Em[t].v] = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">dfs</span>(t+<span class="number">1</span>, sum + Em[t].w, Lef, Rit);</span><br><span class="line">        Lef[Em[t].u] = <span class="number">0</span>;</span><br><span class="line">        Rit[Em[t].v] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">dfs</span>(t+<span class="number">1</span>, sum, Lef, Rit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/12/16/%E3%80%90%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%E3%80%91%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90%E5%A4%8D%E4%B9%A0%E9%A2%98%E6%B1%87%E6%80%BB/" data-id="clkqxrnqr00ag1fj440bj3cp0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/23/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91CVPR2019%E7%BA%BF%E7%A8%BF%E4%B8%8A%E8%89%B2%E3%80%8ATag2Pix%E3%80%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【论文阅读】CVPR2019线稿上色《Tag2Pix》
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/01/%E3%80%90%E5%B0%8F%E8%B7%AF%E7%9A%84%E6%97%A5%E5%B8%B8%E3%80%9111%E6%9C%88%E8%AE%A1%E5%88%92/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【小路的日常】11月计划</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

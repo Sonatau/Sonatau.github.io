@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【论文阅读】FITEE2019《SmartPaint》人机协同绘画系统 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="基本信息 论文标题：《SmartPaint: a co-creative drawing system based on generative adversarial networks》 —— 一种基于生成式对抗神经网络的人机协同绘画系统 论文链接：http:&#x2F;&#x2F;journal.hep.com.cn&#x2F;ckcest&#x2F;fitee&#x2F;CN&#x2F;10.1631&#x2F;FITEE.1900386 关键词：深度学习（D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文阅读】FITEE2019《SmartPaint》人机协同绘画系统">
+<meta property="og:url" content="http://yluy.gitee.io/2021/01/24/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91FITEE2019%E3%80%8ASmartPaint%E3%80%8B%E4%BA%BA%E6%9C%BA%E5%8D%8F%E5%90%8C%E7%BB%98%E7%94%BB%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="基本信息 论文标题：《SmartPaint: a co-creative drawing system based on generative adversarial networks》 —— 一种基于生成式对抗神经网络的人机协同绘画系统 论文链接：http:&#x2F;&#x2F;journal.hep.com.cn&#x2F;ckcest&#x2F;fitee&#x2F;CN&#x2F;10.1631&#x2F;FITEE.1900386 关键词：深度学习（D">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmywh392haj30py05n7dh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmyx1kq57qj30ww0lm7dj.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz5zcp3cjj30s109pguh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz62e54fdj30du0k6tbh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz69c0rjzj30qr085gqq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6ik1dmzj30ln063aau.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6sxz5uuj30gz080dha.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6oc0ex2j30iy0fmacx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7hqw0f0j30dt0mqae2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7iqhw2rj30ie0c212h.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7m7d6djj30y30a44jc.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmz824e2o7j30ws0b9ner.jpg">
+<meta property="article:published_time" content="2021-01-24T15:47:59.000Z">
+<meta property="article:modified_time" content="2021-01-24T15:54:27.125Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="图像翻译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gmywh392haj30py05n7dh.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【论文阅读】FITEE2019《SmartPaint》人机协同绘画系统" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/24/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91FITEE2019%E3%80%8ASmartPaint%E3%80%8B%E4%BA%BA%E6%9C%BA%E5%8D%8F%E5%90%8C%E7%BB%98%E7%94%BB%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time datetime="2021-01-24T15:47:59.000Z" itemprop="datePublished">2021-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【论文阅读】FITEE2019《SmartPaint》人机协同绘画系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本信息"><a class="markdownIt-Anchor" href="#基本信息"></a> 基本信息</h2>
+<p><strong>论文标题</strong>：《SmartPaint: a co-creative drawing system based on generative adversarial networks》 —— 一种基于生成式对抗神经网络的人机协同绘画系统</p>
+<p><strong>论文链接</strong>：<a target="_blank" rel="noopener" href="http://journal.hep.com.cn/ckcest/fitee/CN/10.1631/FITEE.1900386">http://journal.hep.com.cn/ckcest/fitee/CN/10.1631/FITEE.1900386</a></p>
+<p><strong>关键词</strong>：深度学习（Deep Learning）， 图片生成（Image generation），人机协同绘画（Co-creative drawing）</p>
+<p><strong>发表会议</strong>：2019 FITEE</p>
+<p><strong>主要贡献</strong>：SmartPaint可以使得机器和人类协作进行绘制卡通山水画，机器同时了解卡通风格和语义，以及风景图像中对象之间的空间关系。这样用户只需要画出语义标签图，就能生成质量较高的山水画作。</p>
+<p><strong>创新点</strong>：</p>
+<ul>
+<li>人机协同的绘画系统</li>
+<li>边缘图的生成有助于提高绘画的生成质量，并弥合用户输入与计算机输入之间的理解差距。</li>
+<li>我们提出了一套用于开发共同创造的机器人系统的设计原则。（？？？）</li>
+</ul>
+<h2 id="实验过程"><a class="markdownIt-Anchor" href="#实验过程"></a> 实验过程</h2>
+<h3 id="系统绘画效果"><a class="markdownIt-Anchor" href="#系统绘画效果"></a> 系统绘画效果</h3>
+<p>用户给出语义标签图，然后机器可以进行画作生成，得到的效果还是非常好的。把可以绘画的内容分成八个类别：山峰、草地、树、房子、天空、小路、石头，外加一个其他，用黑色表示。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmywh392haj30py05n7dh.jpg" alt="" /></p>
+<p>比如上面这张图可以大概看出，褐色-山脉，墨绿-树林，青绿-草地，紫色-水，红色：房屋。</p>
+<p>整个绘图系统有两种模式，即绘图 &amp; 生成模式。</p>
+<p>绘图模式：用于构造和修改草图</p>
+<p>生成模式：用于在画布上显示生成的绘画</p>
+<h3 id="总体架构"><a class="markdownIt-Anchor" href="#总体架构"></a> 总体架构</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmyx1kq57qj30ww0lm7dj.jpg" alt="" /></p>
+<p><strong>1. Painting Producer</strong></p>
+<p>使用三元组数据集训练模型，包括真实场景图、语义标签图和边缘检测图。语义标签图提供图像每个区域中的语义信息，而边缘图提供每个对象的细节。将这两种输入作为网络输入进行组合可以提高计算机生成的绘画质量。</p>
+<p><strong>2. Edge synthesizer</strong></p>
+<p>边缘合成器会根据用户的输入自动生成边缘图。边缘图的生成是需要利用原始数据集的，去匹配最大的重合区域。</p>
+<p><strong>3. Reference recommender</strong></p>
+<p>担心新手画家没有灵感，而创作过程中的实时指导和视觉反馈可以激发用户的创造力。 给定任意草图输入，SmartPaint推荐数据集中的八个最相似的语义标签图作为用户参考。</p>
+<p>下图显示的是相应的三个部分。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz5zcp3cjj30s109pguh.jpg" alt="" /></p>
+<h3 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h3>
+<p>数据集由7234个三元组组成，三元组是（真实场景图，语义标签图，边缘检测图），是用户从诸多宫崎骏动画和类似风格的动漫中收集的，并且裁剪成了1024*512的尺寸。</p>
+<p><strong>1. 真实场景图</strong></p>
+<p>数据集资源在附录有相关展示：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz62e54fdj30du0k6tbh.jpg" alt="" /></p>
+<p>其实读这篇论文很大的原因就是它处理的是线稿画，而目前暂时没有公开的线稿图数据集，我就想看看作者都是怎么收集和处理的。</p>
+<p><strong>2. 语义标签图</strong></p>
+<p>原文没有说自己是怎么对卡通图像进行标注的，盲猜是借助多分类的自动语义标注实现。</p>
+<p><strong>3. 边缘检测图</strong></p>
+<p>使用opencv的canny边缘检测技术得到。</p>
+<p>所以最后一个元组的组成是这样的：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz69c0rjzj30qr085gqq.jpg" alt="" /></p>
+<h3 id="生成网络"><a class="markdownIt-Anchor" href="#生成网络"></a> 生成网络</h3>
+<p>PaintingProducer的生成网络是基于Pix2PixHD架构组成的，然后将语义标签图和边缘检测图这两张图片作为生成网络的输入，生成逼真的场景图。判别器则是要尽可能得区别真实场景图和这张生成图。</p>
+<p>对Pix2pixHD不是特别熟悉，因为不是重点hhhh</p>
+<p>它引入了VGG的损失函数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mrow><mi>c</mi><mi>o</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{con}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和GAN网络的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mrow><mi>G</mi><mi>A</mi><mi>N</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{GAN}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">G</span><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>,以及基于特征匹配的鉴别器损失<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mrow><mi>F</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{FM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，最后得到损失函数为：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6ik1dmzj30ln063aau.jpg" alt="" /></p>
+<h3 id="画作参考算法"><a class="markdownIt-Anchor" href="#画作参考算法"></a> 画作参考算法</h3>
+<p>系统的右侧会给出8幅参考画作，初始化的时候应该是随机的。随着用户的作画，它会实时给出数据集中和该幅图最相近的8幅语义标签图。整个过程需要借助自动编码器，从图像中提取高纬特征。</p>
+<p>在训练网络之前，将所有的语义标签图大小调整为512*256像素，并转换为单通道的灰度图像。接着，标签图在经过自动编码器的处理后，输出4096维的潜向量latent vector，作为语义标签映射表示。再借助PCA算法，把4096缩小为20，并计算两个向量的欧几里得距离，实时获得8个最相似的语义标签图。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6sxz5uuj30gz080dha.jpg" alt="" /></p>
+<p>另外，可能用户不会在整个画布上绘制，那么系统将通过引用最近的彩色像素来自动填充空白像素。</p>
+<p>填充算法如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6oc0ex2j30iy0fmacx.jpg" alt="" /></p>
+<h3 id="边缘合成器"><a class="markdownIt-Anchor" href="#边缘合成器"></a> 边缘合成器</h3>
+<p>系统要根据语义标签图和边缘检测图生成逼真的场景画，可是对于测试集而言，应该怎么解决边缘检测图的问题呢？作者提出的边缘合成算法可以解决这个问题。</p>
+<p>首先，将找出的八个相似语义标签图的边缘图都输入到边缘合成器中。</p>
+<p>其次，通过形状匹配算法提取了用户草图中的语义段（<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>T</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">T_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>）和八个相似的语义标签图（<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>）。</p>
+<p>把用户草图<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>T</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">T_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>中的每种语义记为t，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>中所有相同的语义记为集合ss，s为ss的其中一个元素，也就是该语义的一个局部组成，希望计算出t和s的最大重叠面积<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>o</mi><msub><mi>a</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">moa_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">o</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，两者具有相同语义。</p>
+<p>最后，选择最大的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>o</mi><msub><mi>a</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">moa_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">o</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>值，并使用s的相应边缘图来计算t的单个边缘图iSE。 通过相同的方法计算出用户草图中每个片段的单个边缘图后，将所有边缘段相加以获得最终的合成边缘图。 边缘图合成的伪代码如下。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7hqw0f0j30dt0mqae2.jpg" alt="" /></p>
+<h2 id="效果预览"><a class="markdownIt-Anchor" href="#效果预览"></a> 效果预览</h2>
+<h3 id="与pix2pixhd相比"><a class="markdownIt-Anchor" href="#与pix2pixhd相比"></a> 与pix2pixHD相比</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7iqhw2rj30ie0c212h.jpg" alt="" /></p>
+<p>本文的方法生成的图像©具有逼真的卡通风格和清晰的细节， 它还基于草图布局获得了具有不同场景的图像。 例如，它将大片树木解释为森林，将小片树木解释为灌木丛。</p>
+<p>原始pix2pixHD方法生成的图像(b)模糊不清，几乎没有描绘出详细的纹理。</p>
+<h3 id="新手友好"><a class="markdownIt-Anchor" href="#新手友好"></a> 新手友好</h3>
+<p>上面一排是新手画作，下面一排是职业画手，效果差别不大，效果都挺好。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7m7d6djj30y30a44jc.jpg" alt="" /></p>
+<h3 id="根据文字描述作画"><a class="markdownIt-Anchor" href="#根据文字描述作画"></a> 根据文字描述作画</h3>
+<p>上面一排是新手画作，下面一排是职业画手。因为输入不同，所以生成的画作也各自有区别，但是总体来讲效果都是非常好的。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz824e2o7j30ws0b9ner.jpg" alt="" /></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/24/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91FITEE2019%E3%80%8ASmartPaint%E3%80%8B%E4%BA%BA%E6%9C%BA%E5%8D%8F%E5%90%8C%E7%BB%98%E7%94%BB%E7%B3%BB%E7%BB%9F/" data-id="clkqxrnpp005g1fj4hd99e1gd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/01/25/IJPE2019%E3%80%8A%E5%85%B7%E6%9C%89%E5%91%A8%E6%9C%9F%E4%B8%80%E8%87%B4%E7%9A%84%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8A%A8%E6%BC%AB%E7%B4%A0%E6%8F%8F%E7%9D%80%E8%89%B2%E3%80%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          IJPE2019《具有周期一致的对抗网络的动漫素描着色》
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/01/15/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91CVPR2019%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E3%80%8ASDGAN%E3%80%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【论文阅读】CVPR2019文本图像生成《SDGAN》</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【数据分析】基础知识准备 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="数据加载 首先在Kaggle上找到对应的竞赛页面，报名参赛下载数据，可以得到了一个train.csv和test.csv文件。 当然，如果你的电脑上已经安装了kaggle的包，当然也可以使用命令行直接下载： 1kaggle competitions download -c titanic 接着载入数据，可以选择使用相对路径或绝对路径，这里将使用绝对路径，将表头修改成中文，索引改为乘客的ID，便于观">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【数据分析】基础知识准备">
+<meta property="og:url" content="http://yluy.gitee.io/2020/08/19/%E3%80%90%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E3%80%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%87%86%E5%A4%87/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="数据加载 首先在Kaggle上找到对应的竞赛页面，报名参赛下载数据，可以得到了一个train.csv和test.csv文件。 当然，如果你的电脑上已经安装了kaggle的包，当然也可以使用命令行直接下载： 1kaggle competitions download -c titanic 接着载入数据，可以选择使用相对路径或绝对路径，这里将使用绝对路径，将表头修改成中文，索引改为乘客的ID，便于观">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ghvf21l5dhj31im0bawh1.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ghvf210h71j30ea05k74q.jpg">
+<meta property="og:image" content="https://chenk.tech/Pic/Untitled/2.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ghvf20ftpbj30po08p74v.jpg">
+<meta property="article:published_time" content="2020-08-19T14:22:05.000Z">
+<meta property="article:modified_time" content="2020-08-22T05:35:51.092Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="简单">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ghvf21l5dhj31im0bawh1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【数据分析】基础知识准备" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/19/%E3%80%90%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E3%80%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%87%86%E5%A4%87/" class="article-date">
+  <time datetime="2020-08-19T14:22:05.000Z" itemprop="datePublished">2020-08-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【数据分析】基础知识准备
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="数据加载"><a class="markdownIt-Anchor" href="#数据加载"></a> 数据加载</h2>
+<p>首先在Kaggle上找到对应的竞赛页面，报名参赛下载数据，可以得到了一个train.csv和test.csv文件。</p>
+<p>当然，如果你的电脑上已经安装了kaggle的包，当然也可以使用命令行直接下载：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kaggle competitions download -c titanic</span><br></pre></td></tr></table></figure>
+<p>接着载入数据，可以选择使用相对路径或绝对路径，这里将使用绝对路径，将表头修改成中文，索引改为乘客的ID，便于观察。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">----- kaggle_titanic</span></span><br><span class="line"><span class="string">  |----- train.csv</span></span><br><span class="line"><span class="string">  |----- test.csv</span></span><br><span class="line"><span class="string">----- data_analysis.ipynb</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;kaggle_titanic/train.csv&#x27;</span>, names = [<span class="string">&#x27;乘客ID&#x27;</span>, <span class="string">&#x27;是否幸存&#x27;</span>, <span class="string">&#x27;仓位等级&#x27;</span>, <span class="string">&#x27;姓名&#x27;</span>, <span class="string">&#x27;性别&#x27;</span>, <span class="string">&#x27;年龄&#x27;</span>,  \ </span><br><span class="line">            <span class="string">&#x27;兄弟姐妹个数&#x27;</span>,  <span class="string">&#x27;父母子女个数&#x27;</span>, <span class="string">&#x27;船票信息&#x27;</span>, <span class="string">&#x27;票价&#x27;</span>, <span class="string">&#x27;客舱&#x27;</span>, <span class="string">&#x27;登船港口&#x27;</span>], index_col=<span class="string">&#x27;乘客ID&#x27;</span>, header = <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">常用params：</span></span><br><span class="line"><span class="string">	- chunksize: number，表示在逐块提取过程中，每一块的行数。</span></span><br><span class="line"><span class="string">	- names: list[]，和列数相同，表头修改后的别名</span></span><br><span class="line"><span class="string">	- index_col: 默认为False/number，表示是否重新设置新的索引index</span></span><br><span class="line"><span class="string">	- header: 当选择默认值或header=0时，将首行设为列名。如果为1的话，展示的表格就从第二行开始</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>其中，chunksize是在对数据进行逐块提取时使用的参数。之所以进行逐块提取，是因为当你从一个有40亿行数据的csv文件中抽取出满足条件的某些行的数据，如果直接使用pandas的read_csv()方法去读取这个csv文件，那服务器的内存是会吃不消的，所以就非常有必要使用chunksize去分块处理。而经过chunksize后将得到一个可迭代的返回结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chunker = pd.read_csv(path, chunksize=<span class="number">100</span>)</span><br><span class="line"><span class="built_in">type</span>(chunker) <span class="comment"># &lt;class &#x27;pandas.io.parsers.TextFileReader&#x27;&gt;</span></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> chunker</span><br><span class="line">	<span class="built_in">print</span>(chunk) <span class="comment"># 发现每一个chunk都有100行</span></span><br></pre></td></tr></table></figure>
+<p>当然，你也可以使用其他方法去替换表头，比如说</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法一: 直接修改columns</span></span><br><span class="line">df.columns = [<span class="string">&#x27;乘客ID&#x27;</span>, <span class="string">&#x27;是否幸存&#x27;</span>, <span class="string">&#x27;仓位等级&#x27;</span>, <span class="string">&#x27;姓名&#x27;</span>, <span class="string">&#x27;性别&#x27;</span>, <span class="string">&#x27;年龄&#x27;</span>,  \ </span><br><span class="line">                        <span class="string">&#x27;兄弟姐妹个数&#x27;</span>, <span class="string">&#x27;父母子女个数&#x27;</span>, <span class="string">&#x27;船票信息&#x27;</span>, <span class="string">&#x27;票价&#x27;</span>, <span class="string">&#x27;客舱&#x27;</span>, <span class="string">&#x27;登船港口&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法二: 重命名columns</span></span><br><span class="line">df.rename(columns=&#123;<span class="string">&#x27;乘客ID&#x27;</span>: <span class="string">&#x27;userID&#x27;</span>, ....&#125;, inplace=<span class="literal">True</span>) <span class="comment"># 注意inplace=True时将直接修改df</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后，还是要设置一个新的索引</span></span><br><span class="line">df = df.set_index(keys=[<span class="string">&#x27;乘客ID&#x27;</span>,  <span class="string">&#x27;是否幸存&#x27;</span> ])</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">np.set_index(): </span></span><br><span class="line"><span class="string">函数原型：DataFrame.set_index(keys, drop=True, append=False, inplace=False, verify_integrity=False) </span></span><br><span class="line"><span class="string">参数解释：</span></span><br><span class="line"><span class="string">	- keys：列标签或列标签/数组列表，需要设置为索引的列</span></span><br><span class="line"><span class="string">	- drop：默认为True，删除用作新索引的列</span></span><br><span class="line"><span class="string">	- append：默认为False，是否将列附加到现有索引</span></span><br><span class="line"><span class="string">	- inplace：默认为False，适当修改DataFrame(不要创建新对象)</span></span><br><span class="line"><span class="string">	- verify_integrity：默认为false，检查新索引的副本。否则，请将检查推迟到必要时进行。将其设置为false将提高该方法的性能。 </span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ghvf21l5dhj31im0bawh1.jpg" alt="" /></p>
+<p>接着你可以使用一些操作简单的看看数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df.info()</span><br><span class="line">df.head(<span class="number">10</span>)  <span class="comment"># df.tail(10)</span></span><br><span class="line">df.isnull().head()  <span class="comment"># 判断数据是否为空，为空的地方返回True，其余地方返回False</span></span><br><span class="line"></span><br><span class="line">df.to_csv(filename)</span><br></pre></td></tr></table></figure>
+<p>对于一个数据，你还可以从每列的数据类型来观察。当然，对于泰坦尼克号这一数据集而言，还可以进一步观察性别与生存率、仓位等级（社会等级）与生存率、家属数与生存率、年龄与生存率等数据之间的关系。</p>
+<h2 id="pandas的相关知识"><a class="markdownIt-Anchor" href="#pandas的相关知识"></a> Pandas的相关知识</h2>
+<p>Pandas中有两个数据类型DataFrame和Series。</p>
+<p>Series是一种类似于一维数组的对象。它由一组数据（各种Numpy数据类型）以及一组与之相关的数据标签（即索引）组成，它只有行索引。</p>
+<p>DataFrame是一个表格型的数据结构，它含有一组有序的列，每列可以是不同的值类型（数值、字符串、布尔型值）。DataFrame既有行索引也有列索引，它可以被看做<strong>由Series组成的字典</strong>（共同用一个索引）。</p>
+<p>我们比较常用的是DataFrame，通过简单的操作查看DataFrame的结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df.columns</span><br><span class="line">df[<span class="string">&#x27;xxx&#x27;</span>]  <span class="comment"># 可以查看表头为xxx这列的所有项</span></span><br><span class="line"><span class="keyword">del</span> df[<span class="string">&#x27;xxx&#x27;</span>]  <span class="comment"># 列删除</span></span><br></pre></td></tr></table></figure>
+<p>当然，你依旧可以考虑用其他方法删除多余的列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df.drop([<span class="string">&#x27;性别&#x27;</span>, <span class="string">&#x27;票价&#x27;</span>],axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)  <span class="comment"># 删除多列</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># inplace 是起了一个保存作用，如果没有它，就只是隐藏了列元而已</span></span><br></pre></td></tr></table></figure>
+<p>接着可以做一些条件筛选，比如找到年纪大于50岁的乘客，或者是找到年纪大于40和小于20的乘客，涉及到一些交并的操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">midage = df[(df[<span class="string">&quot;年龄&quot;</span>] &gt; <span class="number">50</span>) | (df[<span class="string">&quot;年龄&quot;</span>] &lt; <span class="number">20</span>)]  <span class="comment"># 并集</span></span><br><span class="line">midage = df[(df[<span class="string">&quot;年龄&quot;</span>] &gt; <span class="number">50</span>) &amp; (df[<span class="string">&quot;年龄&quot;</span>] &lt; <span class="number">20</span>)]  <span class="comment"># 交集</span></span><br></pre></td></tr></table></figure>
+<p>当你想取特定行特定列的元素时，你或许需要将之前设定的“乘客id”索引给删去，这样才能完成特定行的获取。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">midage = midage.reset_index(drop=<span class="literal">True</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">reset_index():</span></span><br><span class="line"><span class="string">函数原型：DataFrame.reset_index(level=None, drop=False, inplace=False, col_level=0, col_fill=&#x27;&#x27;)</span></span><br><span class="line"><span class="string">参数解释:</span></span><br><span class="line"><span class="string">	- level：int、str、tuple或list，默认无，仅从索引中删除给定级别。默认情况下移除所有级别。</span></span><br><span class="line"><span class="string">	- drop：drop为False则索引列会被还原为普通列，否则会丢失</span></span><br><span class="line"><span class="string">	- inplace：默认为false，适当修改DataFrame(不要创建新对象)</span></span><br><span class="line"><span class="string">	- col_level：int或str，默认值为0，如果列有多个级别，则确定将标签插入到哪个级别。默认情况下，它将插入到第一级。</span></span><br><span class="line"><span class="string">	- col_fill：对象，默认‘’，如果列有多个级别，则确定其他级别的命名方式。如果没有，则重复索引名</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>然后你就可以进行“定位”取数的操作了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">midage.loc[[<span class="number">100</span>, <span class="number">105</span>, <span class="number">108</span>], [<span class="string">&#x27;Pclass&#x27;</span>, <span class="string">&#x27;Name&#x27;</span>, <span class="string">&#x27;Sex&#x27;</span>]]</span><br><span class="line">midage.iloc[[<span class="number">100</span>, <span class="number">105</span>, <span class="number">108</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]]  <span class="comment"># iloc不能直接通过列名获取数值，而是要写出第几列</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ghvf210h71j30ea05k74q.jpg" alt="" /></p>
+<p>另外，可进行特定行列取数的函数还有<code>iloc()</code>，两者之间的差异可参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/Leon_Kbl/article/details/97492966%EF%BC%8C%E5%86%99%E5%BE%97%E9%9D%9E%E5%B8%B8%E6%B8%85%E6%A5%9A%E3%80%82">https://blog.csdn.net/Leon_Kbl/article/details/97492966，写得非常清楚。</a></p>
+<p>我们有的时候会对两个DataFrame相加，这时候会返回一个新的DataFrame，对应的行和列的值会想加，没有对应的就会变成空值。比如说两个DataFrame的(1, 1)位置上，都有值1，那么两者想加的结果就是2。反之一个有一个无，则得到的结果就是NaN。</p>
+<h2 id="数据分析探索"><a class="markdownIt-Anchor" href="#数据分析探索"></a> 数据分析探索</h2>
+<p>很多网站的表格都会做一个升序降序的功能，在数据分析的时候我们也会有这类的需求：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">df.sort_value(by=[<span class="string">&#x27;xx&#x27;</span>, <span class="string">&#x27;xx&#x27;</span>], ascending=<span class="literal">True</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">params:</span></span><br><span class="line"><span class="string">	- by: 选择待排序的列，可以是单个也可以多个</span></span><br><span class="line"><span class="string">	- ascending: True/False，True是升序</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>你还可以选择对行、列索引进行升/降序排列。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.sort_index()  <span class="comment"># 行索引升序</span></span><br><span class="line">df.sort_index(axis = <span class="number">1</span>)  <span class="comment"># 列索引升序，其实就是表头的排序是正确的</span></span><br></pre></td></tr></table></figure>
+<p>或者你对船上最大家族的人数感兴趣，你也可以：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">max</span>(text[<span class="string">&#x27;兄弟姐妹个数&#x27;</span>] + text[<span class="string">&#x27;父母子女个数&#x27;</span>])</span><br><span class="line"><span class="comment"># 同样的方法你可以看看其他感兴趣的数据</span></span><br></pre></td></tr></table></figure>
+<p>Pandas的<code>describe()</code>函数查看数据基本统计信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">train_data.describe()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">count    样本大小</span></span><br><span class="line"><span class="string">mean     平均值</span></span><br><span class="line"><span class="string">std      标准差</span></span><br><span class="line"><span class="string">min      最小值</span></span><br><span class="line"><span class="string">25%      样本数据25%时候的值</span></span><br><span class="line"><span class="string">50%      50%</span></span><br><span class="line"><span class="string">75%      75%</span></span><br><span class="line"><span class="string">max      最大值</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://chenk.tech/Pic/Untitled/2.png" alt="img" /></p>
+<p>通过describe()函数我们可以简单地看出哪些是数值型数据哪些是字符型数据，对于字符型数据我们当然要转换成数值型数据来处理，比如可以转换成0-1编码的数值型。</p>
+<p>但需要注意的是，对于一些数值型数据却未必就不需要进一步的处理了，比如Pclass特征，从名字我们就可以看出这是标识仓位等级的特征，取值范围为[1, 2, 3]，这个特征我们不应该简单地当作一个数值型数据放进分类模型中直接跑，应该把它转变为one-hot编码，标识乘客不同的仓位，这一步我们将在数据预处理步骤完成。</p>
+<p>另外，你也可以单独看看特定列的信息统计：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">text[<span class="string">&#x27;父母子女个数&#x27;</span>].describe()  <span class="comment"># 或许可以看出讯息，绝大多数乘客都没有带父母子女</span></span><br><span class="line">text[<span class="string">&#x27;票价&#x27;</span>].describe()</span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ghvf20ftpbj30po08p74v.jpg" alt="" /></p>
+<h2 id="课后思考"><a class="markdownIt-Anchor" href="#课后思考"></a> 课后思考</h2>
+<p><strong>1. read_table和read_csv的异同</strong></p>
+<p>read_csv是pandas中专门用于csv文件读取的功能，不过这并不是唯一的处理方式。pandas中还有读取表格的通用函数read_table。两者都是加载带分隔符的数据，每一个分隔符作为一个数据的标志，但二者读出来的数据格式是不一样的。</p>
+<p>两者在读取数据时的主要差异性如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>默认分隔符</th>
+<th>使用方式</th>
+<th>输出结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>read_csv</td>
+<td>逗号</td>
+<td><code>pd.read_csv( )</code></td>
+<td>每一个字符串作为一列</td>
+</tr>
+<tr>
+<td>read_table</td>
+<td>制表符’\t’</td>
+<td><code>pd.read_table</code></td>
+<td>每个字符串之间有逗号相隔</td>
+</tr>
+</tbody>
+</table>
+<p>由于read_table以制表符 \t 作为数据的标志，也就是以行为单位进行存储。因此在读取数据的过程中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df_csv = pd.read_csv(path)</span><br><span class="line">df_table = pd.read_table(path)</span><br><span class="line"><span class="built_in">print</span>(df_csv.shape) <span class="comment"># (891, 12)</span></span><br><span class="line"><span class="built_in">print</span>(df_table.shape) <span class="comment"># (891, 1)</span></span><br></pre></td></tr></table></figure>
+<p>输出结果表明，使用read_table是对每一行作为一个维度进行了存储，可以得到一个n行1列的数组，每一行字符串为一列而不是每一个字符串。而使用read_csv是一个n行k列的数组，因为它将每一个字符串作为了一列。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/08/19/%E3%80%90%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E3%80%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%87%86%E5%A4%87/" data-id="clkqxrnp2003a1fj48daravfo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/20/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%91%E4%BC%98%E5%8C%96%E5%87%BD%E6%95%B0%E8%AF%A6%E8%A7%A3(%E4%BA%8C)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【深度学习】优化函数详解(2)
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

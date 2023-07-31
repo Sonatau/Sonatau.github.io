@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【图像处理】Haar特征描述算子 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Haar特征描述算子 经过前面的学习，个人对几个基础概念仍然有些模糊，比如说图像特征、级联分类器等，所以这篇笔记就结合这些天查阅到的知识点和Datawhale提供的学习内容一起记录一下，会比较注重概念的理解，文字内容多一些～  图像特征 实际上，计算机是不认识图像的，但倘若我们能够将图像数字化地输入计算机，它就能够理解不同的图像，从而有真正意义上的视觉。所以在进行人脸检测或者识别的过程中，需要关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图像处理】Haar特征描述算子">
+<meta property="og:url" content="http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Haar%E7%89%B9%E5%BE%81%E6%8F%8F%E8%BF%B0%E7%AE%97%E5%AD%90/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="Haar特征描述算子 经过前面的学习，个人对几个基础概念仍然有些模糊，比如说图像特征、级联分类器等，所以这篇笔记就结合这些天查阅到的知识点和Datawhale提供的学习内容一起记录一下，会比较注重概念的理解，文字内容多一些～  图像特征 实际上，计算机是不认识图像的，但倘若我们能够将图像数字化地输入计算机，它就能够理解不同的图像，从而有真正意义上的视觉。所以在进行人脸检测或者识别的过程中，需要关">
+<meta property="og:locale">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630161905885-1287692645.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630161938835-243399537.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162014953-1976155267.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162035485-263321560.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162057764-1714674920.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162122207-262929721.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162145283-1233495463.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162214927-2003490753.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162333880-80796421.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162351426-1630642234.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162439161-1477674097.png">
+<meta property="article:published_time" content="2020-08-24T15:26:17.000Z">
+<meta property="article:modified_time" content="2020-08-24T15:28:16.648Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="中等">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630161905885-1287692645.png">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【图像处理】Haar特征描述算子" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Haar%E7%89%B9%E5%BE%81%E6%8F%8F%E8%BF%B0%E7%AE%97%E5%AD%90/" class="article-date">
+  <time datetime="2020-08-24T15:26:17.000Z" itemprop="datePublished">2020-08-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>►<a class="article-category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【图像处理】Haar特征描述算子
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="haar特征描述算子"><a class="markdownIt-Anchor" href="#haar特征描述算子"></a> Haar特征描述算子</h2>
+<p>经过前面的学习，个人对几个基础概念仍然有些模糊，比如说图像特征、级联分类器等，所以这篇笔记就结合这些天查阅到的知识点和Datawhale提供的学习内容一起记录一下，会比较注重概念的理解，文字内容多一些～</p>
+<h3 id="图像特征"><a class="markdownIt-Anchor" href="#图像特征"></a> 图像特征</h3>
+<p>实际上，计算机是不认识图像的，但倘若我们能够将图像数字化地输入计算机，它就能够理解不同的图像，从而有真正意义上的视觉。所以在进行人脸检测或者识别的过程中，需要关注的是如何从图像中提取出有用的数据或信息，得到图像的“非图像”的表示或描述，比如常用的数值、向量等。这个过程就是特征提取。而提取出来的特征我们可以通过训练过程教会计算机如何懂得这些特征，从而使得计算机具备识别图像的能力。</p>
+<h4 id="基础概念"><a class="markdownIt-Anchor" href="#基础概念"></a> 基础概念</h4>
+<p><strong>特征</strong></p>
+<p>严格上说，特征是某一类对象区别于其他类对象的相应特点或特性。对于一幅图像而言，它自身的纹理、亮度等等，都可以成为区别于其他图像的自身特征。当然有些特征需要经过变换处理之后才能得到，需要我们转换成直方图等等。</p>
+<p><strong>特征向量</strong></p>
+<p>如果现在我们想要表示一个抽象的对象，可以把这个对象的特征们都组合在一起，形成一个特征向量来表示。如果这个物体只有单个特征，那特征向量就是一个一维的向量。如果有n个特征，那对应的，特征向量将是一个n维的。</p>
+<p>如下图所示，左图是一些在三维空间中的样本点。假设这些样本是鸢尾花，那么三个坐标轴可能分别代表花瓣的“长度”、“宽度”、“厚度”三个特征，给出三者的分数后，便可在三维空间中详细表示。例如，现在使用一个三维的特征来代表一个植物对象，比如(5,  6.7, 1)。</p>
+<img src = "https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630161647000-2034650917.png" style="width:67%">
+<p><strong>特征提取原则</strong></p>
+<p>其实图像识别是一个分类的过程。我们需要识别出某图像所属的类别，就需要将它和其他不同的图像区分开来。那么这就要求选取的特征不仅要能够很好地描述图像，重要的是还要能够很好地区分不同类别的图像。</p>
+<p>我们更希望选择那些在同类图像之间差异较小，但是在不同类别的图像之间差异较大的图像特征作为我们的判断标准，可以称它们为是最有区分能力的特征。</p>
+<p>那么重点来了，在特征提取的过程中我们应该注意些什么呢？</p>
+<p>如果在分类过程中，仅仅是简单地提取图像中所有像素的灰度值作为特征，虽然可以尽可能地提供信息给分类器，但是高纬度意味着高计算复杂度，在后续的处理和识别中很容易导致维度灾难。</p>
+<p>所以，我们仅仅只需要将部分像素信息交给分类器就已经足够了。</p>
+<blockquote>
+<p>比如说，在表情识别的时候，我们并不需要肤色、面部轮廓等特征，只要给出眉毛、眼睛、和嘴这些表情区域作为特征提取的候选区，就已经完全足够了。</p>
+</blockquote>
+<p><strong>评价标准</strong></p>
+<p>评价标准其实有一定的主观性，但是还是有一些原则是可以普遍遵循的，比如说下面这几点：</p>
+<ol>
+<li>特征应该容易提取，也就是说在提取的过程中不应该花费过多的代价。</li>
+<li>选取的特征应该对噪声、不相关的转换等操作不敏感。</li>
+<li>寻找一个最具区分能力的特征。</li>
+</ol>
+<h3 id="直方图及其统计特征"><a class="markdownIt-Anchor" href="#直方图及其统计特征"></a> 直方图及其统计特征</h3>
+<p>其实直方图更多是作为一种辅助图像分析的工具，但它也可以作为图像纹理描述的一种强大手段。</p>
+<p>笔者在上一篇博客已经详细阐述了图像纹理的概念及其特点，它具有一定的周期性。我们知道，纹理区域的像素灰度级分布具有一定的形式，而直方图又恰好可以用来描述图像中像素灰度级分布的有力工具，所以我们当然可以使用直方图来描述图像纹理咯～</p>
+<img src = "https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630161824054-1900048032.png" style = "width:67%">
+<p>那么，毫无疑问的是，相似的纹理具有相似的直方图，也就可以说明，直方图和纹理之间存在一定的对应关系。然后，经过分析可以想象到，直方图本身就是一个向量，而向量的维数是直方图统计的灰度级数，因此我们可以直接把这个直方图形成的向量作为代表图像纹理的样本特征向量，交给分类器处理，就像LBP直方图所做的工作那样。</p>
+<p>当然，还有其他思路，比如说从直方图中提取出能够描述自身的统计特征，然后组合成样本的特征向量，这样还可以降低特征向量的维数。</p>
+<h3 id="级联分类器"><a class="markdownIt-Anchor" href="#级联分类器"></a> 级联分类器</h3>
+<p>在上节的学习过程中，遇到了一个新的名词，叫做级联分类器。我不仅不知道它是个什么东西，还老念错它的名字，所以也找了一些资料，决定搞明白它到底是个啥玩意。</p>
+<h4 id="概念理解"><a class="markdownIt-Anchor" href="#概念理解"></a> 概念理解</h4>
+<p>通常情况下，分类器需要对多个图像特征进行识别。比如在识别一个动物是狗还是其他动物的时候，可能需要根据多个条件进行判断，如果首先就比较它们有几条腿：</p>
+<p>● 有“四条腿”的动物被判断为“可能为狗”，并对此范围内的对象继续进行分析和判断。</p>
+<p>● 没有“四条腿”的动物直接被否决，即不可能为狗。</p>
+<p>这样，仅仅比较腿的数目，根据这个特征就能排除样本集中大量的负类（例如鸡、鸭、鹅等不是狗的其他动物实例）。</p>
+<p>级联分类器就是基于这种思路，将多个简单的分类器按照一定的顺序级联而成的。</p>
+<p>它将多个弱分类器串联成了强分类器，其中弱分类器是一些性能受限的分类器，它们无法正确区分所有事物。而强分类器是可以正确地对数据进行分类的。之所以以弱分类器为基础，是因为这种技术可以避免执行高精度的单一分类器所产生的问题。</p>
+<p>如果一味强调分类器的精确度，可能会变成计算密集型且运行速度变慢。</p>
+<p>级联分类器的基础示意图如下图所示：</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630161905885-1287692645.png"  style = "width: 40% ;">
+<h4 id="优势"><a class="markdownIt-Anchor" href="#优势"></a> 优势</h4>
+<p>在开始阶段仅仅进行非常简单的判断，就能够排除明显不符合要求的样本。那些在开始阶段就被排除的负类，之后都不需要参与分类，只有正样本才会送到下一个强分类器进行再次检验，这样就保证了最后输出的正样本的伪正(false positive)的可能性非常低。这样很大程度提高了后面分类的速度，而且每个弱分类器也不需要太精确。</p>
+<h3 id="haar特征及其级联分类器"><a class="markdownIt-Anchor" href="#haar特征及其级联分类器"></a> Haar特征及其级联分类器</h3>
+<p>Haar特征可以用来反映图像灰度变化，而使用该算子进行人脸识别时，正是从人脸灰度变化角度考虑的。</p>
+<h4 id="概念与应用"><a class="markdownIt-Anchor" href="#概念与应用"></a> 概念与应用</h4>
+<p>研究者发现，从像素的差值这个角度考虑，两幅看似不相关的图像可能会存在一定的相关性。随后提出的Haar特征正是从这个角度出发，这些特征包含了垂直特征、水平特征和对角特征。根据特征的特点，构建了特征模版，使用某类模版可以判断是否具备某类特征。</p>
+<p>Haar算子如今普遍适用于行人检测和人脸检测中。</p>
+<h4 id="haar特征的计算"><a class="markdownIt-Anchor" href="#haar特征的计算"></a> Haar特征的计算</h4>
+<p>简单的几个Haar特征如下图所示，它主要反映的是<strong>图像的灰度变化</strong>（你品，你细品），它将像素划分为模块后求差值。其中特征模版是用黑白两种矩形框组合成特征模版的。</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630161938835-243399537.png"  style = "width: 40% ;">
+<p>在特征模版中，用白色矩形像素块的像素和减去黑色矩形像素块的像素和来表示该模版的特征。那么经过上述处理之后，人脸部的一些特征就可以使用矩形框的差值来简单表示，其中公式如下：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mo>=</mo><mo>∑</mo><mo stretchy="false">(</mo><mi mathvariant="normal">白</mi><mi mathvariant="normal">色</mi><mi mathvariant="normal">区</mi><mi mathvariant="normal">域</mi><mi mathvariant="normal">像</mi><mi mathvariant="normal">素</mi><mi mathvariant="normal">和</mi><mo stretchy="false">)</mo><mo>−</mo><mo>∑</mo><mo stretchy="false">(</mo><mi mathvariant="normal">黑</mi><mi mathvariant="normal">色</mi><mi mathvariant="normal">区</mi><mi mathvariant="normal">域</mi><mi mathvariant="normal">像</mi><mi mathvariant="normal">素</mi><mi mathvariant="normal">和</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T = \sum(白色区域像素和) - \sum(黑色区域像素和)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.6000100000000002em;vertical-align:-0.55001em;"></span><span class="mop op-symbol large-op" style="position:relative;top:-0.000004999999999977245em;">∑</span><span class="mopen">(</span><span class="mord cjk_fallback">白</span><span class="mord cjk_fallback">色</span><span class="mord cjk_fallback">区</span><span class="mord cjk_fallback">域</span><span class="mord cjk_fallback">像</span><span class="mord cjk_fallback">素</span><span class="mord cjk_fallback">和</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.6000100000000002em;vertical-align:-0.55001em;"></span><span class="mop op-symbol large-op" style="position:relative;top:-0.000004999999999977245em;">∑</span><span class="mopen">(</span><span class="mord cjk_fallback">黑</span><span class="mord cjk_fallback">色</span><span class="mord cjk_fallback">区</span><span class="mord cjk_fallback">域</span><span class="mord cjk_fallback">像</span><span class="mord cjk_fallback">素</span><span class="mord cjk_fallback">和</span><span class="mclose">)</span></span></span></span></span></p>
+<p>之所以可以使用haar算子来识别某些面部特征，是因为在我们的面部构造上存在了一些明显的特点。</p>
+<p>比如说眼睛的颜色比脸颊的颜色要深，那么让这两者的区域像素和做减法操作时，其差值就会比较大。但假如我们对两个都是脸颊的区域做这样的操作，显然差值很小，有可能是0。那么这样眼睛区域和非眼睛区域就能够使用差值的大小来进行区分了。</p>
+<p>因此，经过分析发现，面部的这些特点使得有很多区域都可以借助<strong>不同的模版</strong>来计算并区分。</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162014953-1976155267.png" style = "width: 40% ;" >
+<p>同样的，<strong>我们希望当把矩形放到人脸区域计算出来的特征值和放到非人脸区域计算出来的特征值差别越大越好</strong>，这样我们就能够用来区分人脸和非人脸了。</p>
+<p>关于Harr特征中的矩形框，有如下3个变量。</p>
+<p>● 矩形位置：矩形框要逐像素地划过（遍历）整个图像获取每个位置的差值。</p>
+<p>● 矩形大小：矩形的大小可以根据需要做任意调整。</p>
+<p>● 矩形类型：包含垂直、水平、对角等不同类型。</p>
+<p>上述3个变量保证了能够细致全面地获取图像的特征信息。</p>
+<h4 id="积分图"><a class="markdownIt-Anchor" href="#积分图"></a> 积分图</h4>
+<p>前面说到，计算haar特征之前，要先计算两块区域的和，再算它们之间的差。</p>
+<p>都说程序员是最知道偷懒的，他们发现光是计算区域和也好累，因为如果我们细致全面地获取图像的特征信息，使用不同的矩形进行特征提取，若同一个像素包含在不同的重叠矩形区域中会被多次遍历，导致计算量加大。</p>
+<p>所以学者们又提出了简化Haar特征的方法，也就引出了积分图的计算。假设现在有一张图，如下图所示：</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162035485-263321560.png" style = "width: 40% ;" >
+<p>如果需要计算图像中任意矩形区域的大小，不需要遍历区域内的所有像素。</p>
+<p>想象下图中左上的点和任何相对的点P形成的矩形。设AP表示这个矩形的面积。如前图所示，AB表示通过取左上角点和相对的B点形成的5×2矩形的面积。为了清楚起见，看一下下图：</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162057764-1714674920.png" style = "width: 40% ;" >
+<p>上图中的左上部分，着色像素表示左上角与点A之间的区域。这个区域用AA表示，剩下的图用AB、AC、AD表示。若想计算上图ABCD区域，将使用下列公式：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>T</mi><mrow><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi></mrow></msub><mo>=</mo><msub><mi>T</mi><mrow><mi>A</mi><mi>C</mi></mrow></msub><mo>−</mo><mo stretchy="false">(</mo><msub><mi>T</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>+</mo><msub><mi>T</mi><mrow><mi>A</mi><mi>D</mi></mrow></msub><mo>−</mo><msub><mi>T</mi><mrow><mi>A</mi><mi>A</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T_{ABCD} = T_{AC} - (T_{AB} + T_{AD} - T_{AA})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span><span class="mord mathdefault mtight" style="margin-right:0.07153em;">C</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.07153em;">C</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight">A</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>这种特定的公式有什么特别的地方吗？</p>
+<p>⚠️  实际上我们知道，提取图像的Haar特征需要计算多个尺度矩形的和。而这些计算是重复的，因为反复遍历了同一个像素。那么上面这种方法借助了动态规划的思想，避免了对同一个位置的重复计算，极大地节省了时间开销。</p>
+<h4 id="haar级联分类器"><a class="markdownIt-Anchor" href="#haar级联分类器"></a> Haar级联分类器</h4>
+<p>这下总算能具体说说Haar级联分类器到底是什么，应该怎么使用的了！！其实这部分的内容，助教给的学习资料已经很清楚了，甚至很多图像处理的书都没他讲的明白。。</p>
+<p>简单地说，在进行人脸检测的过程中，需要使用一个强分类器，且其由多个弱分类器组成。那么其中的每个弱分类器都只包含一个Haar特征。每个分类器都将确定一个阈值，如果某区域的处理差值小于该阈值，则被归为负类，反之则进行下一级的弱分类，最终经过多个弱分类器后，可完成检测。其分类过程如下图所示：</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162122207-262929721.png" style = "width: 40% ;">
+<p>那么接下来，再具体地说明执行过程：</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162145283-1233495463.png"  style = "width: 60% ;">
+<ol>
+<li>首先，对于一幅图像，它可能存在K个面部特征，假设这些面部特征可以用来区分眼睛、眉毛、鼻子、嘴等特征。</li>
+<li>确定一些超参数，如滑动窗口的大小，及窗口的移动步长。窗口从上往下，从左向右地滑动。在滑动的过程中，每次都可以计算出一个数值<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span></span></span></span>。</li>
+<li>滑动结束时，将得到的特征值进行排序，并选取一个最佳特征值（最优阈值），使得在该特征值下，对于该特征而言，样本的加权错误率最低。这样就训练出了一个弱分类器。</li>
+<li>因为面部特征的不同，我们将采用不同的滑动窗口进行特征提取。所以根据不同的窗口识别不同的特征，进而训练出了不同的弱分类器。</li>
+<li>对于每个弱分类器都将计算它的错误率，选择错误率最低的K个弱分类器，组合成强分类器。</li>
+<li>一组样本投入强分类器后，在每个渐进的阶段，分类器逐渐在较少的图像窗口上使用更多的特征（负类被丢弃）。如果某个矩形区域在所有弱分类器中都被归结为正类，那么可以认为该区域是存在人脸的。</li>
+</ol>
+<p>其中，弱分类器训练的具体步骤如下：</p>
+<p>1、对于每个特征 𝑓，计算所有训练样本的特征值，并将其排序：</p>
+<p>2、扫描一遍排好序的特征值，对排好序的表中的每个元素，计算下面四个值：</p>
+<p>计算全部正例的权重和𝑇+；</p>
+<p>计算全部负例的权重和𝑇−；</p>
+<p>计算该元素前之前的正例的权重和𝑆+；</p>
+<p>计算该元素前之前的负例的权重和𝑆−；</p>
+<p>3、选取当前元素的特征值<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>F</mi><mrow><mi>k</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">F_{k,j}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>和它前面的一个特征值<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>F</mi><mrow><mi>k</mi><mo separator="true">,</mo><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">F_{k,j-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>之间的数作为阈值，所得到的弱分类器就在当前元素处把样本分开 —— 也就是说这个阈值对应的弱分类器将当前元素前的所有元素分为人脸（或非人脸），而把当前元素后（含）的所有元素分为非人脸（或人脸）。该阈值的分类误差为：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>e</mi><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><msup><mi>S</mi><mo>+</mo></msup><mo>+</mo><mo stretchy="false">(</mo><msup><mi>T</mi><mo>−</mo></msup><mo>−</mo><msup><mi>S</mi><mo>−</mo></msup><mo stretchy="false">)</mo><mo separator="true">,</mo><msup><mi>S</mi><mo>−</mo></msup><mo>+</mo><mo stretchy="false">(</mo><msup><mi>T</mi><mo>+</mo></msup><mo>−</mo><msup><mi>S</mi><mo>+</mo></msup><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">e=min(S^++(T^--S^-),S^-+(T^+-S^+))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.071331em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.821331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.071331em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.821331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.071331em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.821331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.821331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.071331em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.821331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.071331em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.821331em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
+<p>于是，通过把这个排序表从头到尾扫描一遍就可以为弱分类器选择使分类误差最小的阈值（最优阈值），也就是选取了一个最佳弱分类器。</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162214927-2003490753.png" style = "width: 40% ;">
+<h4 id="级联分类器的使用"><a class="markdownIt-Anchor" href="#级联分类器的使用"></a> 级联分类器的使用</h4>
+<p>在OpenCV中，有一些训练好的级联分类器供用户使用。这些分类器可以用来检测人脸、脸部特征（眼睛、鼻子）、人类和其他物体。这些级联分类器以XML文件的形式存放在OpenCV源文件的data目录下，加载不同级联分类器的XML文件就可以实现对不同对象的检测。</p>
+<p>OpenCV自带的级联分类器存储在OpenCV根文件夹的data文件夹下。该文件夹包含三个子文件夹：haarcascades、hogcascades、lbpcascades，里面分别存储的是Harr级联分类器、HOG级联分类器、LBP级联分类器。</p>
+<p>其中，Harr级联分类器多达20多种（随着版本更新还会继续增加），提供了对多种对象的检测功能。部分级联分类器如下表所示：</p>
+<img src = "https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162241116-963472225.png" style = "width: 40% ;">
+<h3 id="opencv实现过程"><a class="markdownIt-Anchor" href="#opencv实现过程"></a> openCV实现过程</h3>
+<h4 id="静态检测"><a class="markdownIt-Anchor" href="#静态检测"></a> 静态检测</h4>
+<p>第一步仍然是导入环境包，图片读取，灰度转换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filepath = <span class="string">&#x27;../img/cv_2.jpeg&#x27;</span></span><br><span class="line">cascadepath = <span class="string">&#x27;/Users/sonata/opt/anaconda3/share/opencv4/haarcascades/haarcascade_frontalface_default.xml&#x27;</span></span><br><span class="line"></span><br><span class="line">img = cv.imread(filepath)</span><br><span class="line">grey = cv.cvtColor(img, cv.COLOR_BGR2GRAY)</span><br></pre></td></tr></table></figure>
+<p>随后加载haar的级联分类器，并且使用<code>detectMultiScale()</code>函数来处理灰度图，并用矩形框将人脸框出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">faceCascade = cv.CascadeClassifier(cascadepath)</span><br><span class="line">faces = faceCascade.detectMultiScale(grey, <span class="number">1.3</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (x, y, w, h) <span class="keyword">in</span> faces:</span><br><span class="line">    img = cv.rectangle(img, (x, y), (x+w, y+h), (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">cv.imshow(<span class="string">&#x27;FaceDetected&#x27;</span>, img)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+<p>得到最终的检测结果如下图所示，效果比LBP好一些似乎，因为上次也是这张图，结果就是检测不全。</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162333880-80796421.png" style = "width: 40% ;" >
+<p>单独使用了一下眼睛检测，一定是我牙不够白…</p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162351426-1630642234.png" style = "width: 40% ;">
+<h4 id="动态检测"><a class="markdownIt-Anchor" href="#动态检测"></a> 动态检测</h4>
+<p>接下来就是使用摄像头进行动态检测的过程了。<code>DynamicDetect</code>函数主要包括：打开摄像头、读取帧、检测人脸、扫描检测到的人脸中的眼睛，并使用不同颜色绘制出矩形框。这次助教写的函数解释很清楚，贴出来记录一下重点：</p>
+<p>detectMultiScale有许多可选参数；眼睛是一个比较小的人脸特征，并且胡子或者鼻子的本身阴影以及帧的随机阴影都会产生假阳性。通过限制对眼睛搜索的最小尺寸为40x40像素，可以去掉假阳性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">detectMultiScale(image, scaleFactor, minNeighbors, flags, minSize, maxSize)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>scaleFactor：为每一个图像尺度中的尺度参数，默认值为1.1。scaleFactor参数可以决定两个不同大小的窗口扫描之间有多大的跳跃，这个参数设置的大，则意味着计算会变快，但如果窗口错过了某个大小的人脸，则可能丢失物体。</li>
+<li>minNeighbors：参数为每一个级联矩形应该保留的邻近个数，默认为3。minNeighbors控制着误检测，默认值为3表明至少有3次重叠检测，我们才认为人脸确实存。</li>
+</ul>
+<p>个人的实现过程如下，基本上和助教给的差不多：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">PathOfFaceCascade = <span class="string">&#x27;/Users/sonata/opt/anaconda3/share/opencv4/haarcascades/haarcascade_frontalface_default.xml&#x27;</span></span><br><span class="line">PathOfEyeCascade = <span class="string">&#x27;/Users/sonata/opt/anaconda3/share/opencv4/haarcascades/haarcascade_eye.xml&#x27;</span></span><br><span class="line"></span><br><span class="line">faceCascade = cv.CascadeClassifier(PathOfFaceCascade)</span><br><span class="line">eyeCascade = cv.CascadeClassifier(PathOfEyeCascade)</span><br><span class="line"></span><br><span class="line">camera = cv.VideoCapture(<span class="number">0</span>)</span><br><span class="line">cv.namedWindow(<span class="string">&#x27;Dynamic&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    ret, frame = camera.read()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ret:</span><br><span class="line">        grey = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)</span><br><span class="line">        faces = faceCascade.detectMultiScale(grey, <span class="number">1.3</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (x, y, w, h) <span class="keyword">in</span> faces:</span><br><span class="line">            cv.rectangle(frame, (x, y), (x+w, y+h), (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            roi_gray = grey[y:y+h, x:x+w]</span><br><span class="line">            eyes = eyeCascade.detectMultiScale(roi_gray, <span class="number">1.03</span>, <span class="number">5</span>, <span class="number">0</span>, (<span class="number">40</span>, <span class="number">40</span>))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (ex, ey, ew, eh) <span class="keyword">in</span> eyes:</span><br><span class="line">                cv.rectangle(frame, (x + ex, ey + y), (ex + x + ew, y + ey + eh), (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">        cv.imshow(<span class="string">&#x27;Dynamic&#x27;</span>, frame)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> cv.waitKey(<span class="number">100</span>) &amp; <span class="number">0xff</span> == <span class="built_in">ord</span>(<span class="string">&#x27;q&#x27;</span>):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">camera.release()</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+<h3 id="非极大值抑制nms"><a class="markdownIt-Anchor" href="#非极大值抑制nms"></a> 非极大值抑制（NMS）</h3>
+<p>不知道各位小伙伴有没有想到，一张脸可能会被不同形状的候选矩形框检测出，那么最后将决定以哪个框为我们的最终结果呢？这就需要使用到NMS（Non-Maximum Suppression）方法来去除多余的框。</p>
+<img src = "https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162413956-1660898761.png" style = "width: 40% ;">
+<h4 id="公式理解"><a class="markdownIt-Anchor" href="#公式理解"></a> 公式理解</h4>
+<ol>
+<li>首先对所有检测出来的框，根据分数从高到低进行排序。</li>
+<li>从分数最高的框开始，计算与分数比自身地的框的IOU，如果IOU大于一定的阈值，就把分数较低的那个去掉。</li>
+<li>便利剩余未被去掉的框，重复步骤2的操作。</li>
+<li>最后得到一组得分较高且不重复的框。</li>
+</ol>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>O</mi><mi>U</mi><mo>=</mo><mfrac><mrow><mi>A</mi><mo>⋂</mo><mi>B</mi></mrow><mrow><mi>A</mi><mo>⋃</mo><mi>B</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi mathvariant="normal">重</mi><mi mathvariant="normal">合</mi><mi mathvariant="normal">面</mi><mi mathvariant="normal">积</mi></mrow><mrow><mi>A</mi><mi mathvariant="normal">面</mi><mi mathvariant="normal">积</mi><mo>+</mo><mi>B</mi><mi mathvariant="normal">面</mi><mi mathvariant="normal">积</mi><mo>−</mo><mi mathvariant="normal">重</mi><mi mathvariant="normal">合</mi><mi mathvariant="normal">面</mi><mi mathvariant="normal">积</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">IOU = \frac{A \bigcap B}{A \bigcup B} = \frac{重合面积}{A面积 + B面积 -重合面积}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.36301em;vertical-align:-0.93601em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⋃</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⋂</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.93601em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.4463300000000001em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.677em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="mord cjk_fallback">面</span><span class="mord cjk_fallback">积</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord cjk_fallback">面</span><span class="mord cjk_fallback">积</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord cjk_fallback">重</span><span class="mord cjk_fallback">合</span><span class="mord cjk_fallback">面</span><span class="mord cjk_fallback">积</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">重</span><span class="mord cjk_fallback">合</span><span class="mord cjk_fallback">面</span><span class="mord cjk_fallback">积</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<img src="https://img2020.cnblogs.com/blog/1813159/202006/1813159-20200630162439161-1477674097.png" style = "width: 40% ;" >
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<ol>
+<li>分类任务中可借助图像特征和直方图来完成。</li>
+<li>级联分类器有强弱之分，多个弱分类器组成了强分类器。Haar特征就是一种弱分类器。</li>
+<li>Haar特征值等于白色矩形像素块的像素和减去黑色矩形像素块的像素和。</li>
+<li>人脸包含的每个特征都可以训练出一个弱分类器，选择出K个最优分类器进行组合成为强分类器。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Haar%E7%89%B9%E5%BE%81%E6%8F%8F%E8%BF%B0%E7%AE%97%E5%AD%90/" data-id="clkqxrnox002p1fj4ffwleogu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91HOG%E7%89%B9%E5%BE%81%E6%8F%8F%E8%BF%B0%E7%AE%97%E5%AD%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【图像处理】HOG特征描述算子
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91LBP%E7%89%B9%E5%BE%81%E6%8F%8F%E8%BF%B0%E7%AE%97%E5%AD%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【图像处理】LBP特征描述算子</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

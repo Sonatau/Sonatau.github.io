@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【论文阅读】《cGAN》 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="论文：《Conditional Generative Adversarial Nets》 年份：2014年   引言 原始的GAN过于自由，训练会很容易失去方向，导致不稳定且效果差。比如说GAN生成MNIST数字的过程，虽然可以生成数字，但生成的结果是随机的（因为是根据输入的随机噪声生成的图片），没有办法控制模型生成的具体数字。 CGAN就是在原来的GAN模型中加入一些先验条件，使得GAN变得更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文阅读】《cGAN》">
+<meta property="og:url" content="http://yluy.gitee.io/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8AcGAN%E3%80%8B/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="论文：《Conditional Generative Adversarial Nets》 年份：2014年   引言 原始的GAN过于自由，训练会很容易失去方向，导致不稳定且效果差。比如说GAN生成MNIST数字的过程，虽然可以生成数字，但生成的结果是随机的（因为是根据输入的随机噪声生成的图片），没有办法控制模型生成的具体数字。 CGAN就是在原来的GAN模型中加入一些先验条件，使得GAN变得更">
+<meta property="og:locale">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170425408-754854655.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170441170-22928452.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170448186-1353755540.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170502324-663011961.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170517127-827948811.png">
+<meta property="article:published_time" content="2020-08-28T02:36:20.000Z">
+<meta property="article:modified_time" content="2020-12-24T10:23:22.235Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="简单">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170425408-754854655.png">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【论文阅读】《cGAN》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8AcGAN%E3%80%8B/" class="article-date">
+  <time datetime="2020-08-28T02:36:20.000Z" itemprop="datePublished">2020-08-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【论文阅读】《cGAN》
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>论文：《Conditional Generative Adversarial Nets》</p>
+<p>年份：2014年</p>
+</blockquote>
+<h2 id="引言"><a class="markdownIt-Anchor" href="#引言"></a> 引言</h2>
+<p>原始的GAN过于自由，训练会很容易失去方向，导致不稳定且效果差。比如说GAN生成MNIST数字的过程，虽然可以生成数字，但生成的结果是随机的（因为是根据输入的随机噪声生成的图片），没有办法控制模型生成的具体数字。</p>
+<p>CGAN就是在原来的GAN模型中加入一些先验条件，使得GAN变得更加可控制。具体来说，我们可以在生成模型G和判别模型D中同时加入条件约束y来引导数据的生成过程。条件可以是任何补充的信息，如类标签等，这样我们在生成新的样本的同时，还能确切地控制新样本的类型。</p>
+<h2 id="cgan结构"><a class="markdownIt-Anchor" href="#cgan结构"></a> cGAN结构</h2>
+<p>cGAN的全程是Conditional Generative Adversarial Networks，即条件对抗生成网络。它为生成器、判别器都额外加入了一个条件y，这个条件实际上是希望生成的标签。</p>
+<p>生成器G必须要生成和条件y匹配的样本，判别器不仅要判别图像是否真实，还要判别图像和条件y是否匹配。cGAN的输入输出为：</p>
+<ul>
+<li>生成器G：输入一个噪声z，一个条件y，输出符合该条件的图像G。</li>
+<li>判别器D：输入一张图像x，一个条件y，输出该图像在该条件下的真实概率D(x|y)</li>
+</ul>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170425408-754854655.png" alt="" /></p>
+<h2 id="优化目标"><a class="markdownIt-Anchor" href="#优化目标"></a> 优化目标</h2>
+<p>在原始的GAN中，优化目标为：</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170441170-22928452.png" alt="" /></p>
+<p>在cGAN中，在其中加入条件y，则优化目标修改成了：</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170448186-1353755540.png" alt="" /></p>
+<p>以MNIST为例，生成器G和判别器D的输入输出是：</p>
+<ul>
+<li>G输入一个噪声z，一个数字标签y(y的取值范围是0~9)。输出和数字标签相符合的图像G(z|y)。</li>
+<li>D输入一个图像x，一个数字标签y。输出图像和数字符合的概率D(x|y)。</li>
+</ul>
+<p>显然，在训练完成后，向G输入某个数字标签和噪声，可以生成对应数字的图像。</p>
+<h2 id="pytorch代码实现"><a class="markdownIt-Anchor" href="#pytorch代码实现"></a> Pytorch代码实现</h2>
+<h3 id="cgan生成器"><a class="markdownIt-Anchor" href="#cgan生成器"></a> cGAN生成器</h3>
+<p>定义生成器及前向传播函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Generator</span>(nn.Module):￼</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="built_in">super</span>().__init__()￼</span><br><span class="line">    self.label_emb = nn.Embedding(<span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line">    self.model = nn.Sequential(</span><br><span class="line">      nn.Linear(<span class="number">110</span>, <span class="number">256</span>),</span><br><span class="line">      nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">      nn.Linear(<span class="number">256</span>, <span class="number">512</span>),</span><br><span class="line">      nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">      nn.Linear(<span class="number">512</span>, <span class="number">1024</span>),</span><br><span class="line">      nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">      nn.Linear(<span class="number">1024</span>, <span class="number">784</span>),￼</span><br><span class="line">      nn.Tanh()</span><br><span class="line">    )</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, z, labels</span>):</span><br><span class="line">    z = z.view(z.size(<span class="number">0</span>), <span class="number">100</span>)￼</span><br><span class="line">    c = self.label_emb(labels)￼</span><br><span class="line">    x = torch.cat([z, c], <span class="number">1</span>)</span><br><span class="line">    out = self.model(x)</span><br><span class="line">    <span class="keyword">return</span> out.view(x.size(<span class="number">0</span>), <span class="number">28</span>, <span class="number">28</span>)</span><br></pre></td></tr></table></figure>
+<p>其中，torch.nn.Embedding的函数介绍如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nn.Embedding(num_embeddings, embedding_dim)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">params:</span></span><br><span class="line"><span class="string">- num_embeddings - 词嵌入字典大小，即一个字典里要有多少个词。</span></span><br><span class="line"><span class="string">- embedding_dim - 每个词嵌入向量的大小。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="cgan判别器"><a class="markdownIt-Anchor" href="#cgan判别器"></a> cGAN判别器</h3>
+<p>定义判别器及前向传播函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Discriminator</span>(nn.Module):</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="built_in">super</span>().__init__()</span><br><span class="line">    self.label_emb = nn.Embedding(<span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line">    self.model = nn.Sequential(</span><br><span class="line">      nn.Linear(<span class="number">794</span>, <span class="number">1024</span>),</span><br><span class="line">      nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),￼</span><br><span class="line">      nn.Dropout(<span class="number">0.4</span>),</span><br><span class="line">      nn.Linear(<span class="number">1024</span>, <span class="number">512</span>),</span><br><span class="line">      nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">      nn.Dropout(<span class="number">0.4</span>),</span><br><span class="line">      nn.Linear(<span class="number">512</span>, <span class="number">256</span>),</span><br><span class="line">      nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">      nn.Dropout(<span class="number">0.4</span>),</span><br><span class="line">      nn.Linear(<span class="number">256</span>, <span class="number">1</span>),</span><br><span class="line">      nn.Sigmoid()￼</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, labels</span>):</span><br><span class="line">      x = x.view(x.size(<span class="number">0</span>), <span class="number">784</span>)￼</span><br><span class="line">      c = self.label_emb(labels)</span><br><span class="line">      x = torch.cat([x, c], <span class="number">1</span>)￼</span><br><span class="line">      out = self.model(x)</span><br><span class="line">      <span class="keyword">return</span> out.squeeze()</span><br></pre></td></tr></table></figure>
+<h3 id="cgan损失函数"><a class="markdownIt-Anchor" href="#cgan损失函数"></a> cGAN损失函数</h3>
+<p>定义判别器对真、假图像的损失函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义判别器对真图像的损失函数：</span></span><br><span class="line">real_validity = D(images, labels)￼</span><br><span class="line">d_loss_real = criterion(real_validity, real_labels)￼</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义判别器对假图像（即由潜在空间点生成的图像）的损失函数￼</span></span><br><span class="line">z = torch.randn(batch_size, <span class="number">100</span>).to(device)￼</span><br><span class="line">fake_labels = torch.randint(<span class="number">0</span>,<span class="number">10</span>,(batch_size,)).to(device)￼</span><br><span class="line">fake_images = G(z, fake_labels)￼</span><br><span class="line">fake_validity = D(fake_images, fake_labels)￼</span><br><span class="line">d_loss_fake = criterion(fake_validity, torch.zeros(batch_size).to(device))￼</span><br><span class="line"></span><br><span class="line"><span class="comment">#CGAN总的损失值￼</span></span><br><span class="line">d_loss = d_loss_real + d_loss_fake</span><br></pre></td></tr></table></figure>
+<h3 id="cgan可视化"><a class="markdownIt-Anchor" href="#cgan可视化"></a> cGAN可视化</h3>
+<p>利用网格（10×10）的形式显示指定条件下生成的图像</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170502324-663011961.png" alt="" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torchvision.utils <span class="keyword">import</span> make_grid￼</span><br><span class="line">z = torch.randn(<span class="number">100</span>, <span class="number">100</span>).to(device)￼</span><br><span class="line">labels = torch.LongTensor([i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)]).to(device)￼</span><br><span class="line">images = G(z, labels).unsqueeze(<span class="number">1</span>)￼</span><br><span class="line">grid = make_grid(images, nrow=<span class="number">10</span>, normalize=<span class="literal">True</span>)￼</span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">10</span>,<span class="number">10</span>))￼</span><br><span class="line">ax.imshow(grid.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>).detach().cpu().numpy(), cmap=<span class="string">&#x27;binary&#x27;</span>)￼</span><br><span class="line">ax.axis(<span class="string">&#x27;off&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="查看指定标签数据"><a class="markdownIt-Anchor" href="#查看指定标签数据"></a> 查看指定标签数据</h3>
+<p>可视化指定单个数字条件下生成的数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_digit</span>(<span class="params">generator, digit</span>):</span><br><span class="line">  z = torch.randn(<span class="number">1</span>, <span class="number">100</span>).to(device)￼     </span><br><span class="line">  label = torch.LongTensor([digit]).to(device)￼     </span><br><span class="line">  img = generator(z, label).detach().cpu()￼     </span><br><span class="line">  img = <span class="number">0.5</span> * img + <span class="number">0.5</span>￼     </span><br><span class="line">  <span class="keyword">return</span> transforms.ToPILImage()(img)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用</span></span><br><span class="line">generate_digit(G, <span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="可视化损失值"><a class="markdownIt-Anchor" href="#可视化损失值"></a> 可视化损失值</h3>
+<p>记录判别器和生成器的损失变化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writer.add_scalars(<span class="string">&#x27;scalars&#x27;</span>, &#123;<span class="string">&#x27;g_loss&#x27;</span>: g_loss, <span class="string">&#x27;d_loss&#x27;</span>: d_loss&#125;, step)</span><br></pre></td></tr></table></figure>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200811170517127-827948811.png" alt="" /></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8AcGAN%E3%80%8B/" data-id="clkqxrnpz006g1fj4bj0g5d4z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8ADCGAN%E3%80%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【论文阅读】《DCGAN》
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8ACycleGAN%E3%80%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【论文阅读】《CycleGAN》</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

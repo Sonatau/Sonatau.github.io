@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【论文阅读】《DCGAN》 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="论文：《UNSUPERVISED REPRESENTATION LEARNING WITH DEEP CONVOLUTIONAL GENERATIVE ADVERSARIAL NETWORKS》 发表日期：ICLR 2016   前言 这几年CNNs在计算机视觉应用的监督学习方面的应用广泛，而在非监督学习方向的应用就相对没有受到关注。因此，提出的这一深度卷积生成对抗网络（DCGANs）中使用了C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文阅读】《DCGAN》">
+<meta property="og:url" content="http://yluy.gitee.io/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8ADCGAN%E3%80%8B/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="论文：《UNSUPERVISED REPRESENTATION LEARNING WITH DEEP CONVOLUTIONAL GENERATIVE ADVERSARIAL NETWORKS》 发表日期：ICLR 2016   前言 这几年CNNs在计算机视觉应用的监督学习方面的应用广泛，而在非监督学习方向的应用就相对没有受到关注。因此，提出的这一深度卷积生成对抗网络（DCGANs）中使用了C">
+<meta property="og:locale">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/8c2b2f6fjw1f99h94gnlbg20az0aldi4.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/8c2b2f6fjw1f9aba7bh2ig20az0chwjq.gif">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185433669-1435958113.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185453103-2133415157.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185516079-910008385.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185529535-737886146.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185534236-423705360.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185545536-381592810.png">
+<meta property="article:published_time" content="2020-08-28T02:38:13.000Z">
+<meta property="article:modified_time" content="2020-08-28T02:40:26.394Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="中等">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/8c2b2f6fjw1f99h94gnlbg20az0aldi4.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【论文阅读】《DCGAN》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8ADCGAN%E3%80%8B/" class="article-date">
+  <time datetime="2020-08-28T02:38:13.000Z" itemprop="datePublished">2020-08-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【论文阅读】《DCGAN》
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>论文：《UNSUPERVISED REPRESENTATION LEARNING WITH DEEP CONVOLUTIONAL<br />
+GENERATIVE ADVERSARIAL NETWORKS》</p>
+<p>发表日期：ICLR 2016</p>
+</blockquote>
+<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>这几年CNNs在计算机视觉应用的监督学习方面的应用广泛，而在非监督学习方向的应用就相对没有受到关注。因此，提出的这一深度卷积生成对抗网络（DCGANs）中使用了CNNs的内容，证明它也是可以进行非监督学习的。</p>
+<p>通过各类的图像数据训练表明，DCGAN的生成器和鉴别器能够学习从物体部分到场景的表示层次。并且能把学到的特征用于新的任务中，以证明他们可以作为一般图像表征的适用性。</p>
+<p>其次，GANs在训练时是不稳定的，经常导致生成器输出没有意义的图片。</p>
+<h2 id="架构设计规则"><a class="markdownIt-Anchor" href="#架构设计规则"></a> 架构设计规则</h2>
+<p>为了GAN能够很好得适应于卷积神经网络架构，DCGAN提出了<strong>四点架构设计规则</strong>：</p>
+<ul>
+<li>使用卷积层替换池化层</li>
+<li>去除全连接层</li>
+<li>使用批归一化</li>
+<li>使用恰当的激活函数</li>
+</ul>
+<h3 id="卷积层替换池化层"><a class="markdownIt-Anchor" href="#卷积层替换池化层"></a> 卷积层替换池化层</h3>
+<p>传统的CNN结构不仅包含卷积层，还包括了池化层。而在DCGAN结构中，采取把传统卷积网络中的池化层全部去除的操作，并使用卷积层来替换。</p>
+<p>在判别器中，我们使用步长卷积（strided convolution）来代替池化层；在生成器中，我们使用分数步长卷积（fractional-strided convolutions）来代替池化层。</p>
+<p>其中步长卷积的图形化解释如下：</p>
+<p><img src="http://ww2.sinaimg.cn/large/8c2b2f6fjw1f99h94gnlbg20az0aldi4.gif" alt="" /></p>
+<p>实际上，卷积层在判别器中进行了空间下采样（spatial downsampling），输入数据为5x5的矩阵，使用了3x3的过滤器，步长为2x2，最终的输出矩阵为3x3。</p>
+<p>假设输入的特征大小为i，卷积核尺寸k，步长s，padding为p，经过卷积后得到的结果为：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>o</mi><mo>=</mo><mfrac><mrow><mi>i</mi><mo>+</mo><mn>2</mn><mi>p</mi><mo>−</mo><mi>k</mi></mrow><mi>s</mi></mfrac><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">o = \frac{i + 2p - k }{s} + 1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">o</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.0574399999999997em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord mathdefault">p</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span></p>
+<p>而分数步长卷积的图形化解释如下：</p>
+<p><img src="http://ww1.sinaimg.cn/large/8c2b2f6fjw1f9aba7bh2ig20az0chwjq.gif" alt="img" /></p>
+<p>这表示的是卷积层在生成器中进行上采样（spatial unsampling），输入为3x3的矩阵，同样使用了3x3的过滤器，反向步长为2x2，故在每个输入矩阵的点之间填充一个0，最终输出为5x5。</p>
+<p>那么使用公式表示如下：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>o</mi><mo mathvariant="normal">′</mo></msup><mo>=</mo><mi>s</mi><mo stretchy="false">(</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mi>k</mi><mo>−</mo><mn>2</mn><mi>p</mi></mrow><annotation encoding="application/x-tex">o&#x27; = s(i-1) + k - 2p
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.801892em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">o</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.801892em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">s</span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">2</span><span class="mord mathdefault">p</span></span></span></span></span></p>
+<p>之所以叫分数步长卷积，是因为反向卷积的步长变成了1/s。因此，我们需要在原始特征中插入数字0，使得内核比单位步幅移动更慢，具体在于在输入每两个元素之间插入s-1个0，如果卷积的步长是2，在反卷积的时候就应在元素之间插入1个0。</p>
+<p>原始的输入特征经过数字0的插入后，输入的尺寸大小变为</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>i</mi><mo mathvariant="normal">′</mo></msup><mo>=</mo><mi>i</mi><mo>+</mo><mo stretchy="false">(</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>s</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">i&#x27; = i + (i - 1)(s - 1)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.801892em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.801892em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></p>
+<p>再对该结果进行卷积，此时的步长应为1，进行空洞卷积后的结果如下：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>o</mi><mo mathvariant="normal">′</mo></msup><mo>=</mo><msup><mi>i</mi><mo mathvariant="normal">′</mo></msup><mo>−</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>p</mi><mo>+</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">o&#x27; = i&#x27; - 1 - 2p + k
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.801892em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">o</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.801892em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8852220000000001em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.801892em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">2</span><span class="mord mathdefault">p</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span></span></p>
+<p>空洞卷积的好处是，在不做pooling损失信息的情况下，加大了感受野，让每个卷积输出都包含较大范围的信息，同时使得参数的个数不变。</p>
+<h3 id="去除全连接层"><a class="markdownIt-Anchor" href="#去除全连接层"></a> 去除全连接层</h3>
+<p>全连接层的缺点在于参数过多，当神经网络层数深了以后运算速度变变得非常慢。此外它也会使得网络变得容易过拟合。论文中提出了一种折中的方案，也就是将生成器的随机输入直接与卷积层特征输入进行连接，同样地对于判别器的输出层也是与卷积层的输出特征连接。</p>
+<h3 id="使用批归一化"><a class="markdownIt-Anchor" href="#使用批归一化"></a> 使用批归一化</h3>
+<p>深度学习的神经网络层数很多，每一层都会使得输出数据的分布发生变化，随着层数的增加网络的整体偏差会越来越大。批归一化（batch normalization）可以解决这一问题，通过对每一层的输入都进行归一化的处理，能够有效使得数据服从某个固定的数据分布。</p>
+<h3 id="激活函数的设计"><a class="markdownIt-Anchor" href="#激活函数的设计"></a> 激活函数的设计</h3>
+<p>在DCGAN中，生成器和判别器使用不同的激活函数。生成器中使用ReLU函数，输出层使用Tanh激活函数。另外，判别器中对所有层均使用LeakyReLU。</p>
+<p>上面这四点，在原文中就是：</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185433669-1435958113.png" alt="" /></p>
+<h2 id="dcgan的框架结构"><a class="markdownIt-Anchor" href="#dcgan的框架结构"></a> DCGAN的框架结构</h2>
+<p>前面提到的，DCGAN的两个网络都是用了卷积层。注意，CNN包含卷积层，其后是归一化层或池化层，之后是激活函数。</p>
+<p>DCGAN中，判别网络接收图像，使用卷积层和池化层对其进行下采样，然后使用全连接分类层将图像分类为真的或假的。生成网络从潜在空间中获取随机噪声向量，然后通过上采样机制进行上采样，最后生成一张图像。隐藏层是用LeakyReLU作为激活函数，并且使用系数介于0.4-0.7的随机失活来避免过拟合。</p>
+<h3 id="生成器架构图"><a class="markdownIt-Anchor" href="#生成器架构图"></a> 生成器架构图</h3>
+<p>如图所示，输入z是100位的随机数据，服从范围在[-1, 1]的均匀分布。经过一系列的空洞卷积之后，形成一张分辨率为64x64x3的图像的过程。</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185453103-2133415157.png" alt="" /></p>
+<h3 id="判别器架构图"><a class="markdownIt-Anchor" href="#判别器架构图"></a> 判别器架构图</h3>
+<p>首先看判别网络的架构:</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185516079-910008385.png" alt="" /></p>
+<p>上图展示了判别网络架构的顶层概况。<br />
+判别网络是包含10层（可以添加更多层）的CNN。简单说来，它接收维度为64×64×3的图像，使用2D卷积层对其进行下采样，然后传递给全连接层进行分类。判别网络输出估测，判断给定图像是真是假。输出值为0或1，输出1表示判别网络接收的图像为真，输出0表示该图像为假。</p>
+<h2 id="训练细节"><a class="markdownIt-Anchor" href="#训练细节"></a> 训练细节</h2>
+<h3 id="参数设置"><a class="markdownIt-Anchor" href="#参数设置"></a> 参数设置</h3>
+<ul>
+<li>训练集：Large-scale Scene Understanding（LSUN）、Imagenet-1k and a newly assembled Faces dataset</li>
+<li>LeakyReLU斜率：0.2</li>
+<li>优化器：Adam —— <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>=</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\beta_1 = 0.5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span></span></span></span></li>
+<li>学习率：0.0001</li>
+<li>初始输入：以0为中心的正态分布，标准差为0.02</li>
+<li>梯度下降：SGD</li>
+</ul>
+<h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
+<p><strong>1. 漫游隐空间</strong></p>
+<p>通过使用插值微调噪音输入z 的方式可以导致隐空间结构发生变化从而引导生成图像发生语义上的平滑过度，比如说从有窗户到没窗户，从有电视到没电视等等。</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185529535-737886146.png" alt="" /></p>
+<p><strong>2. 语义遮罩</strong></p>
+<p>通过标注窗口，并判断激活神经元是否在窗口内的方式来找出影响窗户形成的神经元，将这些神经元的权重设置为0，那么就可以导致生成的图像中没有窗户。从下图可以看到，上面一行图片都是有窗户的，下面一行通过语义遮罩的方式拿掉了窗户，但是空缺的位置依然是平滑连续的，使整幅图像的语义没有发生太大的变化。</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185534236-423705360.png" alt="" /></p>
+<p><strong>3. 矢量算法</strong></p>
+<p>在向量算法中有一个很经典的例子就是【vector(“King”) - vector(“Man”) + vector(“Woman”) = vector(“Queue”)】，作者将该思想引入到图像生成当中并得到了以下实验结果：【smiling woman - neutral woman + neutral man = smiling man】</p>
+<p><img src="https://img2020.cnblogs.com/blog/1813159/202008/1813159-20200815185545536-381592810.png" alt="" /></p>
+<h2 id="代码实现"><a class="markdownIt-Anchor" href="#代码实现"></a> 代码实现</h2>
+<p>（未完成）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8ADCGAN%E3%80%8B/" data-id="clkqxrnps005w1fj4h2q22m9z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8APix2Pix%E3%80%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【论文阅读】《Pix2Pix》
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/28/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91%E3%80%8AcGAN%E3%80%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【论文阅读】《cGAN》</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

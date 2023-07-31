@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="温和安静 爱我所爱">
+<meta property="og:type" content="website">
+<meta property="og:title" content="私人海域">
+<meta property="og:url" content="http://yluy.gitee.io/page/4/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="温和安静 爱我所爱">
+<meta property="og:locale">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="test">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Trapped-Ball-Segmentation陷球分割" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/20/Trapped-Ball-Segmentation%E9%99%B7%E7%90%83%E5%88%86%E5%89%B2/" class="article-date">
+  <time datetime="2021-04-20T13:18:48.000Z" itemprop="datePublished">2021-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/20/Trapped-Ball-Segmentation%E9%99%B7%E7%90%83%E5%88%86%E5%89%B2/">Trapped-Ball-Segmentation陷球分割</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>总结的动力来自于叶老师的灵魂拷问：下次我问你，你能讲出来吗？</p>
+<p>那必须的~~</p>
+<h2 id="trapped-ball-region-segmentation"><a class="markdownIt-Anchor" href="#trapped-ball-region-segmentation"></a> Trapped-Ball Region Segmentation</h2>
+<p>陷球分割技术的提出：《Vectorizing Cartoon Animations》</p>
+<p>之前看到的两篇上色论文都提到了这个技术，把图像分割成了不同颜色的色块，方便解决上色过程中的颜色溢出问题。但是都没有详细介绍过处理的过程，所以我理论梳理一下。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpqg1d8igtj31hw0t4gww.jpg" alt="" /></p>
+<p>整体来说，它是借助一个半径为R的球形形态结构元件对图片进行处理，且半径不断修改，处理也越来越细致。</p>
+<h3 id="floodfill"><a class="markdownIt-Anchor" href="#floodfill"></a> FloodFill</h3>
+<p>首先对原图进行洪水填充法上色：由某个像素点开始向四周扩散，以该点的像素值作为参考，设定像素值的上下限，在像素范围内的像素点将被纳入集合中，最终确定待上色的点集合，并对它们的颜色统一更新。</p>
+<p>比如说，我的起始点在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x, y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>，其像素值是68，而我设置的上下限分别为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>+</mo><mn>22</mn><mo separator="true">,</mo><mo>−</mo><mn>28</mn></mrow><annotation encoding="application/x-tex">+22, -28</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">+</span><span class="mord">2</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">−</span><span class="mord">2</span><span class="mord">8</span></span></span></span>，所以颜色区间为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">[</mo><mn>40</mn><mo separator="true">,</mo><mn>90</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[40,90]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">4</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">9</span><span class="mord">0</span><span class="mclose">]</span></span></span></span>。确定区间后就可以进行颜色填充了，从起始点开始，把四周像素值在区间内的颜色都修改成目标颜色。</p>
+<p>有个前提，填充之前会有一个mask，也就是像线稿这样的黑白掩膜。上色时不能跨线条边界的。</p>
+<p>引入一个opencv的FloodFill函数，以像素高低值判断填充区域：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">img = cv2.imread(<span class="string">&#x27;cat.jpg&#x27;</span>)</span><br><span class="line">cv2.imshow(<span class="string">&#x27;img&#x27;</span>,img)</span><br><span class="line">mask = np.zeros([img.shape[<span class="number">0</span>]+<span class="number">2</span>,img.shape[<span class="number">1</span>]+<span class="number">2</span>],np.uint8) <span class="comment">#+2是使用要求</span></span><br><span class="line"><span class="comment">#floodfill的参数：1.操作图像 2.掩膜 3.起始像素点 4.填充颜色 5.填充颜色的低值 6.填充颜色的高值 7.填充方法</span></span><br><span class="line">cv2.floodFill(img,mask,(<span class="number">30</span>,<span class="number">30</span>),(<span class="number">255</span>,<span class="number">100</span>,<span class="number">100</span>),(<span class="number">20</span>,<span class="number">20</span>,<span class="number">20</span>),(<span class="number">50</span>,<span class="number">50</span>,<span class="number">50</span>),cv2.FLOODFILL_FIXED_RANGE)</span><br><span class="line">cv2.imshow(<span class="string">&#x27;newimg&#x27;</span>,img)</span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20210206135831532.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3JlbWFrZXByb2dyYW1lcg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" /></p>
+<h3 id="trapped-ball-filling"><a class="markdownIt-Anchor" href="#trapped-ball-filling"></a> Trapped-ball filling</h3>
+<p>当确定一个大致的区域之后，我们就希望尽可能准确细致地进行图像分割。因为有时候掩膜的线条有缺漏，结果导致上色上多了。比如对a进行洪水填充，因为线条是断断续续的，所以导致四个块都成了蓝色，但实际上，我们更希望分成4个颜色不同的块。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpqha692o3j31qa0b417k.jpg" alt="" /></p>
+<p>因此进行洪水填充后，对c这张去掉mask后的结果图进行形态学处理。使用半径为R的球形形态结构元件进行图像处理中的侵蚀操作，保留下了一个面积尽可能大的三角块d，接着再进行膨胀操作，扩大填充面积得到图e，这就是第一次trapped-ball filling的结果。</p>
+<p>总结一下，这个方法可以把该区域内的像素值都设置为另一个新值，并通过特定规则来实现区域内点中连通区域，进而对相似区域进行填充，直到找到区域内所有像素或边界轮廓为止。没有被更新的区域，是因为它表现出了不同的特征。</p>
+<h3 id="repeat"><a class="markdownIt-Anchor" href="#repeat"></a> Repeat</h3>
+<p>重复FloodFill和Trapped-ball filling的过程，就能对整张图处理，最后得到多种颜色的粗略分割图。</p>
+<p>被修改过颜色的区域，可以设置为visited，下一次处理从未访问过的像素点开始进行填充。</p>
+<h3 id="dilation"><a class="markdownIt-Anchor" href="#dilation"></a> dilation</h3>
+<p>关于上面提到的dilation操作，我们首先要确定小球半径的大小。理论上，半径越小，覆盖的区域就越精确。但是实际上，如果碰到上图这样线段有缺漏的图，就会导致颜色泄漏。而如果一开始确定的半径太大，又会造成训练次数的增加。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpqiavanrdj30y00h2gp2.jpg" alt="" /></p>
+<p>所以，可以选择设置一个下限半径，进行一个小球半径逐渐递减的dilation操作。</p>
+<h3 id="color"><a class="markdownIt-Anchor" href="#color"></a> color</h3>
+<p>在整个filling的过程中，目标颜色是程序给的，也就是借助某个函数得到的。</p>
+<p>挂一篇上色论文的处理过程图</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpqibra21cj31u00rge82.jpg" alt="" /></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/04/20/Trapped-Ball-Segmentation%E9%99%B7%E7%90%83%E5%88%86%E5%89%B2/" data-id="clkqxrnor001w1fj4438hdfxu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Attention机制在图像处理中的应用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/16/Attention%E6%9C%BA%E5%88%B6%E5%9C%A8%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" class="article-date">
+  <time datetime="2021-04-16T02:23:09.000Z" itemprop="datePublished">2021-04-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/16/Attention%E6%9C%BA%E5%88%B6%E5%9C%A8%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">Attention机制在图像处理中的应用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上次组会在介绍论文的时候提到里面用了Attention机制，然后叶老师让我搞明白它咋用的，现在赶紧填坑了。</p>
+<p>主要参考了好几篇博客，对它大致有个了解。</p>
+<p>注意力机制本质上与人类对外界事物的观察机制相似。通常来说，人们在观察外界事物的时候，首先会比较关注比较倾向于观察事物某些重要的局部信息，然后再把不同区域的信息组合起来，从而形成一个对被观察事物的整体印象。</p>
+<p>Attention Mechanism可以帮助模型对输入的X每个部分赋予不同的权重，抽取出更加关键及重要的信息，使模型做出更加准确的判断，同时不会对模型的计算和存储带来更大的开销，这也是Attention Mechanism应用如此广泛的原因。</p>
+<p>总的来说，注意力机制可分为两种：一种是软注意力(soft attention)，另一种则是强注意力(hard attention)。</p>
+<p>软注意力(soft attention)与强注意力(hard attention)的不同之处在于：</p>
+<ul>
+<li>软注意力更关注区域或者通道，而且软注意力是确定性的注意力，学习完成后直接可以通过网络生成，最关键的地方是软注意力是可微的，这是一个非常重要的地方。可以微分的注意力就可以通过神经网络算出梯度并且前向传播和后向反馈来学习得到注意力的权重。 在计算机视觉中，很多领域的相关工作(例如，分类、检测、分割、生成模型、视频处理等)都在使用Soft Attention，典型代表：SENet、SKNet。</li>
+<li>强注意力是更加关注点，也就是图像中的每个点都有可能延伸出注意力，同时强注意力是一个随机的预测过程，更强调动态变化。当然，最关键是强注意力是一个不可微的注意力，训练过程往往是通过增强学习(reinforcement learning) 来完成的。</li>
+</ul>
+<h2 id="cv中的attention机制"><a class="markdownIt-Anchor" href="#cv中的attention机制"></a> CV中的Attention机制</h2>
+<p>计算机视觉中的注意力机制的基本思想是让模型学会专注，把注意力集中在重要的信息上而忽视不重要的信息。<strong>Attention机制的本质就是利用相关特征图学习权重分布，再用学出来的权重施加在原特征图之上最后进行加权求和</strong>。</p>
+<p>结合两篇论文的子网络结构，正好可以介绍下面这两种施加权重的方式：</p>
+<ul>
+<li>加权可以作用在空间尺度上，给不同空间区域加权；</li>
+<li>加权可以作用在Channel尺度上，给不同通道特征加权；</li>
+</ul>
+<p>这俩模型结构可称作空间域(spatial domain)，通道域(channel domain)。</p>
+<ol>
+<li>空间域——将图片中的的空间域信息做对应的空间变换，从而能将关键的信息提取出来。对空间进行掩码的生成，进行打分，代表是Spatial Attention Module。</li>
+<li>通道域——类似于给每个通道上的信号都增加一个权重，来代表该通道与关键信息的相关度的话，这个权重越大，则表示相关度越高。对通道生成掩码mask，进行打分，代表是senet, Channel Attention Module。</li>
+</ol>
+<p>在卷积神经网络中常用到的主要是spatial attention与channel attention。</p>
+<h3 id="spatial-attention"><a class="markdownIt-Anchor" href="#spatial-attention"></a> <strong>Spatial Attention</strong></h3>
+<p>对于卷积神经网络，CNN每一层都会输出一个C x H x W的特征图，C就是通道，同时也代表卷积核的数量，亦为特征的数量，H 和W就是原始图片经过压缩后的图的高度和宽度，</p>
+<p>Spatial Attention就是对于所有的通道而言，在二维平面上，对H x W尺寸的特征图学习到一个权重，<strong>对每个像素都会学习到一个权重</strong>。你可以想象成一个像素是C维的一个向量，深度是C，在C个维度上，权重都是一样的，但是在平面上，权重不一样。</p>
+<p>和NLP中的Attention类似，可以将g(x)看作是Q，f(x)看成是K，两者做点乘后进行softmax操作得到的attention map，深色块表示在此像素处需要消耗更多的注意力，浅色块则相反。h(x)可以当成value，则最后令h(x)与map点积，最后可以得到带注意力的特征图。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gplc2d4c3wj31g20jmdp7.jpg" alt="" /></p>
+<h3 id="channel-attention"><a class="markdownIt-Anchor" href="#channel-attention"></a> Channel Attention</h3>
+<p>对于每个C（通道），在channel维度上，学习到不同的权重，平面维度上权重相同。所以基于通道域的注意力通常是对一个通道内的信息直接全局平均池化，而忽略每一个通道内的局部信息。</p>
+<p>spatial 和 channel attention可以理解为关注图片的不同区域和关注图片的不同特征。通道注意力在图像分类中的网络结构方面，典型的就是SENet。</p>
+<p>在《Tag2pix》中，作者提出的SECat就是基于这个网络结构的基础上修改的。</p>
+<p>我先放Tag2pix的图：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpld8uj733j30ui0gc42i.jpg" alt="" /></p>
+<p>然后下面这张是SENet原图：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpld7t69fwj30hs09zmxz.jpg" alt="" /></p>
+<p>下面是SE模块的具体介绍：</p>
+<ul>
+<li>**Sequeeze：**顺着空间维度来进行特征压缩，将每个二维的特征通道变成一个实数，这个实数某种程度上具有全局的感受野，并且输出的维度和输入的特征通道数相匹配。它表征着在特征通道上响应的全局分布，而且使得靠近输入的层也可以获得全局的感受野。具体操作就是对原特征图C * W * H 进行global average pooling，然后得到了一个 1 * 1 * C 大小的特征图，这个特征图具有全局感受野。</li>
+<li><strong>Excitation</strong> ：输出的1x1xC特征图，再经过两个全连接神经网络，最后用一个类似于循环神经网络中门的机制。通过参数来为每个特征通道生成权重，其中参数被学习用来显式地建模特征通道间的相关性（论文中使用的是sigmoid）。</li>
+<li><strong>特征重标定</strong>：使用Excitation 得到的结果作为权重，然后通过乘法逐通道加权到U的C个通道上，完成在通道维度上对原始特征的重标定，并作为下一级的输入数据。</li>
+</ul>
+<p><strong>这种结构的原理是想通过控制scale的大小，把重要的特征增强，不重要的特征减弱，从而让提取的特征指向性更强。</strong></p>
+<p>SENet 通俗的说就是：通过对卷积之后得到的feature map进行处理，得到一个和通道数一样的一维向量作为每个通道的评价分数，然后将改动之后的分数通过乘法逐通道加权到原来对应的通道上，最后得到输出结果，就相当于在原有的基础上只添加了一个模块而已。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gpldajotw4j30hs09q753.jpg" alt="" /></p>
+<p>上左图是将SE模块嵌入到Inception结构的一个示例。方框旁边的维度信息代表该层的输出。这里我们使用global average pooling作为Squeeze操作。紧接着两个Fully Connected 层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。我们首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected 层升回到原来的维度。</p>
+<p>这样做比直接用一个Fully Connected层的好处在于：</p>
+<ol>
+<li>具有更多的非线性，可以更好地拟合通道间复杂的相关性；</li>
+<li>极大地减少了参数量和计算量。然后通过一个Sigmoid的门获得0-1 之间归一化的权重，最后通过一个Scale的操作来将归一化后的权重加权到每个通道的特征上。</li>
+</ol>
+<p>除此之外，SE模块还可以嵌入到含有skip-connections的模块中。</p>
+<p>上右图是将SE嵌入到 ResNet模块中的一个例子，操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。</p>
+<p>SECat其实和右边的是非常相似的！</p>
+<h2 id="nlp中的attention机制"><a class="markdownIt-Anchor" href="#nlp中的attention机制"></a> NLP中的Attention机制</h2>
+<h3 id="attention入门级解读"><a class="markdownIt-Anchor" href="#attention入门级解读"></a> attention入门级解读</h3>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Enjoy_endless/article/details/88679989">https://blog.csdn.net/Enjoy_endless/article/details/88679989</a></p>
+<h3 id="self-attention"><a class="markdownIt-Anchor" href="#self-attention"></a> self-attention</h3>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/89670164">https://zhuanlan.zhihu.com/p/89670164</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/04/16/Attention%E6%9C%BA%E5%88%B6%E5%9C%A8%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" data-id="clkqxrno400031fj4dleg3c5m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ICIP2019《Mangan》基于cGan的半自动上色框架" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/28/ICIP2019%E3%80%8AMangan%E3%80%8B%E5%9F%BA%E4%BA%8EcGan%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E4%B8%8A%E8%89%B2%E6%A1%86%E6%9E%B6/" class="article-date">
+  <time datetime="2021-01-28T06:54:51.000Z" itemprop="datePublished">2021-01-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/28/ICIP2019%E3%80%8AMangan%E3%80%8B%E5%9F%BA%E4%BA%8EcGan%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E4%B8%8A%E8%89%B2%E6%A1%86%E6%9E%B6/">ICIP2019《Mangan》基于cGan的半自动上色框架</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本信息"><a class="markdownIt-Anchor" href="#基本信息"></a> 基本信息</h2>
+<p><strong>论文标题</strong>：《Mangan：Assisting Colorization Of Manga Characters Concept Art Using Conditional GAN 》 —— 使用条件GAN辅助漫画人物概念艺术的着色</p>
+<p><strong>论文链接</strong>：<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8803667&amp;casa_token=1HtzmvCWXucAAAAA:MEdu83aRd8aNcUcA4OkLGmkeK66c_hl4z-Qkh1zoHgGJzxongNZAEsy1uwD-kjMpbJC2JwKVgnv0">https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8803667&amp;casa_token=1HtzmvCWXucAAAAA:MEdu83aRd8aNcUcA4OkLGmkeK66c_hl4z-Qkh1zoHgGJzxongNZAEsy1uwD-kjMpbJC2JwKVgnv0</a></p>
+<p><strong>关键词</strong>： colorization（上色），DeepLearning，Gans</p>
+<p><strong>发表会议</strong>：2019 ICIP</p>
+<p><strong>主要贡献</strong>：实现了基于cGAN的半自动漫画着色框架。</p>
+<p><strong>创新点</strong>：</p>
+<ul>
+<li>采用半自动颜色提示的方法，以cGAN为主要网络结构，搭建了着色框架</li>
+</ul>
+<p>（论文实在是太短了…</p>
+<h2 id="实验过程"><a class="markdownIt-Anchor" href="#实验过程"></a> 实验过程</h2>
+<h3 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h3>
+<p><strong>1. 原始图片</strong></p>
+<p>safebooru收集动漫人物图片，最后留下13000照片（这么来看，感觉5000-10000张训练集是比较合适的！</p>
+<p><strong>2. 线稿提取</strong></p>
+<p>先将彩色图像转换为灰度图，然后应用自适应阈值，进行图像分割，得到最后的线稿图片。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn3ej8kbqcj30e70e6q9o.jpg" alt="" /></p>
+<p>⚠️ <strong>这篇论文有代码，可以翻出来看看这个提取对风景图有没有效果。</strong></p>
+<p>如果拿skech-simplification对线稿进行优化，质量会更高，不过参数需要好好确认一下。上一排的笔触会粗一点，看上去虽然没那么精细，但是留了很多想象空间，在上色过程中可能加个阴影啥的。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn3ejlmg8pj30ul0u0x69.jpg" alt="" /></p>
+<p><strong>3. 颜色提示</strong></p>
+<p>用白色的色块替换图像中的随机区域，当作是无效提示。然后，在颜色提示中应用了中值模糊，使得颜色细节淡出，它不能用于发现小而复杂区域的确切颜色。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn3elm1e5oj30e30dsqae.jpg" alt="" /></p>
+<p>如果做完全的用户提示，这个半自动实在好尴尬，还是随机像素点或者笔划提示比较好看。</p>
+<h3 id="网络结构"><a class="markdownIt-Anchor" href="#网络结构"></a> 网络结构</h3>
+<p>简洁的爆炸…</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn3eofbua9j30xu0cktdz.jpg" alt="" /></p>
+<h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn3epp3e7cj30sp0jz4qp.jpg" alt="" /></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/28/ICIP2019%E3%80%8AMangan%E3%80%8B%E5%9F%BA%E4%BA%8EcGan%E7%9A%84%E5%8D%8A%E8%87%AA%E5%8A%A8%E4%B8%8A%E8%89%B2%E6%A1%86%E6%9E%B6/" data-id="clkqxrnoi000x1fj4grmcfc1b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ResNeXt网络" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/27/ResNeXt%E7%BD%91%E7%BB%9C/" class="article-date">
+  <time datetime="2021-01-27T10:25:33.000Z" itemprop="datePublished">2021-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/27/ResNeXt%E7%BD%91%E7%BB%9C/">ResNeXt网络</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="卷积的范式"><a class="markdownIt-Anchor" href="#卷积的范式"></a> 卷积的范式</h2>
+<p>作者一上来先归纳了Inception的模式：<strong>split-transform-merge</strong>。</p>
+<p>如下图所示，先将输入分配到多路，然后每一路进行转换，最后再把所有支路的结果融合。</p>
+<p><img src="https://pic1.zhimg.com/v2-5674bf29d779e66ed2db070c27b87a64_b.jpg" alt="" /></p>
+<p>少不了要提一下Inception的缺点，太复杂了，人工设计的痕迹太重了。</p>
+<p>然后，站得更高，分析了神经网络的标准范式就符合这样的split-transform-merge模式。以一个最简单的普通神经元为例（比如FC中的每个神经元）：</p>
+<p><img src="https://pic4.zhimg.com/v2-82ce8ecf3c5973023c4aceadfa3ff1ef_b.jpg" alt="" /></p>
+<p>就是先对输入的m个元素，分配到m个分支，进行权重加权，然后merge求和，最后经过一个激活。</p>
+<p>由此归纳出神经网络的一个通用的单元可以用如下公式表示：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>C</mi></munderover><msub><mi>T</mi><mi>i</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">F(x) = \sum ^ C _ {i=1} T_i(x)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.106005em;vertical-align:-1.277669em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07153em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span></span></p>
+<p>结合ResNet的identity映射，带residual的结构可以用如下公式表示：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mi>x</mi><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>C</mi></munderover><msub><mi>T</mi><mi>i</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y = x+  \sum ^ C _ {i=1} T_i(x)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:3.106005em;vertical-align:-1.277669em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07153em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span></span></p>
+<p>上面的变换T可以是任意形式，一共有C个独立的变换，作者将C称之为基数，并且指出，基数C对于结果的影响比宽度和深度更加重要。</p>
+<h2 id="基本结构"><a class="markdownIt-Anchor" href="#基本结构"></a> 基本结构</h2>
+<p>结合强大的残差网络，我们得到的便是完整的ResNeXt，也就是在简化Inception中添加一条short-cut。如下图，左边是ResNet的基本结构，右边是ResNeXt的基本结构：</p>
+<p><img src="https://pic2.zhimg.com/v2-ee942d228efdaaff277c8a9a8b96a131_b.jpg" alt="" /></p>
+<p>回忆下上面的公式，可以看到，旁边的residual connection就是公式中的x直接连过来，然后剩下的是32组独立的同样结构的变换，最后再进行融合，符合split-transform-merge的模式。</p>
+<p>作者进一步指出，split-transform-merge是通用的神经网络的标准范式，前面已经提到，基本的神经元符合这个范式，而如下图所示：</p>
+<p><img src="https://pic2.zhimg.com/v2-324282edcbfbd476fbe406c5fddb8dfd_b.jpg" alt="" /></p>
+<p>a是ResNeXt基本单元，如果把输出那里的1x1合并到一起，得到等价网络b拥有和Inception-ResNet相似的结构，而进一步把输入的1x1也合并到一起，得到等价网络c则和通道分组卷积的网络有相似的结构。</p>
+<p>总的说，我们发现ResNeXt和Inception v4（图b）是非常像的。不同之处有两点：</p>
+<ol>
+<li>ResNeXt的分支的拓扑结构是相同的，Inception V4需要人工设计；</li>
+<li>ResNeXt是先进行 <img src="https://www.zhihu.com/equation?tex=1%5Ctimes1" alt="[公式]" /> 卷积然后执行单位加，Inception V4是先拼接再执行 <img src="https://www.zhihu.com/equation?tex=1%5Ctimes1" alt="[公式]" /> 卷积</li>
+</ol>
+<p>到这里，可以看到本文的野心很大，相当于在说，Inception-ResNet和通道分组卷积网络，都只是ResNeXt这一范式的特殊形式而已，进一步说明了split-transform-merge的普遍性和有效性，以及抽象程度更高，更本质一点。</p>
+<h2 id="resnext"><a class="markdownIt-Anchor" href="#resnext"></a> ResNeXt</h2>
+<p>然后是ResNeXt具体的网络结构。</p>
+<p>类似ResNet，作者选择了很简单的基本结构，每一组C个不同的分支都进行相同的简单变换，下面是ResNeXt-50（32x4d）的配置清单，32指进入网络的第一个ResNeXt基本结构的分组数量C（即基数）为32，4d表示depth即每一个分组的通道数为4（所以第一个基本结构输入通道数为128）：</p>
+<p><img src="https://pic2.zhimg.com/v2-623f58e8e2e93bbd19e4f33f5f71423d_b.jpg" alt="" /></p>
+<p>可以看到ResNet-50和ResNeXt-50（32x4d）拥有相同的参数，但是精度却更高。</p>
+<p>具体实现上，因为1x1卷积可以合并，就合并了，代码更简单，并且效率更高。</p>
+<p>参数量不变，但是效果太好，这个时候通常会有一个『但是』。。。但是，因为分组了，多个分支单独进行处理，所以相交于原来整个一起卷积，硬件执行效率上会低一点，训练ResNeXt-101（32x4d）每个mini-batch要0.95s，而ResNet-101只要0.70s，虽然本质上计算量是相同的，通过底层的优化因为能缩小这个差距。好消息是，看了下最近的cuDNN7的<a href="https://link.zhihu.com/?target=https%3A//developer.nvidia.com/cudnn">更新说明</a>：</p>
+<blockquote>
+<p>Grouped Convolutions for models such as ResNeXt and Xception and CTC (Connectionist Temporal Classification) loss layer for temporal classification</p>
+</blockquote>
+<p>貌似已经针对分组卷积进行了优化，我还没进行过测试，不过我猜效率应该提升了不少。</p>
+<p>至于具体的效果，ResNeXt-101（32x4d）大小和Inception v4相当，效果略差，但Inception-v4慢啊= =，ResNeXt-101（64x4d）比Inception-Resnet v2要大一点，精度相当或略低。</p>
+<p>上面的比较并不算很严谨，和训练方式、实现方式等有很大的关系，实际使用中区别不大，还没有找到一个很全的benchmark可以准确比较。不过<a href="https://link.zhihu.com/?target=https%3A//github.com/Cadene/pretrained-models.pytorch">这里</a>的结果可以作为一个参考。</p>
+<p>得益于精心设计的复杂的网络结构，ResNet-Inception v2可能效果会更好一点，但是ResNeXt的网络结构更简单，可以防止对于特定数据集的过拟合。而且更简单的网络意味着在用于自己的任务的时候，自定义和修改起来更简单。</p>
+<p>最后，提一个八卦，ResNet作者的论文被Inception v4那篇argue说residual connection可以提升训练收敛速度，但是对于精度没有太大帮助，然后这篇ResNeXt马上又怼回去了，说没有要降好几个点，对于网络的优化是有帮助的。。。</p>
+<p>总结下：split-transform-merge模式是作者归纳的一个很通用的抽象程度很高的标准范式，然后ResNeXt就这这一范式的一个简单标准实现，简洁高效啊。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/27/ResNeXt%E7%BD%91%E7%BB%9C/" data-id="clkqxrnoq001s1fj4d3fh2msm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-掌握卷积神经网络（CNN）的细碎知识点" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/27/%E6%8E%8C%E6%8F%A1%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89%E7%9A%84%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/" class="article-date">
+  <time datetime="2021-01-27T10:19:41.000Z" itemprop="datePublished">2021-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/27/%E6%8E%8C%E6%8F%A1%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89%E7%9A%84%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/">掌握卷积神经网络（CNN）的细碎知识点</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最开始计算卷积的过程中，需要进行翻转卷积核的操作。</p>
+<p>引入的互相关，用滑动窗口的点积计算来实现，可以省去翻转的步骤，这是因为使用点积运算是为了进行特征提取，而卷积核是否翻转与其特征抽取的能力并无关系。</p>
+<h2 id="cnn特点"><a class="markdownIt-Anchor" href="#cnn特点"></a> CNN特点</h2>
+<p>CNN的特点可以概括为：局部连接、权重共享。</p>
+<p><strong>1. 局部连接</strong></p>
+<p>如果使用全连接，参数个数为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>M</mi><mi>l</mi></msub><mo>∗</mo><msub><mi>x</mi><mrow><mi>l</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">M_l * x_{l-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>，如果变成局部连接，参数个数为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>M</mi><mi>l</mi></msub><mo>∗</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">M_l * K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span></span></span></span>，其中K为卷积核的大小。可以有效减少参数的个数。</p>
+<p><strong>2. 权重共享</strong></p>
+<p>作为卷积核<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>w</mi><mi>l</mi></msup></mrow><annotation encoding="application/x-tex">w^l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span></span></span></span></span></span></span>对第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span>层的所有神经元相同，可以理解为一个卷积核只捕捉输入数据的一种特定局部特征。因此，如果需要对多特征进行提取，则需要多个卷积核。</p>
+<p>因此，在第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span>层中，需要参数的个数为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>K</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>，参数个数与神经元的数量是无关的。</p>
+<h2 id="3d卷积核"><a class="markdownIt-Anchor" href="#3d卷积核"></a> 3D卷积核</h2>
+<p>卷积核厚度等于1时为2D卷积，对应平面点相乘然后把结果加起来，相当于点积运算；</p>
+<p>卷积核厚度大于1时为3D卷积，每片分别平面点求卷积，然后把每片结果加起来，作为3D卷积结果；</p>
+<p>1x1卷积属于3D卷积的一个特例，有厚度无面积, 直接把每片单个点乘以权重再相加。</p>
+<p>归纳之，<strong>卷积的意思就是把一个区域，不管是一维线段，二维方阵，还是三维长方块，全部按照卷积核的维度形状，对应逐点相乘再求和，浓缩成一个标量值也就是降到零维度，作为下一层的一个feature map的一个点的值</strong>！</p>
+<p>可以比喻一群渔夫坐一个渔船撒网打鱼，鱼塘是多层水域，每层鱼儿不同。<br />
+船每次移位一个stride到一个地方，每个渔夫撒一网，得到收获，然后换一个距离stride再撒，如此重复直到遍历鱼塘。</p>
+<p>A渔夫盯着鱼的品种，遍历鱼塘后该渔夫描绘了鱼塘的鱼品种分布；</p>
+<p>B渔夫盯着鱼的重量，遍历鱼塘后该渔夫描绘了鱼塘的鱼重量分布；</p>
+<p>还有N-2个渔夫，各自兴趣各干各的；</p>
+<p>最后得到N个特征图，描述了鱼塘的一切！</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn2avli4kuj30k00f70ux.jpg" alt="" /></p>
+<p>由上图可知，输入层和滤波器有着相同的深度，即输入层的通道数量与滤波器中卷积核数量相同。在每个滑动位置，执行乘法和加法运算得到一个运算结果（单个数字），因此最后得到的输出层仅含一个输出通道。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-ea9d19241afe764f3be98b0e2522516c_720w.jpg?source=1940ef5c" alt="img" /></p>
+<p>进一步地，我们就能非常轻易地理解如何在不同深度的层（Layer）进行转换。假设输入层有<img src="https://www.zhihu.com/equation?tex=X_%7Bin%7D" alt="[公式]" />个通道，而输出层需要得到<img src="https://www.zhihu.com/equation?tex=D_%7Bout%7D" alt="[公式]" />个通道。只需要将<img src="https://www.zhihu.com/equation?tex=D_%7Bout%7D" alt="[公式]" />个过滤器对输入层进行处理，而每一个过滤器有<img src="https://www.zhihu.com/equation?tex=D_%7Bin%7D" alt="[公式]" />个卷积核。每个过滤器提供一个输出通道。完成该过程，将得到<img src="https://www.zhihu.com/equation?tex=D_%7Bout%7D" alt="[公式]" />个通道组成输出层。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/27/%E6%8E%8C%E6%8F%A1%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89%E7%9A%84%E7%BB%86%E7%A2%8E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="clkqxrnql009n1fj404phejcv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CVMP2019《PaintsTorch》含用户指导的线稿着色工具" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/26/CVMP2019%E3%80%8APaintsTorch%E3%80%8B%E5%90%AB%E7%94%A8%E6%88%B7%E6%8C%87%E5%AF%BC%E7%9A%84%E7%BA%BF%E7%A8%BF%E7%9D%80%E8%89%B2%E5%B7%A5%E5%85%B7/" class="article-date">
+  <time datetime="2021-01-26T08:48:40.000Z" itemprop="datePublished">2021-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/CVMP2019%E3%80%8APaintsTorch%E3%80%8B%E5%90%AB%E7%94%A8%E6%88%B7%E6%8C%87%E5%AF%BC%E7%9A%84%E7%BA%BF%E7%A8%BF%E7%9D%80%E8%89%B2%E5%B7%A5%E5%85%B7/">CVMP2019《PaintsTorch》含用户指导的线稿着色工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本信息"><a class="markdownIt-Anchor" href="#基本信息"></a> 基本信息</h2>
+<p><strong>论文标题</strong>：《PaintsTorch: a User-Guided Anime Line Art Colorization Tool with Double Generator Conditional Adversarial Network》 —— 基于用户指导的，且具有双生成器的条件对抗网络的动漫艺术线条着色工具</p>
+<p><strong>论文链接</strong>：<a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3359998.3369401">https://dl.acm.org/doi/10.1145/3359998.3369401</a></p>
+<p><strong>关键词</strong>：深度学习（Deep Learning）、神经网络（Neural Networks）、生成对抗网络（Generative Adversarial Network）、用户指导的上色（User-guided Colorization）</p>
+<p><strong>发表会议</strong>：2019 CVMP</p>
+<p><strong>主要贡献</strong>：开发了一个类似于PaintsChainer的上色工具，用户可以提供类似于笔刷的颜色提示。</p>
+<p><strong>创新点</strong>：</p>
+<ul>
+<li>引入了一种基于笔触仿真的方法来生成提示，也就是颜色提示从随机像素采样修改成了笔划的形式</li>
+<li>提出了一个新的更清洁的数据集</li>
+<li>使用包含了双重生成器的GAN网络来提高视觉效果</li>
+</ul>
+<h2 id="实验过程"><a class="markdownIt-Anchor" href="#实验过程"></a> 实验过程</h2>
+<h3 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h3>
+<p>作者提到了两个比较出名的动漫人物数据集：</p>
+<ul>
+<li>
+<p><strong>Nico-opendata</strong>：<a target="_blank" rel="noopener" href="https://nico-opendata.jp/en/seigadata/index.html%EF%BC%8C">https://nico-opendata.jp/en/seigadata/index.html，</a> 包含了400k 张图像</p>
+</li>
+<li>
+<p><strong>Danbooru2018</strong>：<a target="_blank" rel="noopener" href="https://hyper.ai/datasets/9000">https://hyper.ai/datasets/9000</a></p>
+<p>Danbooru2018 数据集是由 Kaggle 平台发布，包括日本动漫人物的图像与相对应的标签信息。标签通常分为版权、角色、作者等信息。该数据集由动漫爱好者收集，十分具有针对性，弥补了类似于 ImageNet 等大型数据集对于图像粗略描述分类而导致的应用限制问题。</p>
+</li>
+</ul>
+<p>但是他还是嫌弃数据集的质量不够高，对《User-Guided Deep Anime Line Art Colorization with Conditional Adversarial Networks》这篇论文所使用的数据集进行了一定的过滤和添加，最后确定了适用于训练的数据集，其包含了21930张的高质量动漫插图。</p>
+<h3 id="预处理"><a class="markdownIt-Anchor" href="#预处理"></a> 预处理</h3>
+<p><strong>1. 生成线稿图</strong></p>
+<p>线稿是从原图中生成的，提取方法XDoG（场景画用XDoG不太合适，这玩意好像主要针对动漫人物</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn148dobmdj30kj0ba46u.jpg" alt="" /></p>
+<p><strong>2. 颜色提示生成</strong></p>
+<p>使用带有圆形笔刷的PIL图形库模拟人的画笔，并且定义了四个参数：笔划数0-120、笔刷厚度1-4、每一笔的长度1-5、宽度0-10。</p>
+<p>（这每一笔长度原翻译是the number of waypoints per stroke，宽度是a square of width）</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn14dh9l4mj30ov0ba7gs.jpg" alt="" /></p>
+<p><strong>3. 模型输入变形</strong></p>
+<p>假设此时给定一张动漫图，需要将它的尺寸放大/缩小并裁剪至<code>512*512*3</code>的尺寸，接着分出两个分支。其中一个分支将图片作为XDoG的输入，进而得到对应的线稿图。另一个分支则继续将照片调整为<code>128*128*3</code>的尺寸，生成模拟提示（Strokes），结合黑白mask才成为最后的用户提示<code>128*128*4</code>。</p>
+<p>（其实我觉得不应该是4呀，把遮罩的channel广播成三通道，然后和strokes相乘，这样不是就可以保证颜色的提取了么？？）</p>
+<p>比如右边的用户提示，它的背景是黑色的，这就是遮罩的作用。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn14fbgxlxj312q0a676q.jpg" alt="" /></p>
+<h3 id="模型结构"><a class="markdownIt-Anchor" href="#模型结构"></a> 模型结构</h3>
+<p>生成网络使用的是U-net结构，不过内部由ResNetXt块组成，这些块可以增加网络的感受野。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn14uwlicjj317q0gmjta.jpg" alt="" /></p>
+<p>引入了本地特征网络F1，其作用是使用Illustration2Vec网络来标记插图，这些标签与提示图像一起通过生成器和鉴别器传递，并作为条件，把相关的语义信息提供给生成器。</p>
+<p>判别器收到SRGAN的启发，不过相同的块结构更多，层数也更多。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn15dgte5sj317i0u0k7p.jpg" alt="" /></p>
+<p>显然，在论文中还有两个网络结构，一个是F2，另一个是G2。</p>
+<p>第二个生成器负责从第一个生成的假插图中生成合成线条图，F2应该是ImageNet [5]上预训练的VGG16 [26]的第四次卷积激活结果。</p>
+<h3 id="损失函数"><a class="markdownIt-Anchor" href="#损失函数"></a> 损失函数</h3>
+<p><strong>生成器的损失函数</strong>由三个部分组成：内容部分，对抗部分，重建部分。</p>
+<p><strong>1. 内容部分</strong></p>
+<p>感知损失用于内容损失，这取决于输出图像与原始图像之间的L2值，该值来自ImageNet [5]上预训练的VGG16 [26]的第四次卷积激活得到的结果。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn15il5obdj30um02yglw.jpg" alt="" /></p>
+<p><strong>2. 对抗损失</strong></p>
+<p>使用了局部条件网络F1作为条件输入，并且使用WGAN-GP区分了虚假实例和真实实例</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn15pe3qffj31b4048wf6.jpg" alt="" /></p>
+<p><strong>3. 重建损失</strong></p>
+<p>对线稿图进行重建，由于输出不包含多通道信息，因此使用均方误差计算差值。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn15qr2nwjj31bs042mxp.jpg" alt="" /></p>
+<p>综合来看就是：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn15sp8bakj30zm06gdgg.jpg" alt="" /></p>
+<p><strong>鉴别器损失函数</strong>由两部分组成：Wasserstein Loss &amp; Penalty Loss.</p>
+<p><strong>1. Wasserstein loss</strong>：详细查看WGAN</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn15upix40j30x0042dgf.jpg" alt="" /></p>
+<p><strong>2. Penalty Loss</strong>：参考《Progressive Growingd of GANs for Improved Quality, Stability, and Variation》</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn15vv1wqoj30wq04i0te.jpg" alt="" /></p>
+<p>（损失函数可真有讲究</p>
+<h2 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h2>
+<h3 id="评估指标fid"><a class="markdownIt-Anchor" href="#评估指标fid"></a> 评估指标FID</h3>
+<p><strong>对于我们已经拥有的真实图像，这个向量是服从一个分布的，（我们可以假设它是服从一个高斯分布）；对于那些用GAN来生成的n维特征它也是一个分布；我们应该立马能够知道了，GAN的目标就是使得两个分布尽量相同</strong>。假如两个分布相同，那么生成图像的真实性和多样性就和训练数据相同了。</p>
+<p>于是，现在的问题就是，<strong>怎么计算两个分布之间的距离呢</strong>？我们需要注意到这两个分布是多变量的，也就是前面提到的n维特征。<strong>也就是说我们计算的是两个多维变量分布之间的距离，数学上可以用Wasserstein-2 distance或者Frechet distance来进行计算</strong>。</p>
+<p><strong>较低的FID意味着两个分布之间更接近，也就意味着生成图片的质量较高、多样性较好。</strong></p>
+<p>详细查看<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27261889/article/details/86483505">【深度理解】如何评价GAN网络的好坏？IS（inception score）和FID（Fréchet Inception Distance）</a></p>
+<h3 id="stroke-model"><a class="markdownIt-Anchor" href="#stroke-model"></a> Stroke &amp; model</h3>
+<p>Stroke与单/双生成器的网络结构相配合，可以使得FID的值更低。（所以我要不要也试试用笔划来做提示？</p>
+<p>由于艺术是完全主观的事情，因此我们无法推断出双生成器是否在视觉上改善了输出。</p>
+<p>最后，较大的batch不会对FID值产生太大影响，但可以加快训练速度。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn161rgqkqj312q0i0jun.jpg" alt="" /></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn16iqejmrj30ym0jot9x.jpg" alt="" /></p>
+<h3 id="评估指标mos"><a class="markdownIt-Anchor" href="#评估指标mos"></a> 评估指标MOS</h3>
+<p>MOS（Mean Opinion Score），平均主观意见分。在国际标准中，统一使用MOS值来评价系统接收到的经过压缩后的话音质量，这边用来评价生成图片的质量。</p>
+<p>SD的效果明显比其他两个好一些。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn16merh7jj30ym0jg0tz.jpg" alt="" /></p>
+<h3 id="上色效果"><a class="markdownIt-Anchor" href="#上色效果"></a> 上色效果</h3>
+<p>就总体而言还是蛮好的，但是还是会出现一些color bleeding的问题。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn16psslgxj31ie0o64qq.jpg" alt="" /></p>
+<p>下排是PaintsTorch的效果，它在圆上的上色不会溢出，说明对边界的处理效果比较好，应该是损失函数的作用。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn16r7kfdcj311y0b2gvj.jpg" alt="" /></p>
+<h3 id="笔触效果对比"><a class="markdownIt-Anchor" href="#笔触效果对比"></a> 笔触效果对比</h3>
+<p>上一排是PaintsChainer，笔触的粗细长短对上色结果的影响很大，但是本文的方法并不太受影响，意思是上色效果比较稳定。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn16tfk2taj31mz0u0npd.jpg" alt="" /></p>
+<h3 id="缺点"><a class="markdownIt-Anchor" href="#缺点"></a> 缺点</h3>
+<p>在存在高度饱和的颜色或提示比较密集的情况下，输出图像上出现的伪像</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn16xw6i8jj310k0skkjl.jpg" alt="" /></p>
+<h2 id="个人学习"><a class="markdownIt-Anchor" href="#个人学习"></a> 个人学习</h2>
+<ul>
+<li>笔划效果比随机像素的提示效果可能会好一些，可以作为消融实验的参考</li>
+<li>双生成器的必要性作者自己的都不太确定，具体可以看看DualGAN，我觉得在山水画这里可以学习一下</li>
+<li>损失函数也可以参考一下，鉴别器损失这个还挺有意思的</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/26/CVMP2019%E3%80%8APaintsTorch%E3%80%8B%E5%90%AB%E7%94%A8%E6%88%B7%E6%8C%87%E5%AF%BC%E7%9A%84%E7%BA%BF%E7%A8%BF%E7%9D%80%E8%89%B2%E5%B7%A5%E5%85%B7/" data-id="clkqxrnob000f1fj487t36w5x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-IJPE2019《具有周期一致的对抗网络的动漫素描着色》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/25/IJPE2019%E3%80%8A%E5%85%B7%E6%9C%89%E5%91%A8%E6%9C%9F%E4%B8%80%E8%87%B4%E7%9A%84%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8A%A8%E6%BC%AB%E7%B4%A0%E6%8F%8F%E7%9D%80%E8%89%B2%E3%80%8B/" class="article-date">
+  <time datetime="2021-01-25T02:59:53.000Z" itemprop="datePublished">2021-01-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/25/IJPE2019%E3%80%8A%E5%85%B7%E6%9C%89%E5%91%A8%E6%9C%9F%E4%B8%80%E8%87%B4%E7%9A%84%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8A%A8%E6%BC%AB%E7%B4%A0%E6%8F%8F%E7%9D%80%E8%89%B2%E3%80%8B/">IJPE2019《具有周期一致的对抗网络的动漫素描着色》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本信息"><a class="markdownIt-Anchor" href="#基本信息"></a> 基本信息</h2>
+<p><strong>论文标题</strong>：《 Colorization for Anime Sketches with Cycle-Consistent Adversarial Network》 —— 具有周期一致的对抗网络的动漫素描着色</p>
+<p><strong>论文链接</strong>：<a target="_blank" rel="noopener" href="http://www.ijpe-online.com/EN/abstract/abstract4089.shtml">http://www.ijpe-online.com/EN/abstract/abstract4089.shtml</a></p>
+<p><strong>关键词</strong>： anime，sketches（草图），colorization（上色），cycle-consistency（周期一致性），u-net</p>
+<p><strong>发表会议</strong>：2019 IJPE</p>
+<p><strong>主要贡献</strong>：实现了动漫人物头像的自动化上色。</p>
+<p><strong>创新点</strong>：</p>
+<ul>
+<li>循环一致性网络，用于将绘画的颜色应用于草图。</li>
+<li>具有少量信息量的残留U-net。</li>
+<li>由BEGAN修改的鉴别器，适用于处理不同颜色的着色。</li>
+</ul>
+<h2 id="网络架构"><a class="markdownIt-Anchor" href="#网络架构"></a> 网络架构</h2>
+<p>引入了U-net，并进行了适当的结构修改。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzr0l29alj316u0la0vy.jpg" alt="" /></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzr1036jvj30yw0letd2.jpg" alt="" /></p>
+<h2 id="实验效果"><a class="markdownIt-Anchor" href="#实验效果"></a> 实验效果</h2>
+<p>本菜鸡发言：我觉得它效果并不是很好！</p>
+<p><strong>数据集</strong>：自己收集约1K，XDoG生成线稿。</p>
+<h3 id="与cyclegan比较"><a class="markdownIt-Anchor" href="#与cyclegan比较"></a> 与CycleGAN比较</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzr4xv2h7j30t20eqkfn.jpg" alt="" /></p>
+<h3 id="与paintschainer对比"><a class="markdownIt-Anchor" href="#与paintschainer对比"></a> 与PaintsChainer对比</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzr7dalt6j30n10fm4jc.jpg" alt="" /></p>
+<h3 id="多风格"><a class="markdownIt-Anchor" href="#多风格"></a> 多风格</h3>
+<p>同一张图片的多次生成结果是多样化的</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmzr83wktij30jk0hn4e6.jpg" alt="" /></p>
+<p>（这水平，我也能！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/25/IJPE2019%E3%80%8A%E5%85%B7%E6%9C%89%E5%91%A8%E6%9C%9F%E4%B8%80%E8%87%B4%E7%9A%84%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8A%A8%E6%BC%AB%E7%B4%A0%E6%8F%8F%E7%9D%80%E8%89%B2%E3%80%8B/" data-id="clkqxrnok00181fj46c5zfb2e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-【论文阅读】FITEE2019《SmartPaint》人机协同绘画系统" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/24/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91FITEE2019%E3%80%8ASmartPaint%E3%80%8B%E4%BA%BA%E6%9C%BA%E5%8D%8F%E5%90%8C%E7%BB%98%E7%94%BB%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time datetime="2021-01-24T15:47:59.000Z" itemprop="datePublished">2021-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/24/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91FITEE2019%E3%80%8ASmartPaint%E3%80%8B%E4%BA%BA%E6%9C%BA%E5%8D%8F%E5%90%8C%E7%BB%98%E7%94%BB%E7%B3%BB%E7%BB%9F/">【论文阅读】FITEE2019《SmartPaint》人机协同绘画系统</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本信息"><a class="markdownIt-Anchor" href="#基本信息"></a> 基本信息</h2>
+<p><strong>论文标题</strong>：《SmartPaint: a co-creative drawing system based on generative adversarial networks》 —— 一种基于生成式对抗神经网络的人机协同绘画系统</p>
+<p><strong>论文链接</strong>：<a target="_blank" rel="noopener" href="http://journal.hep.com.cn/ckcest/fitee/CN/10.1631/FITEE.1900386">http://journal.hep.com.cn/ckcest/fitee/CN/10.1631/FITEE.1900386</a></p>
+<p><strong>关键词</strong>：深度学习（Deep Learning）， 图片生成（Image generation），人机协同绘画（Co-creative drawing）</p>
+<p><strong>发表会议</strong>：2019 FITEE</p>
+<p><strong>主要贡献</strong>：SmartPaint可以使得机器和人类协作进行绘制卡通山水画，机器同时了解卡通风格和语义，以及风景图像中对象之间的空间关系。这样用户只需要画出语义标签图，就能生成质量较高的山水画作。</p>
+<p><strong>创新点</strong>：</p>
+<ul>
+<li>人机协同的绘画系统</li>
+<li>边缘图的生成有助于提高绘画的生成质量，并弥合用户输入与计算机输入之间的理解差距。</li>
+<li>我们提出了一套用于开发共同创造的机器人系统的设计原则。（？？？）</li>
+</ul>
+<h2 id="实验过程"><a class="markdownIt-Anchor" href="#实验过程"></a> 实验过程</h2>
+<h3 id="系统绘画效果"><a class="markdownIt-Anchor" href="#系统绘画效果"></a> 系统绘画效果</h3>
+<p>用户给出语义标签图，然后机器可以进行画作生成，得到的效果还是非常好的。把可以绘画的内容分成八个类别：山峰、草地、树、房子、天空、小路、石头，外加一个其他，用黑色表示。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmywh392haj30py05n7dh.jpg" alt="" /></p>
+<p>比如上面这张图可以大概看出，褐色-山脉，墨绿-树林，青绿-草地，紫色-水，红色：房屋。</p>
+<p>整个绘图系统有两种模式，即绘图 &amp; 生成模式。</p>
+<p>绘图模式：用于构造和修改草图</p>
+<p>生成模式：用于在画布上显示生成的绘画</p>
+<h3 id="总体架构"><a class="markdownIt-Anchor" href="#总体架构"></a> 总体架构</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmyx1kq57qj30ww0lm7dj.jpg" alt="" /></p>
+<p><strong>1. Painting Producer</strong></p>
+<p>使用三元组数据集训练模型，包括真实场景图、语义标签图和边缘检测图。语义标签图提供图像每个区域中的语义信息，而边缘图提供每个对象的细节。将这两种输入作为网络输入进行组合可以提高计算机生成的绘画质量。</p>
+<p><strong>2. Edge synthesizer</strong></p>
+<p>边缘合成器会根据用户的输入自动生成边缘图。边缘图的生成是需要利用原始数据集的，去匹配最大的重合区域。</p>
+<p><strong>3. Reference recommender</strong></p>
+<p>担心新手画家没有灵感，而创作过程中的实时指导和视觉反馈可以激发用户的创造力。 给定任意草图输入，SmartPaint推荐数据集中的八个最相似的语义标签图作为用户参考。</p>
+<p>下图显示的是相应的三个部分。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz5zcp3cjj30s109pguh.jpg" alt="" /></p>
+<h3 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h3>
+<p>数据集由7234个三元组组成，三元组是（真实场景图，语义标签图，边缘检测图），是用户从诸多宫崎骏动画和类似风格的动漫中收集的，并且裁剪成了1024*512的尺寸。</p>
+<p><strong>1. 真实场景图</strong></p>
+<p>数据集资源在附录有相关展示：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz62e54fdj30du0k6tbh.jpg" alt="" /></p>
+<p>其实读这篇论文很大的原因就是它处理的是线稿画，而目前暂时没有公开的线稿图数据集，我就想看看作者都是怎么收集和处理的。</p>
+<p><strong>2. 语义标签图</strong></p>
+<p>原文没有说自己是怎么对卡通图像进行标注的，盲猜是借助多分类的自动语义标注实现。</p>
+<p><strong>3. 边缘检测图</strong></p>
+<p>使用opencv的canny边缘检测技术得到。</p>
+<p>所以最后一个元组的组成是这样的：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz69c0rjzj30qr085gqq.jpg" alt="" /></p>
+<h3 id="生成网络"><a class="markdownIt-Anchor" href="#生成网络"></a> 生成网络</h3>
+<p>PaintingProducer的生成网络是基于Pix2PixHD架构组成的，然后将语义标签图和边缘检测图这两张图片作为生成网络的输入，生成逼真的场景图。判别器则是要尽可能得区别真实场景图和这张生成图。</p>
+<p>对Pix2pixHD不是特别熟悉，因为不是重点hhhh</p>
+<p>它引入了VGG的损失函数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mrow><mi>c</mi><mi>o</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{con}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和GAN网络的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mrow><mi>G</mi><mi>A</mi><mi>N</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{GAN}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">G</span><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>,以及基于特征匹配的鉴别器损失<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mrow><mi>F</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{FM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，最后得到损失函数为：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6ik1dmzj30ln063aau.jpg" alt="" /></p>
+<h3 id="画作参考算法"><a class="markdownIt-Anchor" href="#画作参考算法"></a> 画作参考算法</h3>
+<p>系统的右侧会给出8幅参考画作，初始化的时候应该是随机的。随着用户的作画，它会实时给出数据集中和该幅图最相近的8幅语义标签图。整个过程需要借助自动编码器，从图像中提取高纬特征。</p>
+<p>在训练网络之前，将所有的语义标签图大小调整为512*256像素，并转换为单通道的灰度图像。接着，标签图在经过自动编码器的处理后，输出4096维的潜向量latent vector，作为语义标签映射表示。再借助PCA算法，把4096缩小为20，并计算两个向量的欧几里得距离，实时获得8个最相似的语义标签图。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6sxz5uuj30gz080dha.jpg" alt="" /></p>
+<p>另外，可能用户不会在整个画布上绘制，那么系统将通过引用最近的彩色像素来自动填充空白像素。</p>
+<p>填充算法如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz6oc0ex2j30iy0fmacx.jpg" alt="" /></p>
+<h3 id="边缘合成器"><a class="markdownIt-Anchor" href="#边缘合成器"></a> 边缘合成器</h3>
+<p>系统要根据语义标签图和边缘检测图生成逼真的场景画，可是对于测试集而言，应该怎么解决边缘检测图的问题呢？作者提出的边缘合成算法可以解决这个问题。</p>
+<p>首先，将找出的八个相似语义标签图的边缘图都输入到边缘合成器中。</p>
+<p>其次，通过形状匹配算法提取了用户草图中的语义段（<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>T</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">T_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>）和八个相似的语义标签图（<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>）。</p>
+<p>把用户草图<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>T</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">T_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>中的每种语义记为t，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>l</mi><mi>a</mi><mi>b</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{label}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">b</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>中所有相同的语义记为集合ss，s为ss的其中一个元素，也就是该语义的一个局部组成，希望计算出t和s的最大重叠面积<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>o</mi><msub><mi>a</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">moa_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">o</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，两者具有相同语义。</p>
+<p>最后，选择最大的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>o</mi><msub><mi>a</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">moa_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">o</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>值，并使用s的相应边缘图来计算t的单个边缘图iSE。 通过相同的方法计算出用户草图中每个片段的单个边缘图后，将所有边缘段相加以获得最终的合成边缘图。 边缘图合成的伪代码如下。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7hqw0f0j30dt0mqae2.jpg" alt="" /></p>
+<h2 id="效果预览"><a class="markdownIt-Anchor" href="#效果预览"></a> 效果预览</h2>
+<h3 id="与pix2pixhd相比"><a class="markdownIt-Anchor" href="#与pix2pixhd相比"></a> 与pix2pixHD相比</h3>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7iqhw2rj30ie0c212h.jpg" alt="" /></p>
+<p>本文的方法生成的图像©具有逼真的卡通风格和清晰的细节， 它还基于草图布局获得了具有不同场景的图像。 例如，它将大片树木解释为森林，将小片树木解释为灌木丛。</p>
+<p>原始pix2pixHD方法生成的图像(b)模糊不清，几乎没有描绘出详细的纹理。</p>
+<h3 id="新手友好"><a class="markdownIt-Anchor" href="#新手友好"></a> 新手友好</h3>
+<p>上面一排是新手画作，下面一排是职业画手，效果差别不大，效果都挺好。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz7m7d6djj30y30a44jc.jpg" alt="" /></p>
+<h3 id="根据文字描述作画"><a class="markdownIt-Anchor" href="#根据文字描述作画"></a> 根据文字描述作画</h3>
+<p>上面一排是新手画作，下面一排是职业画手。因为输入不同，所以生成的画作也各自有区别，但是总体来讲效果都是非常好的。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmz824e2o7j30ws0b9ner.jpg" alt="" /></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/24/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91FITEE2019%E3%80%8ASmartPaint%E3%80%8B%E4%BA%BA%E6%9C%BA%E5%8D%8F%E5%90%8C%E7%BB%98%E7%94%BB%E7%B3%BB%E7%BB%9F/" data-id="clkqxrnpp005g1fj4hd99e1gd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-【论文阅读】CVPR2019文本图像生成《SDGAN》" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/15/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91CVPR2019%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E3%80%8ASDGAN%E3%80%8B/" class="article-date">
+  <time datetime="2021-01-15T05:40:10.000Z" itemprop="datePublished">2021-01-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a>►<a class="article-category-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/15/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91CVPR2019%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E3%80%8ASDGAN%E3%80%8B/">【论文阅读】CVPR2019文本图像生成《SDGAN》</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本信息"><a class="markdownIt-Anchor" href="#基本信息"></a> 基本信息</h2>
+<p><strong>论文标题</strong>：《Semantics Disentangling for Text-to-Image Generation》 —— 用于“文本转换至图像”的语义分解，实现跨模态转换。</p>
+<p>**论文链接：**<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1904.01480v1">https://arxiv.org/abs/1904.01480v1</a></p>
+<p><strong>研究领域</strong>：计算机图形学，Text-to-Image，深度学习（Deep Learning），生成式对抗网络（GAN）</p>
+<p>**发表会议：**2019 CVPR</p>
+<p>**研究意义：**这篇文章属于Text-to-Image一类，它所解决的主要任务是如何根据文本的描述生成相应的图像，不仅要求生成的图像要清晰真实，而且更要求其符合给定的文本描述。作者提出了一个全新的文本图像生成模型，对输入语句进行语义分离，使其满足高级语义一致性的同时，达到低级语义多样性。</p>
+<h2 id="主要贡献"><a class="markdownIt-Anchor" href="#主要贡献"></a> 主要贡献</h2>
+<p>首先预览一下大致的实验效果：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmo5u8cr2ej30r40b7djm.jpg" alt="" /></p>
+<p>如上图所示，SDGAN和之前的StackGAN、AttenGAN进行了对比，从生成的图像可以直观的看出SDGAN的结果更清晰，同时与描述文本更相符，那么它是做了哪些工作才得到这么好的效果呢？</p>
+<p>题目是<strong>Semantics Disentangling for Text-to-Image Generation</strong>，将其翻译过来为用于<strong>用于Text-to-Image的语义分解</strong>，从中我们可以知道它是基于文本的语义来改进Text-to-Image的工作，进一步可以猜测它应该是考虑文本的高级语义和低级语义。</p>
+<p>作者指出由于对于同一张图像来说，不同的人会给出不同的描述，它们自然包含了对于图像主要信息的描述，同样也充满了多样性和个性化，因此<strong>如何从中提取出一致性的语义信息，同时保留描述的多样性和其中的细节信息</strong>，成为了Text-to-Image任务的一大难题。</p>
+<p>总结来看，本文的主要贡献如下：</p>
+<ol>
+<li>从文本中提出共享语义：SDGAN从文字描述中提取出公共语义，使得生成的图像可以在表达变体下保持一致性。<strong>第一次在跨模态生成中引入Siamese机制</strong>。</li>
+<li>保留文本中的语义多样性和细节。Siamese可能失去独特语义多样性，因此通过语言线索（linguistic cues）重新构造批量标准化层，来设计增强的视觉语义嵌入方法（ visual-semantic embedding method）。语言嵌入可以进一步指导细粒度图像生成。</li>
+</ol>
+<h2 id="概念介绍"><a class="markdownIt-Anchor" href="#概念介绍"></a> 概念介绍</h2>
+<p>在正式理解SDGAN模型之前，我们需要补充一些相关的基础知识，因为对于文本和图像跨模态这块，我确实啥啥都不会！</p>
+<h3 id="高级语义一致性"><a class="markdownIt-Anchor" href="#高级语义一致性"></a> 高级语义一致性</h3>
+<p>由于人类对某个事物的文字描述和语言习惯既主观又多样，因此即使是对同一张图像，一百个人可能给出一百种不同的描述。那么这也意味着，在文字图像生成的过程中将会面临一个问题，即如何才能保证两段对同一张图片的描述所生成的图片在整体上看上去是类似的呢？</p>
+<p>作者给出了一个例子，在这张图中，a-i是原始图片，a-ii是对这张图片进行的两段不同描述，但大意相同，a-iii是使用现有的GAN网络生成的图片。显然，你会发现尽管它们是从相似的一段文字中转换而来，但这两张生成图像几乎可以认为不是同一种鸟类，也就是差异性非常大。</p>
+<p><img src="https://i.loli.net/2020/12/18/1JcboWRzFf5yqPe.png" alt="https://i.loli.net/2020/12/18/1JcboWRzFf5yqPe.png" /></p>
+<p>此时得到的结论是，描述文字（description）的变化可能导致图像生成结果的不同。作者认为，至少我们应该保证：如果两段文字描述具有非常相似的语义，那么生成的图像应该在整体上相似。提出来的高级语义一致性，实际上就是为了保证在不同的文字表达下，生成的图片能根据相同或相近的语义而具有一致性（相似性），实现语义共享。考虑了机器学习中类内和类间的概念，相似描述的文字在特征空间中应该距离小，属于类内；而不同描述距离应该大，属于类间。</p>
+<p>在本文中提出的<strong>Siamese网络</strong>，能够提取出两段文字的公共语义，使得该问题得到了很好的解决。</p>
+<h3 id="低级语义多样性"><a class="markdownIt-Anchor" href="#低级语义多样性"></a> 低级语义多样性</h3>
+<p>和高级语义不同，低级语义比较注重细节和语义的多样性，是在保证高级语义一致性的情况下需要考虑的。既然是两段不同的表述，生成的图片要是完全一样就没有意义了，所以反倒是应该鼓励细粒度的多样性。此时又引入了语义条件批量规范化（Semantic Conditional CBatch Normalization），以保留语义多样性和细节。希望更细粒度的语言嵌入（linguistic embedding）能调整控制生成的图片更多样更精细。</p>
+<p>基于以上两点介绍，我们可以先看看引入了Siamese和SCBN的Gan网络，其生成结果会有什么不同？</p>
+<p><img src="https://i.loli.net/2020/12/18/7WxjJO2TznrE18t.png" alt="https://i.loli.net/2020/12/18/7WxjJO2TznrE18t.png" /></p>
+<h3 id="siamese网络"><a class="markdownIt-Anchor" href="#siamese网络"></a> Siamese网络</h3>
+<p>Siam是古代对于泰国的称呼，可译为暹(xian)罗,Siamese自然可译为暹罗人或泰国人。但Siamese structure network中的Siamese可译为孪生、连体。</p>
+<p><strong>Siamese network</strong>最早在2005年Yann Lecun提出，它可以看做是一种相似性度量方法，而它所主要解决的是one-shot（few-shot）的任务。one-shot任务是指在现实的场景中，数据集中的样本可能类别数很多，但是每个类别所包含的样本的数量很少，甚至极端情况下只有一张，在这样的情况下，如果使用传统的分类模型去做，往往得到的效果都不会太好，因为传统的模型依赖于<strong>大量有标注</strong>的样本。而one-shot希望做的就是使用极少的样本也可以得到不错的效果。</p>
+<p>Siamese网络（孪生神经网络）可以用来<strong>衡量两个输入的相似程度</strong>，然后用这个习得的度量去比较和匹配新的未知类别的样本。因为孪生神经网络有两个输入（Input1 and Input2）,将两个输入feed进入两个神经网络（Network1 and Network2），这两个神经网络分别<strong>将输入映射到新的空间</strong>，<strong>形成输入在新的空间中的表示。</strong></p>
+<p>其模型结构如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190601102458745.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0ZvcmxvZ2Vu,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" /></p>
+<p>通过Loss的计算，比如说计算两者的欧式距离，来进一步评价两个输入的相似度。相似输入的欧氏距离小，差别较大的两个输入得到的欧式距离较大。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-5070e28622a2f3ee9e3cb5d2259fae86_720w.jpg" alt="https://pic3.zhimg.com/80/v2-5070e28622a2f3ee9e3cb5d2259fae86_720w.jpg" /></p>
+<p>如果只是在pixel空间中进行相似性度量显然不合适，因此Siamese network通过某个映射函数将输入的样本映射到一个目标空间中，然后在目标空间中使用一般的距离度量方式进行相似度比较，希望同类的样本的距离应该相近，而不同类别的样本距离应较远。</p>
+<p>详细介绍可以参考博客：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35040994">Siamese network 孪生神经网络–一个简单神奇的结构</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/ybdesire/article/details/84072339">详解Siamese网络</a></li>
+</ul>
+<h3 id="batch-normalization"><a class="markdownIt-Anchor" href="#batch-normalization"></a> Batch Normalization</h3>
+<p>BN是优化神经网络训练一个很重要的工具，大家应该都比较熟悉了，这里只给出一个简单的总结。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190601104926404.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0ZvcmxvZ2Vu,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" /></p>
+<p>BN的过程可以表示为</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>B</mi><mi>N</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mi>γ</mi><mo>⋅</mo><mfrac><mrow><mi>x</mi><mi mathvariant="normal">−</mi><mi>μ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>+</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">B N ( x ) = γ ⋅ \frac{x − μ ( x )}{σ ( x )}  + β
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.63889em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="mord">−</span><span class="mord mathdefault">μ</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span></span></span></span></span></p>
+<p>此外对BN的改进有<strong>Conditional Batch Norm</strong>，可以将其看作是在一般的特征图上的缩放和移位操作的一种特例，它的表示形式如下所示</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">BN</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">(</mo><mi>γ</mi><mo>+</mo><msub><mi>γ</mi><mi>c</mi></msub><mo fence="true">)</mo></mrow><mo>⋅</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>μ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>+</mo><mrow><mo fence="true">(</mo><mi>β</mi><mo>+</mo><msub><mi>β</mi><mi>c</mi></msub><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\operatorname{BN}(x | c)=\left(\gamma+\gamma_{c}\right) \cdot \frac{x-\mu(x)}{\sigma(x)}+\left(\beta+\beta_{c}\right)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">B</span><span class="mord mathrm">N</span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mord">∣</span><span class="mord mathdefault">c</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05556em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault">μ</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
+<p>其中<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>γ</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">\gamma_{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05556em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>β</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">\beta_{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>通过条件线索c学得。</p>
+<p>BN的概念被作者引入了生成模型中，但是我在现有的博客中还没有找到一个比较容易理解的介绍，大致意思是希望将LSTM提取出来的句子特征，能够和图片特征相结合。在本文中，将句子向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover accent="true"><mi>s</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.56778em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;">ˉ</span></span></span></span></span></span></span></span></span>作为conditional cues。</p>
+<p>可以看看知乎的一篇博客：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61248211">Conditional Batch Normalization 详解</a></li>
+</ul>
+<h2 id="sdgan网络结构"><a class="markdownIt-Anchor" href="#sdgan网络结构"></a> SDGAN网络结构</h2>
+<p>通过前面的介绍，我们已经了解到作者提出了一种新的跨模态生成网络，称之为语义解缠生成对抗网络（SDGAN）。该网络主要包括两个部分：Siamese网络 和 SCBN结构。</p>
+<p>其中使用Siamese network在判别器（Discriminator）中学习高层次的语义一致性，使用SCBN来发现 Sentence-level 和 Word-level 的细节信息。这样既可以提取出语义的一致性部分，由可以保留描述的多样性和细节部分。</p>
+<p>整体结构图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190601105712988.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0ZvcmxvZ2Vu,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" /></p>
+<h3 id="含对比损失的siamese结构"><a class="markdownIt-Anchor" href="#含对比损失的siamese结构"></a> 含对比损失的Siamese结构</h3>
+<p>SDGAN中，使用Siamese结构来提取文本语义信息，用于跨域生成；使用对比损失来计算生成结果之间的差异，如果是对同一张真实图像的两段文字描述，其对比损失应该尽可能小，如果来自不同图像，损失则尽可能大。</p>
+<p>本结构有两个分支，且每个分支由三个部分组成：Text-Encoder（编码器）、Contrastive Loss（对比损失）、Hierarchical generative adversarial subnets（分层生成对抗网络）。</p>
+<h3 id="textencoder"><a class="markdownIt-Anchor" href="#textencoder"></a> TextEncoder</h3>
+<p>每个分支的输入都是一句话，文本编码器E的目标就是从自然语言介绍中学习到特征表示（ feature representations），采用双向长短期记忆（Bi-LSTM）从文本中提取出语义向量。</p>
+<p>双向LSTM能够同时利用过去时刻和未来时刻的信息，因此得到的语义向量将更加有意义。通常，在双向LSTM中，隐藏状态用于表示句子中单词的语义，而最后隐藏状态被用作全局句子向量。即<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>w</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">w_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>t</mi><mrow><mi>t</mi><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">t^{th}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">h</span></span></span></span></span></span></span></span></span></span></span></span>单词的特征向量和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover accent="true"><mi>s</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.56778em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;">ˉ</span></span></span></span></span></span></span></span></span>表示句子特征向量。</p>
+<h3 id="hierarchical-generative-adversarial-subnets"><a class="markdownIt-Anchor" href="#hierarchical-generative-adversarial-subnets"></a> Hierarchical generative adversarial subnets</h3>
+<p>本阶段的目标是：使用分阶段的图片生成，完成从低分辨率到高分辨率的转变。其细分成了三个生成阶段，姑且用阶段1和阶段2、3来代替。</p>
+<p>给定来自于Encoder的句子特征<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover accent="true"><mi>s</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.56778em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;">ˉ</span></span></span></span></span></span></span></span></span>和从标准正态分布中采样得到的噪声<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span></span></span></span>，在阶段1生成低分辨率的图像（64 * 64），生成器为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>G</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">G_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。阶段2 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>G</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">G_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、3 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>G</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">G_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>则使用上一个阶段的生成结果，与<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover accent="true"><mi>s</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.56778em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;">ˉ</span></span></span></span></span></span></span></span></span>相结合，生成具有更高分辨率的图像。</p>
+<p>一系列的鉴别器则用来区分图像是真的还是假的，这些鉴别器<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>D</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>D</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">D_0, D_1,D_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是相互独立的，不需要共享参数。</p>
+<p>两个阶段的具体结构如下，左侧是阶段1，右侧是阶段2，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>D</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">D_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>用于阶段1，另外两个用于阶段2和3，x为上一个阶段的特征结果。</p>
+<p><img src="https://i.loli.net/2020/12/18/jXefy1hRmura3IE.png" alt="https://i.loli.net/2020/12/18/jXefy1hRmura3IE.png" /></p>
+<p>其中的<strong>adversarial discriminators</strong>是用于判断每阶段生成图像是否符合文本描述的。</p>
+<h3 id="contrastive-loss"><a class="markdownIt-Anchor" href="#contrastive-loss"></a> Contrastive Loss</h3>
+<p>先假设上述每个分支在当前阶段结束后，都将得到相应的视觉特征向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">V_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，它们之间的欧式距离记为 $$ d = ||v_1 - v_2 ||*2 $$ 那么此时的对比损失可以记为</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mi>c</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>N</mi></mrow></mfrac><mover><mo>∑</mo><mi>N</mi></mover><mo>∗</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi>y</mi><mo separator="true">⋅</mo><msup><mi>d</mi><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>y</mi><mo stretchy="false">)</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>ϵ</mi><mo>−</mo><mi>d</mi><mo separator="true">,</mo><mn>0</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">L_c = \frac{1}{2N}\sum^N*{n=1}y ·d^2 + (1-y)max(\epsilon-d, 0)^2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.514336em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000002em;"><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.300005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5500050000000001em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">∗</span><span class="mord"><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mopen">(</span><span class="mord mathdefault">ϵ</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault">d</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span> : 当两个分支的文字是对同一张图片的描述时，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">y = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>，反之<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span></span> : 特征向量的长度，值为256</li>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">ϵ</span></span></span></span> : 平衡参数，当<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>时，其值为1</li>
+</ul>
+<p>从公式上可以看出，目标应该是最小化<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">L_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p>由于加入了噪声，使得尽管输入相同，输出的向量也不会完全相同。但为了防止生成的图片太过相近，作者修改了一下损失函数：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>L</mi><mi>c</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>N</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mi>y</mi><mo separator="true">⋅</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>d</mi><mo separator="true">,</mo><mi>α</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>y</mi><mo stretchy="false">)</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>ϵ</mi><mo>−</mo><mi>d</mi><mo separator="true">,</mo><mn>0</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex"> L_c = \frac{1}{2N}\sum^N_{n=1}y ·max(d, \alpha)^2 + (1-y)max(\epsilon-d, 0)^2 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0954490000000003em;vertical-align:-1.267113em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000002em;"><span style="top:-1.882887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.267113em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mopen">(</span><span class="mord mathdefault">d</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mopen">(</span><span class="mord mathdefault">ϵ</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault">d</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>α 是避免两个描述同一张ground truth的文本生成的图片太接近时取的超参数，一般为0.1。</p>
+<h3 id="语义条件批量标准化"><a class="markdownIt-Anchor" href="#语义条件批量标准化"></a> 语义条件批量标准化</h3>
+<h3 id="cbn与scbn"><a class="markdownIt-Anchor" href="#cbn与scbn"></a> CBN与SCBN</h3>
+<p>利用自然语言描述中的语言线索（linguistic cues）来调节条件批处理归一化，主要目的是增强生成网络特征图的视觉语义嵌入。它使语言嵌入能够通过上下缩放、否定或关闭等方式操纵视觉特征图，SCBN可以从输入中获取到语句级和词级两个层次上的语言线索。如下所示</p>
+<p><img src="https://i.loli.net/2020/12/18/mp3cDP79Hkrnt1l.png" alt="https://i.loli.net/2020/12/18/mp3cDP79Hkrnt1l.png" /></p>
+<p>公式为：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>B</mi><mi>N</mi><mo stretchy="false">(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mi>γ</mi><mo>+</mo><msub><mi>γ</mi><mi>c</mi></msub><mo stretchy="false">)</mo><mo separator="true">⋅</mo><mfrac><mrow><mi>x</mi><mi mathvariant="normal">−</mi><mi>μ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>+</mo><mo stretchy="false">(</mo><mi>β</mi><mo>+</mo><msub><mi>β</mi><mi>c</mi></msub><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex"> BN(x|c) = (γ + γ_c) · \frac{x − μ(x)}{σ(x)} + (β + β_c). 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mord">∣</span><span class="mord mathdefault">c</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05556em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="mord">−</span><span class="mord mathdefault">μ</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">.</span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">c</span></span></span></span>是条件线索，在SCBN中，该线索由两部分组成，句子层级的线索（sentence-level cues）和单词层级的线索（word-level cues）。本阶段的重点是得到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>γ</mi><mi>c</mi></msub><mo separator="true">,</mo><msub><mi>β</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">\gamma_c,\beta_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05556em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</p>
+<p>其实这个部分基本没看懂，代码还没公开，所以接下来靠盲猜完成，可能猜着猜着就懂了。</p>
+<h3 id="sentence-level-cues"><a class="markdownIt-Anchor" href="#sentence-level-cues"></a> Sentence-level Cues</h3>
+<p>在保证一致性方面，考虑全局向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover accent="true"><mi>s</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.56778em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.19444em;">ˉ</span></span></span></span></span></span></span></span></span>作为线索，并使用包含一层隐藏层的MLP来得到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>γ</mi><mi>c</mi></msub><mo separator="true">,</mo><msub><mi>β</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">\gamma_c,\beta_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05556em;">γ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05556em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，将得到的结果拓展成与<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>的维度相同，以此嵌入语言提示和视觉特征。接着得到的结果再feed入下一个SCBN。</p>
+<h3 id="word-level-cues"><a class="markdownIt-Anchor" href="#word-level-cues"></a> Word-level Cues</h3>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>W</mi><mo>=</mo><msubsup><msub><mi>w</mi><mi>t</mi></msub><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></msubsup><mo>∈</mo><msup><mi>R</mi><mrow><mi>D</mi><mo>×</mo><mi>T</mi></mrow></msup></mrow><annotation encoding="application/x-tex">W = {w_t}^T_{t=1}∈ R^{D×T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0894389999999998em;vertical-align:-0.24810799999999997em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.4518920000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span><span class="mbin mtight">×</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span></span>是单词特征的集合，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>w</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">w_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示第t个单词的特征向量。可视化语义特征向量（visual-semantic embedding (VSE)）模型是为了融合单词特征和可视化的特征提出来的.</p>
+<p>正如上图所示，我们用一个感知层（如<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(w_t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>）去将文本的特征和可视化的特征匹配起来。<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mi>s</mi><msub><mi>e</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">vse_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">s</span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>是在嵌入特征向量 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">v_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>的基础上来计算算每张图片的第 j 个区域，而<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">v_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> 是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><msub><mi>w</mi><mi>t</mi></msub><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></msubsup></mrow><annotation encoding="application/x-tex">{w_t}_{t=1}^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0894389999999998em;vertical-align:-0.24810799999999997em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.4518920000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span></span></span></span>的动态表示。</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>σ</mi><mo stretchy="false">(</mo><msub><mi>v</mi><mi>j</mi></msub><mo separator="true">⋅</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>t</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">σ(v_j· f(w_t))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>表明可视化特征层<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>v</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">v_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>第j个子区域的第t个单词向量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>w</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">w_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的第t个权重。σ(·)是softmax函数。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mi>s</mi><msub><mi>e</mi><mi>j</mi></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>T</mi><mi mathvariant="normal">−</mi><mn>1</mn></mrow></munderover><mi>σ</mi><mo stretchy="false">(</mo><msubsup><mi>v</mi><mi>j</mi><mi>T</mi></msubsup><mi>f</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>t</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>t</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">vse_j = \sum ^ {T−1} _{ t=0 } σ(v_j^T f(w_t))f(w_t)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">s</span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0954490000000003em;vertical-align:-1.267113em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000004em;"><span style="top:-1.882887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.300005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.267113em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.891331em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span><span style="top:-3.1130000000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<h2 id="实验设置"><a class="markdownIt-Anchor" href="#实验设置"></a> 实验设置</h2>
+<h3 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h3>
+<p>数据集为CUB 和 MS-COCO。</p>
+<ul>
+<li>CUB：包含200种鸟类，包括11788张图像，每张图像都有10种描述。其中8855张作为训练集，2933张作为测试集。</li>
+<li>MS-COCO：80k训练集和40k验证集，每张图像都有5种描述。</li>
+</ul>
+<h3 id="训练细节"><a class="markdownIt-Anchor" href="#训练细节"></a> 训练细节</h3>
+<p>除了第二节中引入的对比损失，其所提出的SD-GAN的生成器和鉴别器损耗遵循AttGAN中的训练过程，详细参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41748260/article/details/103132247">论文阅读：AttnGAN</a>，一种attention-driven的多级的细粒度文本到图像生成器。</p>
+<h3 id="模型评估"><a class="markdownIt-Anchor" href="#模型评估"></a> 模型评估</h3>
+<p>包括了预先训练的Inception模型评估，作者还另外设计了主题测试来评估模型性能。</p>
+<p>作者为CUB测试集中的每个类随机选择50个文本描述，在MS-COCO测试集中随机选择5000个文本描述。给出相同的描述，要求50个用户（不包括任何作者）通过不同方法对结果进行排名，计算人类用户排名最佳的平均比率以评估比较方法。</p>
+<h3 id="实验结果"><a class="markdownIt-Anchor" href="#实验结果"></a> 实验结果</h3>
+<p>暂时不对所有的实验结果逐一介绍了，选取其中比较重要且明显的对比做解释。</p>
+<p>通过在CUB和MS-COCO两个数据集上进行实验，证明了SDGAN优于已有的模型</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmo70gbrwuj30ng0pajvy.jpg" alt="" /></p>
+<p>进一步通过实验证明了Siamese mechanism和SCBN的有效性</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmo6zze55qj31am0tkb29.jpg" alt="" /></p>
+<p>最后显示了SDGAN可以对描述文本中小的变化做出相应的改变：</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gmo6z60zy8j30mc0oge20.jpg" alt="" /></p>
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p>整体来看，本文所使用的模型架构和新提出的SCBN具有一定的吸引力，为后面Text-to-Image 任务的解决提供了新的思路。</p>
+<h2 id="参考文献"><a class="markdownIt-Anchor" href="#参考文献"></a> 参考文献</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/4156225_Learning_a_similarity_metric_discriminatively_with_application_to_face_verification?enrichId=rgreq-41bb86e9729b1d866d0194963b0d4747-XXX&amp;enrichSource=Y292ZXJQYWdlOzQxNTYyMjU7QVM6MTAxMzE1NTUyMjE5MTQyQDE0MDExNjY5MTg0MTE=&amp;el=1_x_3&amp;_esc=publicationCoverPdf">Learning a similarity metric discriminatively, with application to face verification</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/92d7f6eaacf5">Siamese network 孪生神经网络–一个简单神奇的结构</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bentuwuying/p/8186364.html">Siamese Network理解</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/15/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91CVPR2019%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E3%80%8ASDGAN%E3%80%8B/" data-id="clkqxrnpn005d1fj49o3c450o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-福州大学分布式数据库期末复习总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/15/%E7%A6%8F%E5%B7%9E%E5%A4%A7%E5%AD%A6%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2021-01-15T01:28:27.000Z" itemprop="datePublished">2021-01-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/15/%E7%A6%8F%E5%B7%9E%E5%A4%A7%E5%AD%A6%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/">福州大学分布式数据库期末复习总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第一章"><a class="markdownIt-Anchor" href="#第一章"></a> 第一章</h2>
+<h3 id="12-分布式数据库的定义-特性"><a class="markdownIt-Anchor" href="#12-分布式数据库的定义-特性"></a> 1.2 分布式数据库的定义 &amp; 特性</h3>
+<p>**定义：**一个物理上分散而逻辑上集中的数据库系统</p>
+<p><strong>三个基本特点</strong>：a. 物理分布性  b. 逻辑整体性  c. 节点自治性</p>
+<p>**其他特点：**d.数据分布透明性  e. 集中与自治相结合的控制机制  f. 适当的数据冗余度  g. 事务管理的分布性</p>
+<p><strong>分布式数据库系统的优点：</strong></p>
+<ul>
+<li>可以管理具有不同透明度的数据</li>
+<li>提高可靠性和可用性：可靠性基本上定义为系统在特定时间运行的概率，而可用性定义为系统在一段时间内连续可用的概率。当 数据和DBMS软件分布在多个站点上时，一个站点可能会失败而其他站点继续运行，并且我们无法仅访问故障站 点中存在的数据，这基本上可以提高可靠性和可用性。</li>
+<li>更容易扩展<br />
+在分布式环境中，在添加更多数据，增加数据库大小或添加更多数据方面扩展系统，增加数据库<br />
+大小或添 加更多处理器要容易得多。</li>
+<li>改进的性能<br />
+通过将查询分解为基本上并行执行的多个子查询，我们可以通过在不同站点执行多个查询来实现<br />
+查询间和 内部查询并行性，这基本上可以提高性能。</li>
+</ul>
+<p><strong>分布式数据库系统的挑战</strong>：数据独立性、数据冗余、查询优化、事务管理等</p>
+<h3 id="13-分布式数据库系统体系结构和组成成分"><a class="markdownIt-Anchor" href="#13-分布式数据库系统体系结构和组成成分"></a> 1.3 分布式数据库系统体系结构和组成成分</h3>
+<p><strong>DDBS体系结构</strong>：DB、DBMS、DBA，均分为全局和局部</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/91df2621-213f-4005-8fdd-61d755c2910b/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/91df2621-213f-4005-8fdd-61d755c2910b/Untitled.png" /></p>
+<p><strong>DDB</strong>：DDB是DDBS中各站点上数据库的逻辑集合。</p>
+<p><strong>DDB的模式结构：四层、六模式</strong></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8705a6d8-d41b-4e69-9700-389828d22bf5/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8705a6d8-d41b-4e69-9700-389828d22bf5/Untitled.png" /></p>
+<p>a. 全局外层：全局外模式</p>
+<p>b. 全局概念层：全局概念模式、分片模式、分配模式</p>
+<p>c. 局部概念层：局部概念模式</p>
+<p>d. 局部内层：局部内层</p>
+<p>**分片模式：**描述全局数据的逻辑划分。数据存储的单位是数据的逻辑片段。每个全局关系可以通过选择和投影这样的关系操作被逻辑划分为若干个片段，这就是数据分片。分片模式就是描述数据分片或定义片段，以及全局关系与片段之间的映像。映像是一对多的，即一个全局关系可以对应多个片段，而一个片段只能来自于一个全局关系。</p>
+<p>**分配模式：**描述数据片段的分配情况。定义片段映像的类型，确定分布式数据库是冗余的还是非冗余的，以及冗余的程度。如果一个片段分配在多个站点上，则片段的映像是一对多的，分布式数据库是冗余的。</p>
+<p><strong>局部概念模式</strong>：对每个站点来说，在该站点上全部物理映像的集合称为该站点的局部概念模式。分配在同一站点上的同一个全局关系模式的一个或多个片段，构成了该全局关系模式在该站点上的一个物理映像。</p>
+<h3 id="14-数据独立性-分布透明性"><a class="markdownIt-Anchor" href="#14-数据独立性-分布透明性"></a> 1.4 数据独立性 &amp; 分布透明性</h3>
+<p><strong>数据独立性</strong> = 逻辑独立性 + 物理独立性 + 数据分布独立性</p>
+<p><strong>分布透明性</strong>：包含三个层次，级别从高到低分别为分片透明性、位置透明性、局部数据模式透明性</p>
+<p>a. 分片透明性：用户只需要关心全局关系模型，不必考虑数据的逻辑分片。位于全局概念模式和分片模式之间。（全局查询即可）</p>
+<p>b. 位置透明性：各片段被复制的情况（是否被复制，复制了几个副本）、片段及各副本的节点位置分配情况。位于分片模式和分配模式之间。（精确到片段）</p>
+<p>c. 局部数据模式透明性：与各个节点上数据库的数据模型无关。位于分配模式和局部概念模式之间。（精确到站点）</p>
+<h3 id="15-ddbs优缺点"><a class="markdownIt-Anchor" href="#15-ddbs优缺点"></a> 1.5 DDBS优缺点</h3>
+<p><strong>CDBS与DDBS的冗余比较</strong></p>
+<p>a. CDBS：减少数据冗余，节省存储空间。其原因是，冗余数据不仅浪费空间，而且容易造成各数据副本之间的不一致性，为了保证数据的一致性，系统要付出一定的维护代价。</p>
+<p>b. DDBS：最大特征是存在数据冗余，在不同的场地存储同一数据的多个副本。多重备份虽然损失掉了部分的存储空间，但保证了系统的可靠性和可用性。同时提高了系统性能，减少通信开销。</p>
+<h2 id="第二章"><a class="markdownIt-Anchor" href="#第二章"></a> 第二章</h2>
+<h3 id="22-自顶向下设计分布式数据库"><a class="markdownIt-Anchor" href="#22-自顶向下设计分布式数据库"></a> 2.2 自顶向下设计分布式数据库</h3>
+<p><strong>自顶向下设计步骤</strong></p>
+<p>需求分析 → 概念设计 → 逻辑设计 → <strong>分布设计</strong> → 物理设计</p>
+<p>其中分布设计包括：a. 数据分片 b. 片段分配，其输入为全局模式，输出是局部概念模式。</p>
+<p><strong>分片设计的基本内容</strong></p>
+<p>a. 设计目的：合适的划分方案可以减少操作量，实现尽可能的本地性。</p>
+<p>b. 分片三原则：1）完整性  2）可重构  3）不相交</p>
+<p>c. 分片类型与其代数表达式：1）水平分片  2）垂直分片  3）混合分片</p>
+<ul>
+<li>
+<p><strong>水平分片</strong>：对全局关系执行选择操作，把具有相同性质的元组进行分组，构成若干不相交的子集。</p>
+<ul>
+<li>
+<p>初级分片：以关系自身的属性性质为基础，执行选择操作，将关系分片成若干个不相交的片段。谓词集合是完整的、最小的。</p>
+</li>
+<li>
+<p>导出分片：从另一个关系的属性性质或水平片段推导出来的。导出分片是一种半连接操作。</p>
+</li>
+<li>
+<p>代数表达式：</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ec2192c0-7b0a-48e6-a04e-a4301261f9ac/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ec2192c0-7b0a-48e6-a04e-a4301261f9ac/Untitled.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>垂直分片</strong>：对全局关系执行投影操作将属性分成若干组。垂直分片的组必须只在某个键属性上重叠，其他不能重叠。</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e9759637-9103-4ea0-84e9-67bf235319f8/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e9759637-9103-4ea0-84e9-67bf235319f8/Untitled.png" /></p>
+</li>
+<li>
+<p>**混合分片：**交替水平分片与垂直分片。</p>
+</li>
+</ul>
+<p><strong>位置分配设计的基本内容</strong></p>
+<p>在非冗余分配中，每个片段恰好映射到一个站点上；冗余分配中，每个片段映射到一个或多个站点上。</p>
+<p>a. 非冗余分配：“最佳适应方法”，将片段R分配到访问R次数最多的那个站点上。</p>
+<p>b. 冗余分配：“所有得益站点”法、“附加复制”法。</p>
+<ul>
+<li>所有得益站点法：应用的检索访问费用总比从任何一个其他站点发出的应用对R进行更新访问的费用要低。</li>
+<li>附加复制法：从最有益处逐步附加复制的副本，直到附加复制已无明显好处。</li>
+</ul>
+<h2 id="第三章-查询处理和优化"><a class="markdownIt-Anchor" href="#第三章-查询处理和优化"></a> 第三章 查询处理和优化</h2>
+<h3 id="32-查询优化基础"><a class="markdownIt-Anchor" href="#32-查询优化基础"></a> 3.2 查询优化基础</h3>
+<p>**查询树：**对一个关系代数表达式表示的查询，进行语法分析，可以得到一颗语法树，树的叶子是已知的关系，各个节点是关系代数操作符。</p>
+<p><strong>两个系统下的查询优化问题</strong></p>
+<p>a. 集中式数据库系统中的查询优化：查询优化的目的在于为每个用户查询寻求总代价最小的执行策略，尽可能降低I/O代价,使查询的响应时间最短。</p>
+<ul>
+<li>逻辑优化:为每个用户查询寻求总代价最小的执行策略或最优的操作符次序;</li>
+<li>物理优化:关于基本运算在实现中的优化,比如考虑索引、排序、聚集等。</li>
+</ul>
+<p>b. 分布式查询优化：两种不同的目标来考虑查询优化。</p>
+<ul>
+<li>一是以总代价最小为标准，除了如CDBS一样考虑CPU代价和I/O代价之外，总代价还包括通过网络在站点之间传输数据和信息的代价；数据的分布和冗余也增加了查询的并行处理的可能性</li>
+<li>另一个目标是以每个查询的响应时间最短为标准。</li>
+</ul>
+<h3 id="33-查询分类和层次结构"><a class="markdownIt-Anchor" href="#33-查询分类和层次结构"></a> 3.3 查询分类和层次结构</h3>
+<p><strong>查询处理步骤</strong>：查询分解 → 数据本地化 → 全局优化 → 局部优化</p>
+<p>a. 查询分解：把SQL语句转换成一个定义在全局关系上的关系代数表达式。输入：sql语句；输出：关系代数表达式或全局查询树</p>
+<p>b. 数据本地化：将一个在全局关系上的查询落实到合适的片段上。（全局查询树→片段查询树）</p>
+<p>c. 全局优化：找出分片查询的最佳操作次序，使得代价最小。（片段查询树→优化的片段查询树）</p>
+<p>d. 局部优化：采用集中式数据库系统中查询优化技术对片段查询进行优化处理。</p>
+<h3 id="34-基于关系代数等价变换的查询优化处理"><a class="markdownIt-Anchor" href="#34-基于关系代数等价变换的查询优化处理"></a> 3.4 基于关系代数等价变换的查询优化处理</h3>
+<p>**基本原理：**把查询问题转变为关系代数表达式,分析得到查询树，进行从全局到片段的变换得到基于片段上的查询树，然后利用关系代数等价变换规则的优化算法，尽可能先执行选择和投影操作。</p>
+<p><strong>优化思想</strong>：利用关系代数等价变换规则,把查询树中的连接和合并操作尽可能上提(向树根方向)，选择和投影操作尽可能下移(向树叶方向)先进行。</p>
+<p><strong>实现步骤和方法</strong></p>
+<ul>
+<li>将一个查询问题转变为关系代数表达式</li>
+<li>从关系代数表达式转换为查询树</li>
+<li>利用关系代数等价变换规则，对全局查询树进行优化处理</li>
+<li>利用分片信息将全局查询树转换为片段上的查询树</li>
+<li>再次利用关系代数等价变换规则，对片段查询树进行优化处理</li>
+</ul>
+<p><strong>从全局查询到片段查询优化原则</strong></p>
+<p>a. **水平分片关系优化：**尽可能把选择条件下移到分片的限定关系处，再把分片的限定关系与选择条件进行比较，然后去掉它们之间存在矛盾的相应片段。如果最后剩下一个水平片段,则可去掉一个“并”操作。</p>
+<p>b. <strong>垂直分片关系优化</strong>：把垂直分片所用到的属性集，与查询条件(查询表达式)中的投影操作所涉及的属性集相比较,去掉无关的垂直片段。如果最后剩下一个垂直片段，则可去掉一个“连接”操作。</p>
+<h3 id="35-基于半连接算法的查询优化"><a class="markdownIt-Anchor" href="#35-基于半连接算法的查询优化"></a> 3.5 基于半连接算法的查询优化</h3>
+<p><strong>从片段查询到物理查询的转换</strong></p>
+<p>将片段查询树转换成具体的每个场地上的局部操作命令和数据传输命令序。其中操作执行次序的选择是重点！</p>
+<p><strong>半连接操作</strong>：</p>
+<p>a. 半连接操作具有不对称性</p>
+<p>b. 从一个站点传送关系到另一个站点做连接之前，先出去那些与连接无关的数据，减少做连接操作的关系中的数据量，从而减少传输的代价。</p>
+<p><strong>选择操作与半连接操作的不同点和相同点：</strong></p>
+<ul>
+<li>相同点：都是删减操作，都有过滤元组和选择元组的作用</li>
+<li>不同点：选择操作是过滤，是单目运算；半连接操作是对半连接左边的进行缩减性运算，非对称的，是双目运算。</li>
+<li>选择操作：以关系R上的选择操作为例。如果R是一个全局关系，那么简单地在包含R的站点上执行选择操作，然后把结果发送给用户站点。如果R被分片且分布在几个站点，那么在每个包含R片段的站点上执行选择操作，然后再将这些选择操作的结果合并到最终结果，发送给用户站点。</li>
+<li>半连接操作：在从一个站点传送关系到另一个站点做连接实现之前，先除去那些与连接无关的数据，减少做连接操作的关系中的数据量，从而减少传输的代价。所以，如果只需要一个关系中的一小部分元组参与和另一个关系连接的话，这是一个使数据传输量最小化的非常有效的方案。</li>
+</ul>
+<p><strong>SDD-1算法</strong></p>
+<p>a. 组成：基本算法 &amp; 后优化</p>
+<p>b. 后优化算法的两条准则：</p>
+<ul>
+<li>若最后一次半连接程序缩减关系的所在场地恰好是被选中的查询执行场地，则最后一次半连接可以取消。</li>
+<li>对基本算法的主迭代所构成的半连接程序程图进行修正。</li>
+</ul>
+<p>c. 基本算法：</p>
+<ul>
+<li>输入：优化了的片段查询树</li>
+<li>方法
+<ul>
+<li>构造出所有可能的半连接缩减程序。</li>
+<li>按半连接缩减程序的静态特性表分别计算其费用和收益，从一组可能的静态特性表中选取一个半连接程序，设M。</li>
+<li>以M完成缩减后,又将产生一组新的静态特性再进行计算，再从一组可取的静态特性表中选一个半连接程序。</li>
+<li>反复直到无半连接缩减程序为止。</li>
+</ul>
+</li>
+<li>输出：以若干次迭代以后的最后缩减关系的静态特性表为基础,进行场地选择,决定执行查询的场地。</li>
+</ul>
+<p>d. 主要思路：利用半连接把属于两个场地的连接运算用半连接变成两次的传递，先缩减后连接，以便达到减少通信。</p>
+<h3 id="36-基于直接连接算法的查询优化"><a class="markdownIt-Anchor" href="#36-基于直接连接算法的查询优化"></a> 3.6 基于直接连接算法的查询优化</h3>
+<p>**分片和复制算法：**选择一组站点，把查询引用的某个关系的所有片段分布到这些站点上，其余被引用的关系则复制到每一个选定的站点中去。</p>
+<p><strong>直接连接操作的常用策略</strong></p>
+<p>a. 两个关系在同一站点----与CDBS中策略相同。<br />
+b. 两个关系在不同站点----假设 R∞S</p>
+<ul>
+<li>第一种策略:整体传输</li>
+<li>第二种策略:按需传输</li>
+</ul>
+<h2 id="第四章"><a class="markdownIt-Anchor" href="#第四章"></a> 第四章</h2>
+<h3 id="41-分布式事务概述"><a class="markdownIt-Anchor" href="#41-分布式事务概述"></a> 4.1 分布式事务概述</h3>
+<p>**集中式事务：**对数据库的一个或一段程序或命令的一次执行。</p>
+<p>**分布式事务（全局事务）：**事务具有分布式，操作命令序列及数据分布在不同的站点上。通常由一个主事务和在不同站点上执行的子事务(局部事务)组成。</p>
+<p><strong>主事务</strong>：负责事务的开始、提交和异常终止。</p>
+<p><strong>子事务</strong>：完成对相应站点上数据库的访问操作。</p>
+<p><strong>特性：</strong></p>
+<p>a. 原子性：每个事务的所有操作要么被全部成功地执行，要么一个也不被执行。</p>
+<p>b. 一致性：如果在执行事务之前数据库是一致的,那么在执行事务之后数据库也还是一致的。//可串行性。</p>
+<p>c. 隔离性：即使多个事务并发执行,每个事务都感觉不到系统中有其他的事务在执行，因而也就能保证数据库的一致性。</p>
+<p>d. 持久性：事务成功执行后它对数据库的修改是永久的，即使系统出现故障也不受影响。</p>
+<p>分布式事务 = ACID + 分布，即各个站点上的数据库全都进入一个新的一致状态，才能使整个数据库转换为新的一致状态。</p>
+<p><strong>全局提交原则</strong></p>
+<p>a. 只要有一个参与者撤消事务,协调者就必须做出全局撤消决定;</p>
+<p>b. 只有所有参与者都同意提交事务,协调者才能做出全局提交决定.</p>
+<p><strong>分布式数据库中的故障类型</strong></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c25d4f10-9064-4b38-9ce2-f0fbe3e0b652/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c25d4f10-9064-4b38-9ce2-f0fbe3e0b652/Untitled.png" /></p>
+<p>其中比较主要的是：网络分割故障、报文错、报文失序。</p>
+<h3 id="42-执行与恢复"><a class="markdownIt-Anchor" href="#42-执行与恢复"></a> 4.2 执行与恢复</h3>
+<p><strong>日志记录格式：</strong></p>
+<p>1)[start_transaction,T] 表示事务T开始执行;</p>
+<p>2)[write_item,T,X,旧值,新值] 表示事务T已将数据项X的值从旧值该为新值;</p>
+<p>3)[read_item,T,X] 表示事务T已读取数据项X的值;</p>
+<p>4)[commit,T] 表示事务T已成功完成,其结果已被提交给数据库(永久性);</p>
+<p>5)[abort,T] 表示事务T已被撤消;</p>
+<p>6)Log:记录长度及用于恢复过程的辅助信息.</p>
+<p>我们假设所有对数据库的永久改变都发生在事务内部,所以对事务故障进行恢复,实际上就是取消或重新逐个地执行日志中的事务操作.</p>
+<p><strong>检查点工作原理：</strong></p>
+<p>为了便于恢复,在日志中设定一种周期性操作点,称为检查点,以标始检查点前已执行完的事务是正确的.每遇检查点,就做如下工作:</p>
+<p>1)将Log缓冲区内容写入日志数据集;</p>
+<p>2)在日志数据集中写入这次检查点记录信息—当前活动事务表;</p>
+<p>3)将DB缓冲区内容写入DB(更新当前DB);</p>
+<p>4)将这次检查点记录在日志数据集中的地址记入“重启动文件”中.</p>
+<p><strong>事务故障的恢复原则</strong></p>
+<p>当发生事务故障时,为了保证事务的原子性需要进行事务恢复。事务故障主要是依靠日志来实现，恢复的原则是：</p>
+<p>(1)孤立和逐步退出事务的原则<br />
+对于不影响其它事务的可排除性局部故障,例如事务操作的删除、超时、违反完整性规则、资源、限制、死锁等,应令某个事务孤立和逐步地退出,将其所做过的修改恢复,即UNDO.</p>
+<p>(2)成功结束事务原则<br />
+成功结束事务所做过的修改应超越各种故障而存在,也就是重做(REDO)它所做过的所有修改数据库的操作.</p>
+<p>(3)夭折事务的原则<br />
+若发生了非局部性的不可排除的故障,例如系统崩溃,则撤消全部事务,恢复到初态.</p>
+<p><strong>基于日志的事务故障的恢复处理过程</strong>：</p>
+<p>在系统发生故障时，需要扫描日志，检查那些已在日志中写入[start_transaction,T]，但没有写入[commit,T]的所有事务T；恢复时必须回滚(UNDO)这些事务以取消它们对数据库的影响。</p>
+<p>此外，还必须对日志中记录的已提交事务的所有写操作进行恢复，这样它们对数据库的作用才可根据这些记录重做(REDO)。</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/85bd2d21-a776-41f0-bd04-789fccceabb6/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/85bd2d21-a776-41f0-bd04-789fccceabb6/Untitled.png" /></p>
+<p><strong>掌握两阶段提交协议内容（算法描述）、实现方式对故障的处理、阻塞现象；</strong></p>
+<p>a. 两阶段提交协议：</p>
+<ul>
+<li>在两阶段提交协议中,把分布式事务的某一个代理(根代理)指定为协调者,所有其它代理称为参与者.</li>
+<li>只有协调者才有掌握提交或撤消事务的决定权,而其他参与者各自负责在其本地数据库中执行写操作,并向协调者提出撤消或提交子事务的意向.</li>
+<li>两个阶段：提交阶段 与 表决阶段</li>
+<li>2PC协议保证了事务的原子性</li>
+</ul>
+<p>b. 算法描述</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0f5b6161-7e7f-4722-86ed-b62d47da4ab9/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0f5b6161-7e7f-4722-86ed-b62d47da4ab9/Untitled.png" /></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dc762a83-b3a2-4b17-ae4f-9d70acab409b/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dc762a83-b3a2-4b17-ae4f-9d70acab409b/Untitled.png" /></p>
+<p>c. 故障处理</p>
+<ul>
+<li>
+<p>场地故障</p>
+<p>(1)当一参与者在写入“准备提交”前发生故障时,该参与者无法向协调者发回答信息,因此,当协调者等待超时后,将决定中止事务.</p>
+<p>对该故障场地而言,当故障恢复后,只要撤消该事务即可.</p>
+<p>(2)参与者在写入“准备提交”后发生故障,这时,其它的参与者可以正常地结束该事务“提交”和“撤消”.</p>
+<p>故障恢复后,该参与者要访问协调者或其它参与者,以了解事务已做出的决定,然后执行相应的操作.</p>
+<p>(3)协调者在日志中写入“预提交”记录后,写入“全部提交”或“全部夭折”前发生故障,这时已发出“准备提交”信息的参与者将等待协调者恢复.</p>
+<p>协调者重启动后将从头恢复提交协议,从“预提交”记录中读出参与者的标识符,重发“预提交”命令给参与者,重新执行提交过程.</p>
+<p>(4)协调者在日志中写入“全部提交”或“全部夭折”记录后,在写入“完成”记录之前发生故障.</p>
+<p>协调者恢复时必须给所有的参与者重发其决定.</p>
+</li>
+<li>
+<p>丢失报文</p>
+<p>(1)来自参与者的回答报文(准备提交或夭折)丢失了至少一个,此时,协调者将等待回答而超时,整个事务被夭折.</p>
+<p>(2)丢失“预提交”报文,由于至少一个参与者收不到该命令,因此协调者会因等待参与者的回答而超时,整个事务被夭折.</p>
+<p>(3)丢失“提交”或“夭折”报文,此时,参与者处于等待协调者命令的状态,当等待超时时,参与者将向协调者发送请求重发该命令的信息----需要在参与者中有超时机制.</p>
+<p>(4)丢失“执行”报文,当协调者未收到全部的“执行”报文时,它会因等待而超时,此时,协调者重发命令给所有参与者----需要在协调者中有超时机制.</p>
+</li>
+</ul>
+<p>d. 阻塞现象：</p>
+<ul>
+<li>在2PC协议中,当参与者等待协调者的回答时,可能因为网络故障或协调者故障使之收不到回答信息而出现等待超时。</li>
+<li>这时,事务进入阻塞状态,重发“准备提交”信息要求协调者给予回答,直到故障恢复.若一直收不到回答,则事务一直处于阻塞状态而挂在相应的场地上。</li>
+</ul>
+<p><strong>2PC协议线性通信结构中报文、网络延迟的计算</strong></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/be214c14-950a-49e4-9ce7-e28ad64d59c6/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/be214c14-950a-49e4-9ce7-e28ad64d59c6/Untitled.png" /></p>
+<p><strong>非阻塞提交协议3PC协议以及该协议是如何避免阻塞现象的</strong></p>
+<p>a. 原理</p>
+<ul>
+<li>在2PC协议中增加一段使得参与者的提交不仅要等到它知道所有的参与者均发出了“准备提交”的报文,而且还知道所有参与者的状态(如它们是处于故障状态,还是已经恢复)以后才执行,这时,2PC协议就是3PC协议。</li>
+<li>在3PC协议中,报文有三次接收和发送.协调者第2次向参与者发出的报文不是“提交”报文,而是提交前的预备报文,告诉所有的参与者均可进入准备提交状态(第2态!),而参与者的回答也不是“提交”报文,而是“准备就绪”报文.</li>
+<li>在2PC中,参与者在“等待回答”时有2种可能的情况,一是夭折,一是可以提交.后一种情况有可能出现阻塞。</li>
+</ul>
+<p>b. 3PC协议的工作过程:</p>
+<ul>
+<li>第一阶段,协调者向所有的参与者发“预提交”报文,由每个参与者根据自己的情况进行投票,只有收到所有的参与者均赞成提交的报文才进入下一阶段.</li>
+<li>第二阶段,协调者向所有的参与者发“准备提交”报文,参与者收到该报文后若已经准备好提交,则回答“准备就绪”报文,否则进行夭折处理.</li>
+<li>第三阶段,当协调者收到所有的参与者“准备就绪”的回答,就向所有的参与者发“提交”报文,参与者收到该报文后可以提交其子事务.</li>
+</ul>
+<p>c. 在3PC协议中下述两种状态是不相容的:</p>
+<ul>
+<li>一个参与者在其它任何一个参与者处于“赞成提交”状态(即第1状态)时,不可能进入“提交”状态(第3状态).</li>
+<li>一个参与者在另一个参与者进入“提交”状态(第3状态),或任何一个参与者都进入了“准备提交”状态(第2状态)时不能进入“夭折”状态(第1状态).</li>
+</ul>
+<p>d. 3PC协议对故障的处理</p>
+<ul>
+<li>协调者没能及时发出“预提交”报文,导致参与者等待超时,这时,参与者将决定夭折.</li>
+<li>协调者等待参与者的投票时超时,这时,协调者将决定夭折.</li>
+<li>参与者已进入“赞成提交”状态(第1状态),在等待协调者的命令时超时或协调者故障.</li>
+<li>参与者处于“准备就绪”状态(第2状态),等待协调者的提交命令超时.</li>
+</ul>
+<p><strong>3pc协议怎么比避免在2pc协议会出现的阻塞现象：</strong></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bb3c8f8d-9561-4fcc-8fb0-faea5f28a68a/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bb3c8f8d-9561-4fcc-8fb0-faea5f28a68a/Untitled.png" /></p>
+<h2 id="第五章"><a class="markdownIt-Anchor" href="#第五章"></a> 第五章</h2>
+<p><strong>了解多个事务并发执行可能出现的问题</strong></p>
+<ol>
+<li>丢失更新问题</li>
+<li>不一致分析问题</li>
+<li>依赖于未提交更新的问题</li>
+</ol>
+<p><strong>了解并掌握并发控制的基本概念，比如事务调度、串行调度、可串行化调度、事务的冲突操作、一致性调度、基于冲突等价的等价调度等；</strong></p>
+<ol>
+<li>
+<p>分布式事务的一个调度</p>
+<p>Ti表示第i个事务,Ri(x)表示Ti对数据项x的读操作,Wi(x)表示Ti对数据项x的写操作.</p>
+<p>所考虑的全部事务中的所有操作的一个序列称为这组事务的一个调度S.</p>
+</li>
+<li>
+<p>串行调度</p>
+<p>设有一组事务T={T1,T2,…,Tn},如果事务Ti的所有操作都先于事务Tj的操作,记为Ti&lt;Tj.</p>
+<p>若一个调度S,其每个事务的执行均有Ti&lt;Tj,称S为串行调度,即S={…&lt;Ti&lt;Tj&lt;…}.</p>
+</li>
+<li>
+<p>可串行化调度</p>
+<p>与串行调度等价的调度称为可串行化调度.</p>
+<p>直观上看,是让有冲突的操作串行执行,非冲突的操作并行执行.</p>
+</li>
+<li>
+<p>冲突操作</p>
+<p>如果有两个操作P和Q对同一个数据x进行操作,其中有一个是写操作W[x],则P和Q称为冲突操作.</p>
+</li>
+<li>
+<p>一致性调度</p>
+<p>如果执行一个调度S,使数据库从一个一致状态转变到另一个一致状态,则称调度S为一致性调度.</p>
+<p>任何一个串行调度是一致性调度.</p>
+</li>
+<li>
+<p>两个调度等价(冲突等价)</p>
+<p>两个调度S1和S2是等价的充分条件是:对于两个有冲突的操作Oi和Oj,若：Oi,Oj Î S1,且Oi&lt;Oj,则Oi,Oj Î S2,且也有Oi&lt;Oj</p>
+</li>
+</ol>
+<p>结论:</p>
+<ul>
+<li>同一个事务集上的可串行化调度,结果未必相同;</li>
+<li>一个可串行化调度必定与某个串行调度等价,且是一致性调度;</li>
+<li>一致性调度不一定是可串行化调度;</li>
+<li>同一事务集的几个可串行化调度,它们的结果未必相同.<strong>使用优先图判别局部调度是否可串行化</strong></li>
+</ul>
+<p>使用优先图判别局部调度是否可串行化：</p>
+<ul>
+<li>对于调度S中的事务Ti,在图上创建一个节点Ti;</li>
+<li>对于每一种这样的情形:如果S中在Ti执行了W(x)操作后执行Tj的R(x)操作,那么在优先图中创建一条边(Ti→Tj);</li>
+<li>对于每一种这样的情形:如果S中在Ti执行了R(x)操作后执行Tj的W(x)操作,那么在优先图中创建一条边(Ti→Tj);</li>
+<li>对于每一种这样的情形:如果S中在Ti执行了W(x)操作后执行Tj的W(x)操作,那么在优先图中创建一条边(Ti→Tj);</li>
+<li>当且仅当优先图中没有环路时,调度S是可串行化的.</li>
+</ul>
+<p><strong>判别一个全局调度是否是一致性调度(全局可串行化调度的条件)：</strong></p>
+<p>在分布式数据库中,只涉及一个站点上的调度称为局部调度,涉及多个站点，上的调度称为全局调度。</p>
+<ul>
+<li>如果分布式数据库中数据没有副本，并且每个局部调度都是可串行化的。那么它们的并集(即全局调度)也称作是可串行化的。</li>
+<li>如果分布式数据库中数据有副本，当局部调度满足以下两个条件时，是可串行化的。
+<ul>
+<li>每一个局部调度必须是可串行化的;</li>
+<li>两个冲突操作在它们同时出现的各个局部调度中,必须具有相同的相对顺序.</li>
+</ul>
+</li>
+</ul>
+<p><strong>两段锁协议</strong></p>
+<ol>
+<li>两阶段封锁协议保证调度的可串行化：如果一个事务所有的封锁操作都放在第一个解锁操作之前,那么就说该事务遵守两阶段封锁协议。这样的一个事务可以被分成两个阶段：
+<ul>
+<li>第一阶段是扩张或成长阶段.在这个阶段中,事务只能获得新的数据项锁,而不能释放任何已持有的锁.</li>
+<li>第二阶段是收缩或衰退阶段.在这个阶段,事务只能释放已经持有的锁,而不能获得任何新的锁.</li>
+</ul>
+</li>
+<li>工作过程（以严格2PL协议为例）:
+<ul>
+<li>当事务T发出R(X)的请求时,系统会代表T调用read-lock(X)操作。如果lock(X)的状态是被另一个事务T’持有写锁,那么,系统会把T放到数据项X的等待队列中。否则,系统同意read-lock(X)的请求,从而允许事务T执行R(X);</li>
+<li>如果事务T发出W(X)操作的请求时,系统会代表T调用write-lock(X)操作。如果lock(X)的状态是被另一个事务T’持有读锁或写锁,那么,系统会把T放到数据项X的等待队列中。如果lock(X)的状态是读封锁,并且事务T本身就是持有X上的读锁的唯一事务,那么系统将该读锁升级为写锁,并且允许T执行W(X)的操作.</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>限制了一个调度中可以发生的并发事务的数量.</li>
+<li>可能出现死锁.</li>
+</ul>
+</li>
+</ol>
+<p><strong>事务等待图和事务优先图的区别</strong></p>
+<ol>
+<li>事务等待图：一种用来表示事务之间相互等待关系的有向图，可指明哪个事务在等待别的事物释放锁</li>
+<li>事务优先图：用于表示事务间先后次序，可以判断是否可串行化调度</li>
+<li>等待图是动态的，有环路代表有死锁</li>
+<li>优先图是静止的，有环路代表不可调度</li>
+</ol>
+<p>**死锁的判别：**当且仅当等待图中至少包含一个回路,则存在一个死锁。</p>
+<p><strong>死锁的预防：</strong></p>
+<ol>
+<li>基本思想：当有发生死锁危险时,就中止并重新启动其中一个事务或让该事务等待。如果事务T1请求一资源,而该资源被另一事务T2所持有时,就进行一次预防性测试.若测试结果表明有死锁的危险时,或不让T1进入等待状态,并重新启动T1,或中止并重新启动T2.</li>
+<li>方法：先对事务按它们的开始时间排序。
+<ul>
+<li>非占先权：总是重新启动比较年轻的事务,允许年老的事务等待年轻的。</li>
+<li>占先权：要求中止比较年轻的事务,且允许年老的事务绝对优于年轻的事务,因而只有年轻的等待年老的。</li>
+</ul>
+</li>
+</ol>
+<p>死锁的检测和解决方法：</p>
+<ul>
+<li>检测: 通过对全局等待图中回路的形成进行研究来实现。</li>
+<li>解决: 撤消某个/某些事务.选择撤消哪些事务称为受害者选择.通过选择一个或多个受害者事务，这些事务将被优先执行或撤消,以打破全局等待图中的回路。</li>
+</ul>
+<h2 id="第六章"><a class="markdownIt-Anchor" href="#第六章"></a> 第六章</h2>
+<p><strong>数据可靠性的几种策略：读一写全法，多数法，主副本法</strong></p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ffc7193e-d6f6-43f7-9bd1-9bf97b9bd7d4/Untitled.png" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ffc7193e-d6f6-43f7-9bd1-9bf97b9bd7d4/Untitled.png" /></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/01/15/%E7%A6%8F%E5%B7%9E%E5%A4%A7%E5%AD%A6%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/" data-id="clkqxrnqn009x1fj4h6mm0i7i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

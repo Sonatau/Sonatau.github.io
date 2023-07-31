@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>卷积神经网络的发展历程 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="按照发展顺序以及相互关系介绍：  LeNet 主要贡献：卷积神经网络的开山祖师爷，第一次定义了CNN的网络结构 网络结构：2个卷积层 + 降采样（这时候都还不叫池化） + 激活函数 + 3个全连接层  卷积层：局部连接、权值共享 降采样：窗口形状为2 * 2，步幅为2，选择局部区域内最大的值作为下采样的结果。池化区域不重叠。 激活函数：Tanh（现在都改成了ReLU   在LeNet后，针对数据与">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卷积神经网络的发展历程">
+<meta property="og:url" content="http://yluy.gitee.io/2021/11/19/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="按照发展顺序以及相互关系介绍：  LeNet 主要贡献：卷积神经网络的开山祖师爷，第一次定义了CNN的网络结构 网络结构：2个卷积层 + 降采样（这时候都还不叫池化） + 激活函数 + 3个全连接层  卷积层：局部连接、权值共享 降采样：窗口形状为2 * 2，步幅为2，选择局部区域内最大的值作为下采样的结果。池化区域不重叠。 激活函数：Tanh（现在都改成了ReLU   在LeNet后，针对数据与">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwj4jeuj4hj31nu0gk0vl.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwjbzm00z8j316o0eqdi7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwje67d6ltj31it0u00wo.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwje9pao82j323m0u0q76.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwki6s7uogj31700b83zh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwkis5hqh4j316k0ge0u0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwkj5lesboj30920fqweo.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwkjdu36fyj32a80d4q6e.jpg">
+<meta property="article:published_time" content="2021-11-19T08:49:39.000Z">
+<meta property="article:modified_time" content="2021-11-19T08:58:07.361Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="中等">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gwj4jeuj4hj31nu0gk0vl.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-卷积神经网络的发展历程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/19/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/" class="article-date">
+  <time datetime="2021-11-19T08:49:39.000Z" itemprop="datePublished">2021-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      卷积神经网络的发展历程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>按照发展顺序以及相互关系介绍：</p>
+<h3 id="lenet"><a class="markdownIt-Anchor" href="#lenet"></a> LeNet</h3>
+<p><strong>主要贡献</strong>：卷积神经网络的开山祖师爷，第一次定义了CNN的网络结构</p>
+<p><strong>网络结构</strong>：2个卷积层 + 降采样（这时候都还不叫池化） + 激活函数 + 3个全连接层</p>
+<ol>
+<li>卷积层：局部连接、权值共享</li>
+<li>降采样：窗口形状为2 * 2，步幅为2，选择局部区域内最大的值作为下采样的结果。池化区域不重叠。</li>
+<li>激活函数：Tanh（现在都改成了ReLU</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwj4jeuj4hj31nu0gk0vl.jpg" alt="" /></p>
+<p>在LeNet后，针对数据与硬件这两个优化方向，提出了AlexNet。</p>
+<h3 id="alexnet改进"><a class="markdownIt-Anchor" href="#alexnet改进"></a> AlexNet改进</h3>
+<p><strong>网络结构</strong>：使用了5层卷积和2层全连接隐藏层，以及1个全连接输出层</p>
+<p><strong>改进优势</strong>：</p>
+<ol>
+<li>以ReLU替代sigmoid或tanh，网络训练以更快速度收敛
+<ul>
+<li>当sigmoid激活函数输出极接近0或1时，这些区域的梯度几乎为0，从而造成反向传播无法继续更新部分模型参数</li>
+<li>若模型参数初始化不当，sigmoid函数可能在正区间得到几乎为0的梯度，从而令模型无法得到有效训练</li>
+<li>ReLU激活函数在正区间的梯度恒为1，负梯度为0，可以减少一半的计算量。</li>
+</ul>
+</li>
+<li>双GPU并行计算：算力更强，因此可以使用更大更深的网络。（与参数有关）</li>
+<li>重叠池化：Pooling窗口存在重叠。可以提高精度，不容易产生过拟合。可以减少一部分信息的丢失。</li>
+<li>全连接层Dropout：
+<ul>
+<li>随机丢弃一定比例的神经元，被丢弃的神经元将不参加训练过程，权重也不做更新</li>
+<li>每次迭代的时候，网络架构都不一样，可以大概率避免过拟合的发生（Ensemble Learning</li>
+</ul>
+</li>
+<li>数据增强：翻转、裁剪和颜色变化，扩大数据集来缓解过拟合</li>
+</ol>
+<p>*注意：它的卷积窗口形状在不断减小，从11到3，这一变化与图像和特征图的尺寸是相关的。（防止捕捉不到物体就需要大一点的）</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwjbzm00z8j316o0eqdi7.jpg" alt="" /></p>
+<h3 id="vgg"><a class="markdownIt-Anchor" href="#vgg"></a> VGG</h3>
+<p><strong>网络结构</strong>：五个卷积层与激活函数的叠加部分 + 2个FC隐藏层 + 1个FC输出层</p>
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gwje67d6ltj31it0u00wo.jpg" height="250"/>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwje9pao82j323m0u0q76.jpg" alt="" /></p>
+<p><strong>改进优势</strong>：</p>
+<ol>
+<li>
+<p>用多个3*3小卷积核替换了大卷积核，并由此组成了不同的vgg块，在每个block的最后进行池化操作。</p>
+<ul>
+<li>
+<p>5 * 5 感受野 --&gt; 3 * 3感受野 --&gt; 1</p>
+</li>
+<li>
+<p>减少了网络参数量，减少计算量</p>
+</li>
+<li>
+<p>更大的网络深度，非线性次数变多，使得学习能力变得更好</p>
+</li>
+</ul>
+</li>
+<li>
+<p>使用了步幅为2，窗口形状为2 * 2的最大池化层，每次池化后的尺寸减半。上图的红色部分。</p>
+</li>
+<li>
+<p>去掉了局部相应归一化层（BN）</p>
+</li>
+<li>
+<p>允许使用多个尺度的图片进行训练：在最后一层使用的是全连接卷积神经网络，因此允许输入维度是变化的。(Multi-scale Training)</p>
+</li>
+</ol>
+<p>*关于参数：前两层卷积占据了绝大部分的内存（因为图片尺寸较大）；第一层全连接层占据了绝大部分参数（4096 * 7 * 7 *512）</p>
+<h3 id="googlenet"><a class="markdownIt-Anchor" href="#googlenet"></a> GoogLeNet</h3>
+<p><strong>提出原因</strong>：（按推理顺序</p>
+<ul>
+<li>网络层数越深效果越好</li>
+<li>模型越深参数越多，容易导致过拟合，且网络的计算量大</li>
+<li>能否在增加复杂度的同时减少网络参数</li>
+<li>设计出了GoogLeNet</li>
+</ul>
+<p><strong>主要思想</strong>：<strong>使用不同尺度的卷积核怼原图（输入）进行不同尺度的卷积，再将卷积结果做通道合并</strong>。4条线路子网络，并行抽取信息。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwki6s7uogj31700b83zh.jpg" alt="改进的Inception模块" /></p>
+<p><strong>网络结构</strong>：9个Inception（原始结构无1*1卷积核）</p>
+<ul>
+<li>同样为5个模块，每个模块之间使用步幅为2的3*3最大池化减少输出的尺寸</li>
+<li><strong>使用GAP替换了第一个全连接层，将每个通道的高宽变为1</strong></li>
+<li>模块介绍：
+<ul>
+<li>1: 64通道的7 * 7卷积 + 3 * 3最大池化</li>
+<li>2: 2个卷积层 + 最大池化
+<ul>
+<li>64通道的1*1卷积</li>
+<li>3*3卷积</li>
+</ul>
+</li>
+<li>3: 串联2个完成的Inception</li>
+<li>4: 串联5个（在第2个和第5个部分设置了额外的辅助 Loss，用以增加向后传导的梯度，缓解梯度消失问题</li>
+<li>5: 串联2个</li>
+</ul>
+</li>
+</ul>
+<h3 id="resnet"><a class="markdownIt-Anchor" href="#resnet"></a> ResNet</h3>
+<p><strong>结构对比</strong>：</p>
+<ul>
+<li>普通：输入为x，直接拟合理想映射fx</li>
+<li>ResNet：理想映射仍为fx，但拟合对象为与恒等映射有关的残差映射fx-x；当虚线框内的权重与偏置均为0时，fx=x为恒等映射。</li>
+</ul>
+<p><strong>主要贡献</strong>：</p>
+<ul>
+<li>近道具有自我闭合的能力：结合网络结构看，若网络在层次加深时性能退化，则它可以通过控制网络中的近道和非近道的组合比例来退回之前浅层的状态。也就是说，虚线内参数全部为0时可以恢复到之前的状态，至少不会变差。</li>
+<li>能缩短误差反向传播到各层的路径，有效抑制梯度消失的现象，从而使网络在不断加深时性能也不会下降。</li>
+<li>成功解决了网络退化的问题。</li>
+</ul>
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gwkis5hqh4j316k0ge0u0.jpg" height="250" />
+<p><strong>主要思想</strong>：添加了跳跃连接</p>
+<p><strong>网络结构</strong>：</p>
+<ul>
+<li>沿用了VGG全3*3卷积的设计，重新加上了BN</li>
+<li>每个残差块里有2个3*3的卷积，第一个后面接了BN和ReLU，第二个后面只接了BN</li>
+<li>模块结构
+<ul>
+<li>1: 64通道的7 * 7卷积 + BN + 3 * 3最大池化</li>
+<li>2: 后接4个由残差块组成的模块，每个模块包含若干个残差块（原文为2个）。因此共有8个残差块，每个模块都进行了4次卷积。</li>
+<li><strong>每个模块在第一残差块里将上一个模块的通道数翻倍，并将高宽减半；第二个保持尺寸。</strong></li>
+<li>GAP后接全连接层，因此整个网络共 1 + 16 + 1 = 18层</li>
+</ul>
+</li>
+</ul>
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gwkj5lesboj30920fqweo.jpg" height="150" />
+<h3 id="densenet"><a class="markdownIt-Anchor" href="#densenet"></a> DenseNet</h3>
+<p><strong>网络结构</strong>：跳跃连接，使用通道连接</p>
+<ul>
+<li>稠密块：
+<ul>
+<li>每块的输入与输出在通道维上连结</li>
+<li>由多个卷积块组成，卷积块顺序为 BN + ReLU + Conv</li>
+<li>比如一个稠密块内包含了4个卷积，每个卷积输出为32。每个卷积的输入尺寸是变化的（是上层输入和输出的拼接），但输出尺寸不变。而最后稠密块的输出通道相比于输入，将增加128个通道，</li>
+</ul>
+</li>
+<li>过渡层：
+<ul>
+<li>1*1卷积 + 平均池化，实现尺寸、通道减半</li>
+<li>功能：由于稠密块会增加通道数，因此在两个稠密块之间加入过渡层，可以控制模型复杂度</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gwkjdu36fyj32a80d4q6e.jpg" alt="" /></p>
+<p><strong>结构特点</strong>：</p>
+<ul>
+<li>特征复用：每个卷积块使用相同的输出通道数。将每块的输入与输出在通道维上连结，以做为下一块的输入特征复用</li>
+<li>卷积块的通道数控制了输出通道数，相当于输入通道数的增长</li>
+</ul>
+<p><strong>优点</strong>：通过特征复用来减少网络的参数量，在一定程度上缓解了梯度消失。</p>
+<h3 id="相关问题"><a class="markdownIt-Anchor" href="#相关问题"></a> 相关问题</h3>
+<h4 id="q1-卷积-池化公式计算"><a class="markdownIt-Anchor" href="#q1-卷积-池化公式计算"></a> Q1. 卷积 &amp; 池化公式计算</h4>
+<p>假设卷积核大小为K，移动步幅为stride，开始时特征图大小为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，填充为P，卷积后特征图大小为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>.</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">第一次卷积: 1 —— K</span><br><span class="line">第二次卷积: 1 + stride —— K + stride</span><br><span class="line">第三次卷积: 1 + 2*stride —— K + 2*stride</span><br><span class="line">...</span><br><span class="line">第t次卷积: 1 + (t-1)*stride —— K + (t-1)*stride</span><br><span class="line"></span><br><span class="line">假设经过t次卷积后结束后</span><br><span class="line">K + (t-1)*stride = S<span class="built_in">_</span>in + 2P</span><br></pre></td></tr></table></figure>
+<p>上述公式经过移项后，可得</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>S</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>+</mo><mn>2</mn><mi>P</mi><mo>−</mo><mi>K</mi></mrow><mrow><mi>s</mi><mi>t</mi><mi>r</mi><mi>i</mi><mi>d</mi><mi>e</mi></mrow></mfrac><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">S_{out} = \frac{S_{in}+2P-K}{stride} + 1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span><span class="mord mathdefault">e</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span></p>
+<p>由于池化时不需要填充，因此依照上述的分析，可以直接得到</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>S</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>S</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>−</mo><mi>K</mi></mrow><mrow><mi>s</mi><mi>t</mi><mi>r</mi><mi>i</mi><mi>d</mi><mi>e</mi></mrow></mfrac><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">S_{out} = \frac{S_{in}-K}{stride} + 1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span><span class="mord mathdefault">e</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.05764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span></p>
+<h4 id="q2-池化层及其作用"><a class="markdownIt-Anchor" href="#q2-池化层及其作用"></a> Q2. 池化层及其作用</h4>
+<p><strong>作用</strong>：</p>
+<ol>
+<li>减少参数量，有效防止过拟合现象</li>
+<li>保持对平移（小量）、伸缩、旋转操作的不变性</li>
+<li>提高感受野的大小</li>
+</ol>
+<p><strong>Average Pooling</strong>:</p>
+<p>取窗口内的平均值作为结果，可以保留背景信息。</p>
+<p>反向传播将把梯度等分为k * k份分配给前一层，保证池化前后的梯度（残差）之和保持不变。</p>
+<p><strong>Maximum Pooling</strong>:</p>
+<p>去窗口内的最大值作为结果传递，可以提取特征纹理，减少无用信息的影响。</p>
+<p>反向传播也就是把梯度直接传给前一层某一个像素，而其他像素不接受梯度，也就是为0。</p>
+<p><strong>Global Pooling</strong>:</p>
+<p>不以窗口的形式取均值，而是以feature map为单位进行均值化，一个feature map输出一个值。</p>
+<h4 id="q3-卷积的本质"><a class="markdownIt-Anchor" href="#q3-卷积的本质"></a> Q3. 卷积的本质</h4>
+<ol>
+<li>从积分公式理解：不稳定的输入fx，稳定的输出gx，求得系统存量</li>
+<li>周围像素点对当前像素值如何产生影响</li>
+<li>一个像素点如何向周围进行试探（Sobel算子等</li>
+</ol>
+<p>代入理解每一层的卷积过程：</p>
+<ul>
+<li>
+<p>假如第一层的卷积提取的是图像的浅层语义信息，如入最简单的边缘。</p>
+</li>
+<li>
+<p>随着层数的增多，某一像素点将表示感受野中众多像素点对其影响逐步积累，进而得到可以表达该图像的深层语义特征。</p>
+</li>
+</ul>
+<h4 id="q4-1times1卷积核的作用"><a class="markdownIt-Anchor" href="#q4-1times1卷积核的作用"></a> Q4. 1$\times$1卷积核的作用</h4>
+<p>1*1卷积核的通道数与输入特征图应该相同。</p>
+<p>作用如下：</p>
+<ul>
+<li><strong>实现降维</strong>或升维，减少通道数从而降低模型复杂度</li>
+<li>跨通道信息交融</li>
+<li><strong>减少了参数量</strong></li>
+<li>增加模型的深度，进而提高非线性的表示能力</li>
+</ul>
+<h4 id="q5-网络退化-过拟合-梯度消失之间的关系"><a class="markdownIt-Anchor" href="#q5-网络退化-过拟合-梯度消失之间的关系"></a> Q5. 网络退化、过拟合、梯度消失之间的关系</h4>
+<p>网络退化：学习效果并非随着网络深度的增加而变好。56层的表现比22层差。</p>
+<p>过拟合：训练集表现好，但测试集差。出现退化时，无论是训练集还是测试集，56层的效果都比22差。</p>
+<p>梯度消失：效果随着训练迭代不会变好，梯度不再更新。但是退化时还是有很明显的梯度变化。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/11/19/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/" data-id="clkqxrnq4006y1fj46bpjacin" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/11/29/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%AD%E7%9A%84Mask%E3%80%81One-hot%E3%80%81Label%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          图像分割中的Mask、One-hot、Label代码详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/11/17/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96%E8%BF%9B%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">梯度下降法及其优化进程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

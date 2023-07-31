@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>VAE | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我这几天比较好奇VAE模型和简单AE之间的区别，就是为什么要引入&#x2F;mu&#x2F;mu&#x2F;mu和sigmasigmasigma，看了一上午，似懂非懂。  AutoEncoder  Encoder Produce the new features representation from the old features representation, from the initial space to late">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VAE">
+<meta property="og:url" content="http://yluy.gitee.io/2021/09/01/VAE/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="我这几天比较好奇VAE模型和简单AE之间的区别，就是为什么要引入&#x2F;mu&#x2F;mu&#x2F;mu和sigmasigmasigma，看了一上午，似懂非懂。  AutoEncoder  Encoder Produce the new features representation from the old features representation, from the initial space to late">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12smkasdj60z20j6jsh02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12svzy46j61ef0jydhc02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12t4npt4j612l0k30tx02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu0y8zpjx8j60or0c775702.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12ti5wznj61e40gojsv02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12tphkgmj61e40gk0tq02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12uaw5f6j612w0iw3zq02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12uid1jpj61fz0izta702.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12uu15pnj61fz0izq3u02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12zaueibj60z60izwf102.jpg">
+<meta property="article:published_time" content="2021-09-01T05:59:34.000Z">
+<meta property="article:modified_time" content="2021-09-01T06:03:50.993Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="中等">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gu12smkasdj60z20j6jsh02.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-VAE" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/01/VAE/" class="article-date">
+  <time datetime="2021-09-01T05:59:34.000Z" itemprop="datePublished">2021-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      VAE
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我这几天比较好奇VAE模型和简单AE之间的区别，就是为什么要引入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">/</mi><mi>m</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">/mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">/</span><span class="mord mathdefault">m</span><span class="mord mathdefault">u</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>i</mi><mi>g</mi><mi>m</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span></span></span></span>，看了一上午，似懂非懂。</p>
+<h2 id="autoencoder"><a class="markdownIt-Anchor" href="#autoencoder"></a> AutoEncoder</h2>
+<h3 id="encoder"><a class="markdownIt-Anchor" href="#encoder"></a> Encoder</h3>
+<p>Produce the new features representation from the old features representation, from the initial space to latent space, as dimensionality reduction.<br />
+Aim: <strong>keep the maximum of information when encoding</strong></p>
+<h3 id="decoder"><a class="markdownIt-Anchor" href="#decoder"></a> Decoder</h3>
+<p>Decompress the latent vector back to the initial space, and recover more information as far as possioble.<br />
+Aim: <strong>keep the minimum of reconstruction error when decoding</strong></p>
+<p>At each iteration, the loss function could be illustrated as</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12smkasdj60z20j6jsh02.jpg" alt="" /></p>
+<p>Indeed, if our encoder and decoder have enough degrees of freedom, we can reduce any initial dimensionality to <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mtext> </mtext><mi>N</mi></mrow><annotation encoding="application/x-tex">1~N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">1</span><span class="mspace nobreak"> </span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span></span> with a small loss.</p>
+<p>We should however keep two things in mind:</p>
+<ol>
+<li>An important dimensionality reduction with no reconstrction loss often comes with a price: the lack of regularity in the latent space. ( dimension 1 )</li>
+<li>Most of the time the final purpose of dimensionality reduction is not to only reduce the number of dimensions of the data but to <strong>reduce this number of dimensions while keeping the major part of the data structure information in the reduced representations</strong>.</li>
+</ol>
+<p>For these two reasons, the dimension of the latent space and the “depth” of autoencoders (that define degree and quality of compression) have to be carefully controlled and adjusted depending on the final purpose of the dimensionality reduction.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12svzy46j61ef0jydhc02.jpg" alt="" /></p>
+<h3 id="limitations"><a class="markdownIt-Anchor" href="#limitations"></a> Limitations</h3>
+<p>If the latent space is regular enough, we could take a point randomly from that latent space and decode it to get a new content we may need. The decoder would then act more or less like the generator of GAN.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12t4npt4j612l0k30tx02.jpg" alt="" /></p>
+<p>The quality and relevance of generated content depend on the regularity of the latent space. But actually it is difficult to ensure that the encoder will organize the latent space to keep its regularity for autoencoder.</p>
+<p>From the image as follow, it illustrates that a good model aims to find a correct mapping from the datasets distribution to the source distribution, in other words, it likes a brige between distributions.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu0y8zpjx8j60or0c775702.jpg" alt="" /></p>
+<p>我卡住了，用中文吧：</p>
+<p>这个模型能够将原来的概率分布映射到训练集的概率分布，也就是说，<strong>它们的目的都是进行分布之间的变换</strong>。生成模型的难题就是判断生成分布与真实分布的相似度。如果两者无法尽可能拟合，将导致生成分布sample出来的随机变量无法生成出合适的结果。</p>
+<p>overfitting也是表现之一，即生成分布与真实分布相似度太低了。</p>
+<p>The high degree of freedom of the autoencoder that makes possible to encode and decode with no infomation loss leads to a severe <strong>overfitting</strong>, implying that some points of the latent space will give meaningless content once decoded. Irregular latent space prevent us from using autoencoder for new content generation.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12ti5wznj61e40gojsv02.jpg" alt="" /></p>
+<p><strong>the autoencoder is solely trained to encode and decode with as few loss as possible, no matter how the latent space is organised.</strong> Thus, if we are not careful about the definition of the architecture, it is natural that, during the training, the network takes advantage of any overfitting possibilities to achieve its task as well as it can…</p>
+<h2 id="variational-autoencoder"><a class="markdownIt-Anchor" href="#variational-autoencoder"></a> Variational autoencoder</h2>
+<p>To overcome the aforementioned drawbacks, we have to be sure that the latent space is regular enough.</p>
+<h3 id="definition"><a class="markdownIt-Anchor" href="#definition"></a> Definition</h3>
+<p><strong>A variational autoencoder can be defined as being an autoencoder whose training is regularised to avoid overfitting and ensure that the latent space has good properties that enable generative process</strong>.</p>
+<p>In order to introduce some regularisation of the latent space, instead of encoding an input as a single point, <strong>we encode it as a distribution over the latent space</strong>!!!</p>
+<p>The model is trained as follows:</p>
+<ol>
+<li>The input is encoded as distribution over the latent space</li>
+<li>A point from the latent space is sampled from that distribution</li>
+<li>The sampled point is decoded and the reconstruction error can be computed</li>
+<li>The reconstruction error is backpropageted through the network</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12tphkgmj61e40gk0tq02.jpg" alt="" /></p>
+<p>The distribution returned by the encoder are enforced to be close to a standard normal distribution so as the latent space regularisation.</p>
+<h3 id="loss-function"><a class="markdownIt-Anchor" href="#loss-function"></a> Loss function</h3>
+<p>The loss function is composed of a “reconstrucion term” and a “regularisation term”, the later item which tends to regularise the organisation of the latent space by making the distributions returned by the encoder close to a standard normal distribution, is expressed by KLD loss.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12uaw5f6j612w0iw3zq02.jpg" alt="" /></p>
+<h3 id="about-regularisation"><a class="markdownIt-Anchor" href="#about-regularisation"></a> About regularisation</h3>
+<p>The regularity that is expected from the latent space in order to make generative process possible can be expressed through two main properties:</p>
+<ol>
+<li><strong>continuity</strong> (two close points in the latent space should not give two completely different contents once decoded)</li>
+<li><strong>completeness</strong> (for a chosen distribution, a point sampled from the latent space should give “meaningful” content once decoded).</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12uid1jpj61fz0izta702.jpg" alt="" /></p>
+<p>The only fact that VAEs encode inputs as distributions instead of simple points is not sufficient to ensure continuity and completeness. Without a well defined regularisation term, the model can learn, in order to minimise its reconstruction error, <strong>to “ignore” the fact that distributions are returned and behave almost like classic autoencoders</strong> (leading to overfitting). To do so, the encoder can either return distributions with tiny variances (that would tend to be punctual distributions) or return distributions with very different means (that would then be really far apart from each other in the latent space). In both cases, distributions are used the wrong way (cancelling the expected benefit) and continuity and/or completeness are not satisfied.</p>
+<p>So, in order to avoid these effects <strong>we have to regularise both the covariance matrix and the mean of the distributions returned by the encoder</strong>. In practice, this regularisation is done by enforcing distributions to be close to a standard normal distribution (centred and reduced). This way, we require the covariance matrices to be close to the identity, preventing punctual distributions, and the mean to be close to 0, preventing encoded distributions to be too far apart from each others.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12uu15pnj61fz0izq3u02.jpg" alt="" /></p>
+<p>We can observe that continuity and completeness obtained with regularisation <strong>tend to create a “gradient” over the information encoded in the latent space</strong>. For example, a point of the latent space that would be halfway between the means of two encoded distributions coming from different training data should be decoded in something that is somewhere between the data that gave the first distribution and the data that gave the second distribution as it may be sampled by the autoencoder in both cases.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gu12zaueibj60z60izwf102.jpg" alt="" /></p>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34998569">https://zhuanlan.zhihu.com/p/34998569</a></li>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73">https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27549418">https://zhuanlan.zhihu.com/p/27549418</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2021/09/01/VAE/" data-id="clkqxrnos00201fj48jag3wux" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/15/2021%E5%B9%B49%E6%9C%8815%E6%97%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2021年9月15日
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/08/30/CC-FPSE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CC-FPSE</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

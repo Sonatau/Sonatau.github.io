@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【图像处理】Canny边缘检测 | 私人海域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言 Canny边缘检测的步骤如下：  使用高斯滤波器，以平滑图像，滤除噪声。 计算图像中每个像素点的梯度强度和方向。 应用非极大值抑制，以消除边缘检测带来的杂散相应。（让边缘变瘦） 应用双阈值检测来确定真实的和潜在的边缘。 通过抑制孤立的弱边缘最终完成边缘检测。   高斯滤波器去除图像噪声 图像边缘容易收到噪声的干扰，因此为了避免检测到错误的边缘信息，需要建筑滤波器将图像做一个去噪的处理。滤波">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【图像处理】Canny边缘检测">
+<meta property="og:url" content="http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/index.html">
+<meta property="og:site_name" content="私人海域">
+<meta property="og:description" content="前言 Canny边缘检测的步骤如下：  使用高斯滤波器，以平滑图像，滤除噪声。 计算图像中每个像素点的梯度强度和方向。 应用非极大值抑制，以消除边缘检测带来的杂散相应。（让边缘变瘦） 应用双阈值检测来确定真实的和潜在的边缘。 通过抑制孤立的弱边缘最终完成边缘检测。   高斯滤波器去除图像噪声 图像边缘容易收到噪声的干扰，因此为了避免检测到错误的边缘信息，需要建筑滤波器将图像做一个去噪的处理。滤波">
+<meta property="og:locale">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2aal7nk4j30rs0840xt.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2aexqem8j30m50c9ac0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2akk9sl1j30qj0c0t9o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2al6huqaj30jr0apmyk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2ap0b2vrj30x10cmgq6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2apza1cqj30rs08uwhp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2asz94x7j30rt05awfs.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2a64qv6vj31990u07sy.jpg">
+<meta property="article:published_time" content="2020-08-24T15:10:33.000Z">
+<meta property="article:modified_time" content="2020-08-24T15:17:50.908Z">
+<meta property="article:author" content="Sonata">
+<meta property="article:tag" content="简单">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2aal7nk4j30rs0840xt.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="私人海域" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">私人海域</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yluy.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【图像处理】Canny边缘检测" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/" class="article-date">
+  <time datetime="2020-08-24T15:10:33.000Z" itemprop="datePublished">2020-08-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>►<a class="article-category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【图像处理】Canny边缘检测
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>Canny边缘检测的步骤如下：</p>
+<ul>
+<li>使用高斯滤波器，以平滑图像，滤除噪声。</li>
+<li>计算图像中每个像素点的梯度强度和方向。</li>
+<li>应用非极大值抑制，以消除边缘检测带来的杂散相应。（让边缘变瘦）</li>
+<li>应用双阈值检测来确定真实的和潜在的边缘。</li>
+<li>通过抑制孤立的弱边缘最终完成边缘检测。</li>
+</ul>
+<h2 id="高斯滤波器去除图像噪声"><a class="markdownIt-Anchor" href="#高斯滤波器去除图像噪声"></a> 高斯滤波器去除图像噪声</h2>
+<p>图像边缘容易收到噪声的干扰，因此为了避免检测到错误的边缘信息，需要建筑滤波器将图像做一个去噪的处理。滤波可以平滑一些纹理较弱的非边缘区域，以此得到更准确的边缘。</p>
+<p>在滤波过程中，我们通过滤波器对像素点周围的像素计算加权平均值，获取最终滤波结果。对于高斯滤波器T，<strong>越临近中心的点，权值越大</strong>。</p>
+<p>滤波器的大小也是可变的，<strong>滤波器的核越大，边缘信息对于噪声的敏感度就越低</strong>。不过，<strong>核越大，边缘检测的定位错误也会随之增加</strong>。</p>
+<p>通常来说，一个5×5的核能够满足大多数的情况。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2aal7nk4j30rs0840xt.jpg" alt="" /></p>
+<h2 id="梯度大小与方向计算"><a class="markdownIt-Anchor" href="#梯度大小与方向计算"></a> 梯度大小与方向计算</h2>
+<p>使用Sobel算子计算图像梯度的幅度。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>G</mi><mo>=</mo><msqrt><mo stretchy="false">(</mo></msqrt><msubsup><mi>G</mi><mi>x</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>G</mi><mi>y</mi><mn>2</mn></msubsup><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>θ</mi><mo>=</mo><mi>a</mi><mi>r</mi><mi>c</mi><mi>t</mi><mi>a</mi><mi>n</mi><mo stretchy="false">(</mo><msub><mi>G</mi><mi>y</mi></msub><mo separator="true">,</mo><msub><mi>G</mi><mi>x</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G = \sqrt(G_x ^2 + G_y ^ 2) \\
+\theta = arctan(G_y, G_x)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">G</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.25612499999999994em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.983875em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mopen" style="padding-left:1em;">(</span></span><span style="top:-2.9438750000000002em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg width='400em' height='1.28em' viewBox='0 0 400000 1296' preserveAspectRatio='xMinYMin slice'><path d='M263,681c0.7,0,18,39.7,52,119c34,79.3,68.167,
+158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120c340,-704.7,510.7,-1060.3,512,-1067
+c4.7,-7.3,11,-11,19,-11H40000v40H1012.3s-271.3,567,-271.3,567c-38.7,80.7,-84,
+175,-136,283c-52,108,-89.167,185.3,-111.5,232c-22.3,46.7,-33.8,70.3,-34.5,71
+c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1s-109,-253,-109,-253c-72.7,-168,-109.3,
+-252,-110,-252c-10.7,8,-22,16.7,-34,26c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26
+s76,-59,76,-59s76,-60,76,-60z M1001 80H40000v40H1012z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.25612499999999994em;"><span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.2472159999999999em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.864108em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span><span style="top:-3.1130000000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">a</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>梯度的方向总是与边缘垂直的，通常就近取值为水平（左、右）、垂直（上、下）、对角线（右上、左上、左下、右下）等8个不同的方向。</p>
+<p>下图的梯度的表示法中，每一个梯度包含幅度和角度两个不同的值。为了方便观察，这里使用了可视化表示方法。例如，左上角顶点的值“2↑”实际上表示的是一个二元数对“(2, 90)”，表示梯度的幅度为2，角度为90°。</p>
+<p>注意梯度方向和实际的边缘方向是垂直的。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2aexqem8j30m50c9ac0.jpg" alt="" /></p>
+<h2 id="非极大值抑制"><a class="markdownIt-Anchor" href="#非极大值抑制"></a> 非极大值抑制</h2>
+<p>在获得了梯度的幅度和方向后，遍历图像中的像素点，去除所有非边缘的点。在具体实现时，逐一遍历像素点，判断当前像素点是否是周围像素点中具有相同梯度方向的最大值，并根据判断结果决定是否抑制该点，这一过程也称作 <strong>边缘细化</strong>（即一个方向上提取出来的像素点变少了）。</p>
+<p>针对每个像素点：</p>
+<ul>
+<li>如果该点是其方向正/负梯度上的局部最大值，则保留该点。</li>
+<li>如果不是，则抑制该点（归零）。</li>
+</ul>
+<p>比如下图中A点具有最大的局部值，所以保留A点（称为边缘），其余两点（B和C）被抑制（归零）。由于ABC三点的梯度方向都是水平的，均垂直于边缘。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2akk9sl1j30qj0c0t9o.jpg" alt="" /></p>
+<p>“正/负梯度方向上”是指相反方向的梯度方向。例如，在图10-5中，黑色背景的像素点都是垂直方向梯度（向上、向下）方向上（即水平边缘）的局部最大值。这些点最终会被处理为边缘点。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2al6huqaj30jr0apmyk.jpg" alt="" /></p>
+<p>因此，这些黑色背景的点最终会被处理为边缘点，而其他点都被处理为非边缘点。</p>
+<p>经过上述处理后，<strong>对于同一个方向的若干个边缘点，基本上仅保留了一个</strong>，因此实现了边缘细化的目的。</p>
+<h2 id="双阈值确定边缘"><a class="markdownIt-Anchor" href="#双阈值确定边缘"></a> 双阈值确定边缘</h2>
+<p>完成上述步骤后，图像内的强边缘已经在当前获取的边缘图像内。但是，一些虚边缘可能也在边缘图像内。这些虚边缘可能是真实图像产生的，也可能是由于噪声所产生的。对于后者，必须将其剔除。</p>
+<p>设置两个阈值，其中一个为高阈值maxVal，另一个为低阈值minVal。根据当前边缘像素的梯度值（指的是梯度幅度，下同）与这两个阈值之间的关系，判断边缘的属性。具体步骤为：</p>
+<ul>
+<li>如果当前边缘像素的梯度值大于或等于maxVal，则将当前边缘像素标记为强边缘。</li>
+<li>如果当前边缘像素的梯度值介于maxVal与minVal之间，则将当前边缘像素标记为虚边缘（需要保留）。</li>
+<li>如果当前边缘像素的梯度值小于或等于minVal，则抑制当前边缘像素。<br />
+在上述过程中，我们得到了虚边缘，需要对其做进一步处理。一般通过判断虚边缘与强边缘是否连接，来确定虚边缘到底属于哪种情况。通常情况下，如果一个虚边缘：
+<ul>
+<li>与强边缘连接，则将该边缘处理为边缘。</li>
+<li>与强边缘无连接，则该边缘为弱边缘，将其抑制。</li>
+</ul>
+</li>
+</ul>
+<p>在下图中，左图显示的是三个边缘信息，右图是对边缘信息进行分类的示意图，具体划分如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2ap0b2vrj30x10cmgq6.jpg" alt="" /></p>
+<ul>
+<li>A点的梯度值值大于maxVal，因此A是强边缘。</li>
+<li>B和C点的梯度值介于maxVal和minVal之间，因此B、C是虚边缘。</li>
+<li>D点的梯度值小于minVal，因此D被抑制（抛弃）。</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2apza1cqj30rs08uwhp.jpg" alt="" /></p>
+<p>对于虚边缘：</p>
+<p>● B点的梯度值介于maxVal和minVal之间，是虚边缘，但该点与强边缘不相连，故将其抛弃。</p>
+<p>C点的梯度值介于maxVal和minVal之间，是虚边缘，但该点与强边缘A相连，故将其保留。</p>
+<p>注意，<strong>高阈值maxVal和低阈值minVal不是固定的</strong>，需要针对不同的图像进行定义。</p>
+<h2 id="函数介绍"><a class="markdownIt-Anchor" href="#函数介绍"></a> 函数介绍</h2>
+<p>使用openCV提供的Canny函数来实现边缘检测：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">edges = cv.Canny( image, threshold1, threshold2[, apertureSize[, L2gradient]])</span><br></pre></td></tr></table></figure>
+<p>edges为计算得到的边缘图像。</p>
+<p>● image为8位输入图像。</p>
+<p>● threshold1表示处理过程中的第一个阈值。</p>
+<p>● threshold2表示处理过程中的第二个阈值。</p>
+<p>● apertureSize表示Sobel算子的孔径大小。</p>
+<p>● L2gradient为计算图像梯度幅度（gradient magnitude）的标识。其默认值为False。如果为True，则使用更精确的L2范数进行计算（即两个方向的导数的平方和再开方），否则使用L1范数（直接将两个方向导数的绝对值相加）。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2asz94x7j30rt05awfs.jpg" alt="" /></p>
+<h2 id="示例介绍"><a class="markdownIt-Anchor" href="#示例介绍"></a> 示例介绍</h2>
+<p>假设现在对于某张火箭的背景图，计划使用canny检测来获取图像的边缘。测试使用不同大小的阈值，观察或渠道的边缘有何不同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"></span><br><span class="line">image = cv.imread(<span class="string">&quot;img/rocket.jpg&quot;</span>, cv.COLOR_BGR2GRAY)</span><br><span class="line">edges1 = cv.Canny(image, <span class="number">128</span>, <span class="number">200</span>)</span><br><span class="line">edges2 = cv.Canny(image, <span class="number">32</span>, <span class="number">128</span>)</span><br><span class="line">cv.imshow(<span class="string">&quot;origin&quot;</span>, image)</span><br><span class="line">cv.imshow(<span class="string">&quot;result1&quot;</span>, edges1)</span><br><span class="line">cv.imshow(<span class="string">&quot;result2&quot;</span>, edges2)</span><br><span class="line">cv.waitKey()</span><br><span class="line">cv.destroyAllWindows()</span><br></pre></td></tr></table></figure>
+<p>观察结果如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gi2a64qv6vj31990u07sy.jpg" alt="" /></p>
+<p>其中：</p>
+<ul>
+<li>左上图为原图。</li>
+<li>右上角为参数128，200的边缘检测结果。</li>
+<li>中下图为参数32，128的边缘检测结果。</li>
+</ul>
+<p>由图可以发现，两个相关的阈值较小时，可以捕获更多的边缘信息。</p>
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<ol>
+<li>《openCV入门》</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yluy.gitee.io/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Canny%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/" data-id="clkqxrnow002i1fj4du6b6fof" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/24/%E3%80%90%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E3%80%91Harris%E7%89%B9%E5%BE%81%E7%82%B9%E6%A3%80%E6%B5%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【图像处理】Harris特征点检测
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/24/%E3%80%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%91GAN/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【深度学习】GAN</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/">JavaScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/openCV/">openCV</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/">公式推导</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">算法原理</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/">疑难杂症</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">栈和队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/">链表</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/%E8%AE%BA%E6%96%87/">论文</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">阅读记录</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVPR/" rel="tag">CVPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colorization/" rel="tag">Colorization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAN/" rel="tag">GAN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIGGRAPH/" rel="tag">SIGGRAPH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/" rel="tag">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/todoList/" rel="tag">todoList</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E7%AD%89/" rel="tag">中等</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%B0%E9%9A%BE/" rel="tag">困难</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" rel="tag">图像翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" rel="tag">文本图像生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8D%95/" rel="tag">简单</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%84%E6%96%99/" rel="tag">资料</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CVPR/" style="font-size: 12.5px;">CVPR</a> <a href="/tags/Colorization/" style="font-size: 15px;">Colorization</a> <a href="/tags/GAN/" style="font-size: 15px;">GAN</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/SIGGRAPH/" style="font-size: 10px;">SIGGRAPH</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/todoList/" style="font-size: 10px;">todoList</a> <a href="/tags/%E4%B8%AD%E7%AD%89/" style="font-size: 20px;">中等</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 15px;">其他</a> <a href="/tags/%E5%9B%B0%E9%9A%BE/" style="font-size: 10px;">困难</a> <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">图像翻译</a> <a href="/tags/%E6%96%87%E6%9C%AC%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/" style="font-size: 10px;">文本图像生成</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 12.5px;">神经网络</a> <a href="/tags/%E7%AE%80%E5%8D%95/" style="font-size: 17.5px;">简单</a> <a href="/tags/%E8%B5%84%E6%96%99/" style="font-size: 10px;">资料</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/31/Hexo-%E6%97%A0%E6%B3%95%E5%8A%A0%E8%BD%BD%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87/">Hexo 无法加载图床图片</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E9%97%AD%E5%8C%85/">Javascript作用域与闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%8E%9F%E5%9E%8B%E9%93%BE/">Javascript原型与原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/Javascript%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">Javascript异步编程</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AC%94%E8%AE%B0/">决策树笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Sonata<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
